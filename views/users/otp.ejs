@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>otp</title>
+    <link rel="stylesheet" href="/users/assets/css/otp.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+     <section>
+        <div class="container">
+          <h1 class="title">Enter OTP</h1>
+          <form id="otp-form" method="POST">
+            <div class="inputs-container">
+              <input name="A" type="text" class="otp-input" maxlength="1">
+              <input name="B" type="text" class="otp-input" maxlength="1">
+              <input name="C" type="text" class="otp-input" maxlength="1">
+              <input name="D" type="text" class="otp-input" maxlength="1">
+              <input name="E" type="text" class="otp-input" maxlength="1">
+              <input name="F" type="text" class="otp-input" maxlength="1">
+            </div>
+            <div>
+              <span id="timer" style="display: block;">00:30</span>
+              <a href="/resend-otp" id="resend-btn" style="display: none;">Resend OTP</a>
+            </div>              
+            <button type="submit" id="verify-btn">Verify OTP</button>
+          </form>
+        </div>            
+      </section> 
+
+  <script>
+    
+    const form = document.querySelector("#otp-form");
+    const inputs = document.querySelectorAll(".otp-input");
+    const verifyBtn = document.querySelector("#verify-btn");
+    const resendBtn = document.querySelector("#resend-btn");
+    const timerElement = document.getElementById("timer");
+
+    const isAllInputFilled = () => {
+      return Array.from(inputs).every((item) => item.value);
+    };
+
+    const getOtpText = () => {
+      let text = "";
+      inputs.forEach((input) => {
+        text += input.value;
+      });
+      return text;
+    };
+
+    const verifyOTP = () => {
+      if (isAllInputFilled()) {
+        const text = getOtpText();
+        console.log("Verifying OTP:", text);
+      }
+    };
+
+    const toggleFilledClass = (field) => {
+      if (field.value) {
+        field.classList.add("filled");
+      } else {
+        field.classList.remove("filled");
+      }
+    };
+
+    form.addEventListener("input", (e) => {
+      const target = e.target;
+      const value = target.value;
+      toggleFilledClass(target);
+      if (target.nextElementSibling) {
+        target.nextElementSibling.focus();
+      }
+      verifyOTP();
+    });
+
+    inputs.forEach((input, currentIndex) => {
+      toggleFilledClass(input);
+      input.addEventListener("paste", (e) => {
+        e.preventDefault();
+        const text = e.clipboardData.getData("text");
+        inputs.forEach((item, index) => {
+          if (index >= currentIndex && text[index - currentIndex]) {
+            item.focus();
+            item.value = text[index - currentIndex] || "";
+            toggleFilledClass(item);
+            verifyOTP();
+          }
+        });
+      });
+      input.addEventListener("keydown", (e) => {
+        if (e.keyCode === 8) {
+          e.preventDefault();
+          input.value = "";
+          toggleFilledClass(input);
+          if (input.previousElementSibling) {
+            input.previousElementSibling.focus();
+          }
+        } else {
+          if (input.value && input.nextElementSibling) {
+            input.nextElementSibling.focus();
+          }
+        }
+      });
+    });
+
+    verifyBtn.addEventListener("click", () => {
+      verifyOTP();
+    });
+
+    let countdown;
+
+    function startTimer(duration) {
+      let timer = duration, minutes, seconds;
+      countdown = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        timerElement.textContent = minutes + ":" + seconds;
+        if (--timer < 0) {
+          clearInterval(countdown);
+          timerElement.style.display = "none";
+          resendBtn.style.display = "block";
+        }
+      }, 1000);
+    }
+
+    window.onload = function () {
+      startTimer(30);
+    };
+
+    resendBtn.addEventListener("click", function(event) {
+      startTimer(30);
+    event.preventDefault();
+    fetch('/resend-otp', {
+         method: 'POST'
+       }).then(response => {
+        if (response.ok) {
+            // console.log('OTP resent successfully');
+             timerElement.style.display = "block";
+             resendBtn.style.display = "none";
+             
+        } else {
+            console.error('Failed to resend OTP');
+        }
+    })
+    .catch(error => console.error('Error sending OTP:', error));
+});
+
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
+  const formData = new FormData(form);
+  const otpData = {};
+  for (let [key, value] of formData.entries()) {
+    otpData[key] = value;
+  }
+
+  fetch("/otp", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(otpData)
+  })
+  .then(response => {
+    if (response.ok) {
+      // Handle success if needed
+      Swal.fire({
+        title: 'Success!',
+        text: 'OTP verified successfully.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(()=>{
+          window.location.href= "/sign-in"
+         })
+    } else {
+      return response.json().then(data => {
+        throw new Error(data.message || 'Failed to verify OTP');
+      });
+    }
+  })
+  .catch(error => {
+    console.error('Error verifying OTP:', error);
+    Swal.fire({
+      title: 'Error!',
+      text: error.message,
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
+  });
+});
+
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Untree.co">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap4" />
+
+    <!--font family-->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+            rel="stylesheet">
+
+            <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+
+    <!-- Bootstrap CSS -->
+    <link href="/users/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="/users/assets/css/tiny-slider.css" rel="stylesheet">
+    <link href="/users/assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="/users/assets_2/css/style.css">
+    
+
+    <title>MacHive</title>
+
+    <style>
+        .cart-heading {
+            font-family: 'Lato', sans-serif;
+        }
+
+        .empty-cart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: -80px;
+            padding: 50px;
+        }
+
+        .empty-cart-image {
+            width: 200px;
+            height: 200px;
+        }
+
+        .empty-cart-message {
+            font-family: "Indie Flower", cursive;
+            font-size: 36px;
+            color: #555;
+            font-weight: 400;
+            font-style: normal;
+            margin-top: 20px;
+        }
+
+
+
+        .address-box {
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        .address-item {
+            display: block;
+        }
+
+        .address-radio {
+            display: none;
+        }
+
+        .address-label {
+            position: relative;
+            display: block;
+            padding-left: 30px;
+            cursor: pointer;
+        }
+
+        .address-label::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+
+        .address-radio:checked+.address-label::before {
+            background-color: blue;
+        }
+
+        .info-list table {
+            width: 100%;
+        }
+
+        .info-list td {
+            padding: 5px 0;
+        }
+
+        .info-list td:first-child {
+            text-align: right;
+            padding-right: 10px;
+        }
+
+
+        .add-address-link:hover {
+            text-decoration: underline;
+        }
+
+        .border {
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            transition: box-shadow 0.5s ease-in-out;
+        }
+
+        .border:hover {
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .p-3 {
+            padding: 1rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-5 {
+            margin-bottom: 3rem;
+        }
+
+        .h6 {
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .collapse {
+            display: none;
+        }
+
+        .collapse.show {
+            display: block;
+        }
+
+        .payment-method {
+            transition: box-shadow 0.3s, background-color 0.3s;
+        }
+
+        .payment-method.active {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>

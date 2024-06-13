@@ -1,0 +1,509 @@
+<%-include ('../layouts/header') %>
+
+	<body>
+
+		<!-- Start Header/Navigation -->
+		<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+
+			<div class="container">
+				<a class="navbar-brand">MacHive</a>
+
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+					aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarsFurni">
+					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+						<li><a class="nav-link" href="/">Home</a></li>
+						<li><a class="nav-link" href="/shop">Shop</a></li>
+						<li><a class="nav-link" href="/views/users/about.ejs">About us</a></li>
+						<li><a class="nav-link" href="/views/users/services.ejs">Services</a></li>
+						<li><a class="nav-link" href="/views/users/blog.ejs">Blog</a></li>
+						<li><a class="nav-link" href="/views/users//contact.ejs">Contact us</a></li>
+					</ul>
+
+					<ul class=" custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+						<li><a class="nav-link" href="#"><i class="fa-solid fa-heart"></i></a></li>
+						<li><a class="nav-link" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+						<li><a class="nav-link" href="/myAccount"><i class="fa-solid fa-user"></i></a></li>
+					</ul>
+
+					<ul class="custom-navbar-nav navbar-nav ">
+
+						<li><a class="nav-link login-nav" href="sign-in">SIGN IN</a></li>
+
+					</ul>
+
+				</div>
+			</div>
+
+		</nav>
+		<!-- End Header/Navigation -->
+
+
+
+		<div class="untree_co-section">
+			<h2 class="main-allpro">CHECKOUT</h2>
+			<div class="container ">
+				<div class="row mb-5">
+
+				</div>
+				<div class="container mt-5">
+					<div class="row">
+						<div class="row mb-5">
+							<div class="col-md-6">
+								<button class="btn btn-outline-black btn-sm btn-block"
+									onclick="window.location='/cart'">⟵ Back to Cart</button>
+							</div>
+						</div>
+						<div class="col-md-6 mb-5 mb-md-0">
+							<h2 class="h3 mb-3 text-black">Billing Details</h2>
+							<div class="p-3 p-lg-5 border bg-white">
+								<% if (addresses && addresses.length> 0) { %>
+									<% addresses.forEach((address, i)=> { %>
+										<div class="form-group address-item">
+											<div class="address-box p-3 mb-3 border">
+												<input type="radio" id="address_<%= i %>" name="selected_address"
+													value="<%= address._id %>" class="address-radio">
+												<label for="address_<%= i %>" class="address-label">
+													<div class="seller-info address-css">
+														<h5 class="heading"><strong>Address-<%= i + 1 %></strong></h5>
+														<div class="info-list">
+															<table>
+																<tr>
+																	<td><strong>Name :</strong></td>
+																	<td>
+																		<%= address.name %>
+																	</td>
+																</tr>
+																<tr>
+																	<td><strong>Phone :</strong></td>
+																	<td>
+																		<%= address.mobile %>
+																	</td>
+																</tr>
+																<tr>
+																	<td><strong>Address :</strong></td>
+																	<td>
+																		<%= address.address %>
+																	</td>
+																</tr>
+																<tr>
+																	<td><strong>City :</strong></td>
+																	<td>
+																		<%= address.city %>
+																	</td>
+																</tr>
+																<tr>
+																	<td><strong>Pincode :</strong></td>
+																	<td>
+																		<%= address.pincode %>
+																	</td>
+																</tr>
+															</table>
+														</div>
+													</div>
+												</label>
+											</div>
+										</div>
+										<% }); %>
+											<div class="form-group address-item">
+												<a href="/myAccount" class="text-info add-address-link"
+													style="font-weight: bold;">Add new address</a>
+											</div>
+											<% } else { %>
+												<p>No addresses found.</p>
+												<div class="form-group address-item">
+													<a href="/myAccount" class="text-info add-address-link"
+														style="font-weight: bold;">Add new address</a>
+												</div>
+												<% } %>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="row mb-5">
+								<div class="col-md-12">
+									<h2 class="h3 mb-3 text-black">Coupon Code</h2>
+									<div class="p-3 p-lg-5 border bg-white">
+										<label for="c_code" class="text-black mb-3">Enter your coupon code if you have
+											one</label>
+										<div class="input-group w-75 couponcode-wrap">
+											<input type="text" class="form-control me-2" id="c_code"
+												placeholder="Coupon Code" aria-label="Coupon Code"
+												aria-describedby="button-addon2">
+											<div class="input-group-append">
+												<button class="btn btn-black btn-sm" type="button"
+													id="button-addon2">Apply</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row mb-5">
+								<div class="col-md-12">
+									<h2 class="h3 mb-3 text-black">Your Order</h2>
+									<div class="p-3 p-lg-5 border bg-white">
+										<table class="table site-block-order-table mb-5">
+											<thead>
+												<tr>
+													<th>Product</th>
+													<th>Total</th>
+												</tr>
+											</thead>
+											<tbody>
+												<% let subtotal=0; %>
+													<% cart.forEach(cartItem=> { %>
+														<% cartItem.products.forEach(product=> { %>
+															<% const
+																productName=product.productVariantId.productId.name; %>
+																<% const
+																	productPrice=product.productVariantId.salePrice; %>
+																	<% const quantity=product.quantity; %>
+																		<% const totalProductPrice=productPrice *
+																			quantity; %>
+																			<tr>
+																				<td>
+																					<%= productName %> <strong
+																							class="mx-2">x</strong>
+																						<%= quantity %>
+																				</td>
+																				<td>₹ <%= totalProductPrice.toFixed(2)
+																						%>
+																				</td>
+																			</tr>
+																			<% subtotal +=totalProductPrice; %>
+																				<% }); %>
+																					<% }); %>
+																						<tr>
+																							<td
+																								class="text-black font-weight-bold">
+																								<strong>Cart
+																									Subtotal</strong>
+																							</td>
+																							<td class="text-black">
+																								<strong>₹ <%=
+																										subtotal.toFixed(2)
+																										%></strong>
+																							</td>
+																						</tr>
+																						<tr>
+																							<td
+																								class="text-black font-weight-bold">
+																								<i>Shipping Charge</i>
+																							</td>
+																							<td class="text-black"><i>₹
+																									100.00</i></td>
+																						</tr>
+																						<tr>
+																							<td
+																								class="text-black font-weight-bold">
+																								<strong>Order
+																									Total</strong>
+																							</td>
+																							<td
+																								class="text-black font-weight-bold">
+																								<strong>₹ <%= (subtotal
+																										+
+																										100).toFixed(2)
+																										%></strong>
+																							</td>
+																						</tr>
+											</tbody>
+										</table>
+										<h3>Payment Method</h3>
+										<br>
+										<div class="border p-3 mb-3 payment-method" data-method="COD">
+											<h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse"
+													href="#collapsebank" role="button" aria-expanded="false"
+													aria-controls="collapsebank">Cash On Delivery</a></h3>
+											<div class="collapse" id="collapsebank">
+												<div class="py-2">
+													<p class="mb-0">Make your payment directly into our bank account.
+														Please use your Order ID as the payment reference. Your order
+														won’t be shipped until the funds have cleared in our account.
+													</p>
+												</div>
+											</div>
+										</div>
+										<div class="border p-3 mb-3 payment-method" data-method="razorpay">
+											<h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse"
+													href="#collapsecheque" role="button" aria-expanded="false"
+													aria-controls="collapsecheque">Online Payment</a></h3>
+											<div class="collapse" id="collapsecheque">
+												<div class="py-2">
+													<p class="mb-0">Make your payment directly into our bank account.
+														Please use your Order ID as the payment reference. Your order
+														won’t be shipped until the funds have cleared in our account.
+													</p>
+												</div>
+											</div>
+										</div>
+										<div class="border p-3 mb-5 payment-method" data-method="Wallet">
+											<h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse"
+													href="#collapsepaypal" role="button" aria-expanded="false"
+													aria-controls="collapsepaypal">My Wallet</a></h3>
+											<div class="collapse" id="collapsepaypal">
+												<div class="py-2">
+													<p class="mb-0">Make your payment directly into our bank account.
+														Please use your Order ID as the payment reference. Your order
+														won’t be shipped until the funds have cleared in our account.
+													</p>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<button class="btn btn-black btn-lg py-3 btn-block"
+												id="place-order-button">Place Order</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- </form> -->
+			</div>
+		</div>
+
+		<!-- Start Footer Section -->
+		<footer class="footer-section">
+			<div class="container relative">
+
+				<div class="row">
+					<div class="col-lg-8">
+						<div class="subscription-form">
+
+							<form action="#" class="row g-3">
+								<div class="col-auto">
+									<input type="text" class="form-control" placeholder="Enter your name">
+								</div>
+								<div class="col-auto">
+									<input type="email" class="form-control" placeholder="Enter your email">
+								</div>
+								<div class="col-auto">
+									<button class="btn btn-primary">
+										<span class="fa fa-paper-plane"></span>
+									</button>
+								</div>
+							</form>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="row g-5 mb-5">
+					<div class="col-lg-4">
+						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>
+						<p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl
+							dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor
+							tristique. Pellentesque habitant</p>
+
+						<ul class="list-unstyled custom-social">
+							<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+							<li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+							<li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+							<li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+						</ul>
+					</div>
+
+					<div class="col-lg-8">
+						<div class="row links-wrap">
+							<div class="col-6 col-sm-6 col-md-3">
+								<ul class="list-unstyled">
+									<li><a href="#">About us</a></li>
+									<li><a href="#">Services</a></li>
+									<li><a href="#">Blog</a></li>
+									<li><a href="#">Contact us</a></li>
+								</ul>
+							</div>
+
+							<div class="col-6 col-sm-6 col-md-3">
+								<ul class="list-unstyled">
+									<li><a href="#">Support</a></li>
+									<li><a href="#">Knowledge base</a></li>
+									<li><a href="#">Live chat</a></li>
+								</ul>
+							</div>
+
+							<div class="col-6 col-sm-6 col-md-3">
+								<ul class="list-unstyled">
+									<li><a href="#">Jobs</a></li>
+									<li><a href="#">Our team</a></li>
+									<li><a href="#">Leadership</a></li>
+									<li><a href="#">Privacy Policy</a></li>
+								</ul>
+							</div>
+
+							<div class="col-6 col-sm-6 col-md-3">
+								<ul class="list-unstyled">
+									<li><a href="#">Nordic Chair</a></li>
+									<li><a href="#">Kruzo Aero</a></li>
+									<li><a href="#">Ergonomic Chair</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="border-top copyright">
+					<div class="row pt-4">
+						<div class="col-lg-6">
+							<p class="mb-2 text-center text-lg-start">Copyright &copy;
+								<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash;
+								Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a
+									hreff="https://themewagon.com">ThemeWagon</a>
+								<!-- License information: https://untree.co/license/ -->
+							</p>
+						</div>
+
+						<div class="col-lg-6 text-center text-lg-end">
+							<ul class="list-unstyled d-inline-flex ms-auto">
+								<li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+								<li><a href="#">Privacy Policy</a></li>
+							</ul>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</footer>
+		<!-- End Footer Section -->
+
+		<script src="js/bootstrap.bundle.min.js"></script>
+		<script src="js/tiny-slider.js"></script>
+		<script src="js/custom.js"></script>
+
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+		<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				const radioButtons = document.querySelectorAll('.address-radio');
+				radioButtons.forEach(button => {
+					button.addEventListener('change', function () {
+						radioButtons.forEach(btn => {
+							const label = btn.nextElementSibling;
+							if (btn.checked) {
+								label.querySelector('.seller-info').classList.add('selected-address');
+							} else {
+								label.querySelector('.seller-info').classList.remove('selected-address');
+							}
+						});
+					});
+				});
+			});
+
+			$(document).ready(function () {
+				let selectedPaymentMethod = null;
+
+				$('.payment-method').on('click', function () {
+					$('.payment-method').removeClass('active');
+					$(this).addClass('active');
+					selectedPaymentMethod = $(this).data('method');
+				});
+
+				$('#place-order-button').on('click', function () {
+					const selectedAddress = $('input[name="selected_address"]:checked').val();
+
+					if (!selectedPaymentMethod) {
+						Swal.fire({
+							icon: 'warning',
+							title: 'Please select a payment method'
+						});
+						return;
+					}
+
+					if (!selectedAddress) {
+						Swal.fire({
+							icon: 'warning',
+							title: 'Please select an address'
+						});
+						return;
+					}
+
+					$.ajax({
+						url: '/placeOrder',
+						method: 'POST',
+						data: {
+							addressId: selectedAddress,
+							paymentMethod: selectedPaymentMethod
+						},
+						success: function (response) {
+							if (response.razorpayOrderId) {
+								const options = {
+									"key": response.key_id,
+									"amount": response.amount,
+									"currency": "INR",
+									"name": "MacHive",
+									"description": "Test Transaction",
+									"image": "/your_logo.png",
+									"order_id": response.razorpayOrderId,
+									"handler": function (paymentResponse) {
+										$.ajax({
+											url: '/verifyPayment',
+											method: 'POST',
+											data: {
+												orderId: response.razorpayOrderId,
+												paymentId: paymentResponse.razorpay_payment_id,
+												signature: paymentResponse.razorpay_signature
+											},
+											success: function () {
+												window.location.href = '/thankyou';
+											},
+											error: function () {
+												Swal.fire({
+													icon: 'error',
+													title: 'Payment verification failed'
+												});
+											}
+										});
+									},
+									"prefill": {
+										"name": "Your Name",
+										"email": "email@example.com",
+										"contact": "9999999999"
+									},
+									"theme": {
+										"color": "#F37254"
+									}
+								};
+
+								const rzp = new Razorpay(options);
+								rzp.open();
+							} else {
+								window.location.href = '/thankyou';
+							}
+						},
+						error: function (error) {
+							Swal.fire({
+								icon: 'error',
+								title: 'Order placement failed',
+								text: error.responseText
+							});
+						}
+					});
+				});
+			});
+
+
+			document.addEventListener('DOMContentLoaded', (event) => {
+				const paymentMethods = document.querySelectorAll('.payment-method');
+
+				paymentMethods.forEach(method => {
+					method.addEventListener('click', () => {
+						paymentMethods.forEach(item => item.classList.remove('active'));
+
+						method.classList.add('active');
+					});
+				});
+			});
+		</script>
+
+	</body>
+
+	<%-include ('../layouts/footer') %>

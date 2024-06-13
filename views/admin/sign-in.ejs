@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" class="light-theme">
+
+
+<!-- Mirrored from codervent.com/synui/demo/collapsed-menu/authentication-sign-in-cover.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 20 Apr 2024 09:12:49 GMT -->
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- loader-->
+  <link href="assets-signin/css/pace.min.css" rel="stylesheet" />
+  <script src="assets-signin/js/pace.min.js"></script>
+
+  <!--plugins-->
+  <link href="assets-signin/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+
+  <!-- CSS Files -->
+  <link href="assets-signin/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets-signin/css/bootstrap-extended.css" rel="stylesheet">
+  <link href="assets-signin/css/style.css" rel="stylesheet">
+  <link href="assets-signin/css/icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
+
+  <title>SYN-UI - Bootstrap Admin Template</title>
+</head>
+
+<body class="bg-white">
+
+  <!--start wrapper-->
+  <div class="wrapper">
+    <div class="">
+      <div class="row g-0 m-0">
+        <div class="col-xl-6 col-lg-12">
+          <div class="login-cover-wrapper">
+            <div class="card shadow-none">
+              <div class="card-body">
+                <div class="text-center">
+                  <h4>Sign In</h4>
+                  <p>Sign In to your account</p>
+                </div>
+                <form class="form-body row g-3" id="form-data">
+                  <div class="col-12">
+                      <label for="inputEmail" class="form-label">Email</label>
+                      <input name="email" type="email" class="form-control" id="inputEmail">
+                      <div id="emailError" class="text-danger"></div> <!-- Error message for email -->
+                  </div>
+                  <div class="col-12">
+                      <label for="inputPassword" class="form-label">Password</label>
+                      <input name="password" type="password" class="form-control" id="inputPassword">
+                      <div id="passwordError" class="text-danger"></div> <!-- Error message for password -->
+                  </div>
+                  <div class="col-12 col-lg-12">
+                      <div class="d-grid">
+                          <button type="submit" class="btn btn-primary">Sign In</button>
+                      </div>
+                  </div>
+              </form>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6 col-lg-12">
+          <div class="position-fixed top-0 h-100 d-xl-block d-none login-cover-img">
+          </div>
+        </div>
+      </div>
+      <!--end row-->
+    </div>
+  </div>
+  <!--end wrapper-->
+
+<script>
+    document.getElementById('form-data').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById("inputEmail").value;
+    const password = document.getElementById("inputPassword").value;
+
+    fetch('/admin', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            if (data.field === "email") {
+                document.getElementById("emailError").textContent = data.message;
+            } else if (data.field === "password") {
+                document.getElementById("passwordError").textContent = data.message;
+            } else {
+                document.getElementById("emailError").textContent = '';
+                document.getElementById("passwordError").textContent = '';
+            }
+        } else {
+            window.location.href = '/admin/dashboard';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+<!-- Mirrored from codervent.com/synui/demo/collapsed-menu/authentication-sign-in-cover.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 20 Apr 2024 09:12:51 GMT -->
+</html>

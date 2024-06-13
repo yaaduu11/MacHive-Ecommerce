@@ -1,0 +1,423 @@
+<%-include ('../layouts/header') %>
+
+	<body>
+
+
+		<!-- Start Header/Navigation -->
+		<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+
+			<div class="container">
+				<a class="navbar-brand">MacHive</a>
+
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+					aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarsFurni">
+					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+						<li><a class="nav-link" href="/">Home</a></li>
+						<li><a class="nav-link" href="/shop">Shop</a></li>
+						<li><a class="nav-link" href="/views/users/about.ejs">About us</a></li>
+						<li><a class="nav-link" href="/views/users/services.ejs">Services</a></li>
+						<li><a class="nav-link" href="/views/users/blog.ejs">Blog</a></li>
+						<li><a class="nav-link" href="/views/users//contact.ejs">Contact us</a></li>
+					</ul>
+
+					<ul class=" custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+						<li><a class="nav-link" href="#"><i class="fa-solid fa-heart"></i></a></li>
+						<li><a class="nav-link" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+						<li><a class="nav-link" href="/myAccount"><i class="fa-solid fa-user"></i></a></li>
+					</ul>
+
+					<ul class="custom-navbar-nav navbar-nav ">
+
+						<li><a class="nav-link login-nav" href="sign-in">SIGN IN</a></li>
+
+					</ul>
+
+				</div>
+			</div>
+
+		</nav>
+		<!-- End Header/Navigation -->
+
+		<!-- Start Hero Section -->
+
+
+
+		<!-- End Hero Section -->
+
+
+		<div class="untree_co-section before-footer-section">
+			<div class="container">
+				<% if (cart && cart.products && cart.products.length > 0) { %>
+					<div class="row mb-5">
+						<form class="col-md-12" method="post" action="/update-cart">
+							<div class="site-blocks-table">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Image</th>
+											<th>Product</th>
+											<th>Price</th>
+											<th>Quantity</th>
+											<th>Total</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<% cart.products.forEach((item, index) => { %>
+											<tr>
+												<td><img src="<%= item.productVariantId.productId.image %>" alt="<%= item.productVariantId.productId.name %>" width="50"></td>
+												<td><%= item.productVariantId.productId.name %></td>
+												<td>
+													<% if (item.productVariantId.is_blocked) { %>
+														<span class="text-danger">Product is unavailable</span>
+													<% } else if (item.productVariantId.stock === 0) { %>
+														<span class="text-danger">This product is out of stock</span>
+													<% } else { %>
+														₹ <%= item.productVariantId.salePrice %>
+													<% } %>
+												</td>
+												<td>
+													<% if (item.productVariantId.is_blocked || item.productVariantId.stock === 0) { %>
+														<span class="text-danger">Unavailable</span>
+													<% } else { %>
+														<div class="input-group input-group-sm">
+															<button type="button" class="btn btn-sm btn-outline-secondary"
+																onclick="updateQuantity('<%= item.productVariantId._id %>', -1, '<%= index %>')">-</button>
+															<input type="number" name="quantities[<%= index %>]" value="<%= item.quantity %>"
+																class="form-control text-center small-input" style="width: 50px;"
+																onchange="updateCartQuantity('<%= item.productVariantId._id %>', this.value)">
+															<button type="button" class="btn btn-sm btn-outline-secondary"
+																onclick="updateQuantity('<%= item.productVariantId._id %>', 1, '<%= index %>')">+</button>
+														</div>
+													<% } %>
+												</td>
+												<td>
+													<% if (item.productVariantId.is_blocked || item.productVariantId.stock === 0) { %>
+														<span class="text-danger">Unavailable</span>
+													<% } else { %>
+														₹ <%= (item.productVariantId.salePrice * item.quantity).toFixed(2) %>
+													<% } %>
+												</td>
+												<td><a href="#" class="text-danger remove-item" data-product-id="<%= item.productVariantId._id %>"><strong>Remove</strong></a></td>
+											</tr>
+										<% }) %>
+									</tbody>
+								</table>
+							</div>
+						</form>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="row mb-5">
+								<div class="col-md-6">
+									<button class="btn btn-outline-black btn-sm btn-block" onclick="window.location='/shop'">Continue Shopping</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 pl-5">
+							<div class="row justify-content-end">
+								<div class="col-md-7">
+									<div class="row">
+										<div class="col-md-12 text-right border-bottom mb-5">
+											<h3 class="text-black h4 text-uppercase">Cart Totals</h3>
+										</div>
+									</div>
+									<div class="row mb-3">
+										<div class="col-md-6">
+											<span class="text-black">Subtotal</span>
+										</div>
+										<div class="col-md-6 text-right">
+											<strong class="text-black">₹ <%= cart.products.reduce((acc, item) => acc + (item.productVariantId.is_blocked || item.productVariantId.stock === 0 ? 0 : item.productVariantId.salePrice * item.quantity), 0).toFixed(2) %></strong>
+										</div>
+									</div>
+									<div class="row mb-5">
+										<div class="col-md-6">
+											<span class="text-black">Total</span>
+										</div>
+										<div class="col-md-6 text-right">
+											<strong class="text-black">₹ <%= cart.products.reduce((acc, item) => acc + (item.productVariantId.is_blocked || item.productVariantId.stock === 0 ? 0 : item.productVariantId.salePrice * item.quantity), 0).toFixed(2) %></strong>
+										</div>
+									</div>
+									<% if((cart.products.reduce((acc, item) => acc + (item.productVariantId.is_blocked || item.productVariantId.stock === 0 ? 0 : item.productVariantId.salePrice * item.quantity), 0).toFixed(2))>0) { %>
+										<div class="row">
+											<div class="col-md-12">
+												<button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='/checkout'">Proceed To Checkout</button>
+											</div>
+										</div>
+									<% } else { %>
+										<div class="row">
+											<div class="col-md-12">
+												<button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='/checkout'" disabled >Proceed To Checkout</button>
+											</div>
+										</div>
+                                    <% } %>
+								</div>
+							</div>
+						</div>
+					</div>
+				<% } else { %>
+					<div class="empty-cart">
+						<p class="empty-cart-message">Your cart is empty.</p>
+						<br>
+						<img src="users/assets/images/cart_empty.png" alt="Sad Emoji" class="empty-cart-image">
+						<br>
+						<p><a href="/shop" class="btn btn-secondary me-2">Shop Now 🡢</a></p>
+					</div>
+				<% } %>
+			</div>
+		</div>
+		
+
+
+
+		<!-- Start Footer Section -->
+		<footer class="footer-section">
+			<div class="container relative">
+
+
+				<div class="row">
+					<div class="col-lg-8">
+						<div class="subscription-form">
+							<h3 class="d-flex align-items-center"><span class="me-1"><img
+										src="/users/assets/images/envelope-outline.svg" alt="Image"
+										class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+
+							<form action="#" class="row g-3">
+								<div class="col-auto">
+									<input type="text" class="form-control" placeholder="Enter your name">
+								</div>
+								<div class="col-auto">
+									<input type="email" class="form-control" placeholder="Enter your email">
+								</div>
+								<div class="col-auto">
+									<button class="btn btn-primary">
+										<span class="fa fa-paper-plane"></span>
+									</button>
+								</div>
+							</form>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="row g-5 mb-5">
+					<div class="col-lg-4">
+						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>
+						<p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl
+							dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor
+							tristique. Pellentesque habitant</p>
+
+						<ul class="list-unstyled custom-social">
+							<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+							<li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+							<li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+							<li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+						</ul>
+					</div>
+
+					<div class="col-lg-8">
+						<div class="row links-wrap">
+							<div class="col-6 col-sm-6 col-md-3">
+								<ul class="list-unstyled">
+									<li><a href="#">About us</a></li>
+									<li><a href="#">Services</a></li>
+									<li><a href="#">Blog</a></li>
+									<li><a href="#">Contact us</a></li>
+								</ul>
+							</div>
+
+							<div class="col-6 col-sm-6 col-md-3">
+								<ul class="list-unstyled">
+									<li><a href="#">Support</a></li>
+									<li><a href="#">Knowledge base</a></li>
+									<li><a href="#">Live chat</a></li>
+								</ul>
+							</div>
+
+							<div class="col-6 col-sm-6 col-md-3">
+								<ul class="list-unstyled">
+									<li><a href="#">Jobs</a></li>
+									<li><a href="#">Our team</a></li>
+									<li><a href="#">Leadership</a></li>
+									<li><a href="#">Privacy Policy</a></li>
+								</ul>
+							</div>
+
+							<div class="col-6 col-sm-6 col-md-3">
+								<ul class="list-unstyled">
+									<li><a href="#">Nordic Chair</a></li>
+									<li><a href="#">Kruzo Aero</a></li>
+									<li><a href="#">Ergonomic Chair</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="border-top copyright">
+					<div class="row pt-4">
+						<div class="col-lg-6">
+							<p class="mb-2 text-center text-lg-start">Copyright &copy;
+								<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash;
+								Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a
+									hreff="https://themewagon.com">ThemeWagon</a>
+								<!-- License information: https://untree.co/license/ -->
+							</p>
+						</div>
+
+						<div class="col-lg-6 text-center text-lg-end">
+							<ul class="list-unstyled d-inline-flex ms-auto">
+								<li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+								<li><a href="#">Privacy Policy</a></li>
+							</ul>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</footer>
+		<!-- End Footer Section -->
+
+
+		<script src="js/bootstrap.bundle.min.js"></script>
+		<script src="js/tiny-slider.js"></script>
+		<script src="js/custom.js"></script>
+
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+		<script>
+
+			function updateQuantity(productId, change, index) {
+				const input = document.querySelector(`input[name="quantities[${index}]"]`);
+				let currentQuantity = parseInt(input.value);
+				let newQuantity = currentQuantity + change;
+
+				if (newQuantity < 1) {
+					newQuantity = 1;
+				} else if (newQuantity > 3) {
+					Swal.fire({
+						icon: 'error',
+						title: 'Oops...',
+						text: 'You can only buy 3 quantity of one product at a time.',
+					});
+					return;
+				}
+
+				checkStockAndUpdate(productId, newQuantity, input);
+			}
+
+			function checkStockAndUpdate(productId, newQuantity, input) {
+				fetch('/check-stock', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ productId, quantity: newQuantity })
+				})
+					.then(response => response.json())
+					.then(data => {
+						if (data.success) {
+							input.value = newQuantity;
+							updateCartQuantity(productId, newQuantity);
+						} else {
+							Swal.fire({
+								icon: 'error',
+								title: 'Oops...',
+								text: data.message || 'Failed to update cart quantity',
+							});
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: 'An error occurred while updating cart quantity.',
+						});
+					});
+			}
+
+			function updateCartQuantity(productId, quantity) {
+				fetch('/update-cart-quantity', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ productId, quantity })
+				})
+					.then(response => response.json())
+					.then(data => {
+						if (data.success) {
+							location.reload();
+						} else {
+							Swal.fire({
+								icon: 'error',
+								title: 'Oops...',
+								text: data.message || 'Failed to update cart quantity',
+							});
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: 'An error occurred while updating cart quantity.',
+						});
+					});
+			}
+
+			function updateTotals() {
+				let subtotal = 0;
+				const rows = document.querySelectorAll("tbody tr");
+				rows.forEach(row => {
+					const price = parseFloat(row.children[2].innerText.substring(1));
+					const quantity = parseInt(row.children[3].querySelector("input").value);
+					const total = price * quantity;
+					row.children[4].innerText = `$${total.toFixed(2)}`;
+					subtotal += total;
+				});
+				document.querySelector(".text-black strong").innerText = `$${subtotal.toFixed(2)}`;
+			}
+
+
+
+			document.querySelectorAll('.remove-item').forEach(button => {
+				button.addEventListener('click', function (event) {
+					event.preventDefault();
+					const productVariantId = this.getAttribute('data-product-id');
+
+					fetch('/remove-from-cart', {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({ productVariantId }),
+					})
+						.then(response => response.json())
+						.then(data => {
+							if (data.success) {
+								location.reload();
+							} else {
+								console.error('Failed to remove item:', data.message);
+							}
+						})
+						.catch(error => {
+							console.error('Error:', error);
+						});
+				});
+			});
+
+		</script>
+
+
+
+	</body>
+
+	<%-include ('../layouts/footer') %>

@@ -1,0 +1,49 @@
+@charset "UTF-8";
+@font-face {
+  font-family: "flaticon";
+  src: url("flaticon6253.ttf?2ed30a5aa4f649b97cd13cccc5a47f29") format("truetype"), url("flaticon6253.woff?2ed30a5aa4f649b97cd13cccc5a47f29") format("woff"), url("flaticon6253.woff2?2ed30a5aa4f649b97cd13cccc5a47f29") format("woff2"), url("flaticon6253.eot?2ed30a5aa4f649b97cd13cccc5a47f29#iefix") format("embedded-opentype"), url("flaticon6253.svg?2ed30a5aa4f649b97cd13cccc5a47f29#flaticon") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+  font-family: flaticon !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.flaticon-truck:before {
+  content: "";
+}
+
+.flaticon-credit-card:before {
+  content: "";
+}
+
+.flaticon-exchange:before {
+  content: "";
+}
+
+.flaticon-call-center-agent:before {
+  content: "";
+}
+
+.flaticon-heart:before {
+  content: "";
+}
+
+.flaticon-user:before {
+  content: "";
+}
+
+.flaticon-random-button:before {
+  content: "";
+}
+
+.flaticon-shopping-cart:before {
+  content: "";
+}
+/*# sourceMappingURL=flaticon.css.map */
