@@ -59,6 +59,7 @@ router.patch('/unlist-variant/:variantId', variants.variantUnlist);
 
 //////////////!   ORDERS
 router.get('/orders', orders.loadOrderList)
+router.get('/salesReport', orders.loadSalesReport)
 router.get('/orderDetails/:orderId', orders.loadOrderDetails);
 router.patch('/updateOrderStatus', orders.orderStatusUpdate)
 
@@ -70,6 +71,12 @@ router.get('/EditCoupons/:couponId', coupons.loadEditCoupons)
 router.post('/AddCoupons', coupons.addCoupons);
 router.patch('/EditCoupons/:couponId', coupons.editCoupon)
 router.patch('/unlist-coupon/:couponId', coupons.unlistCoupon)
+
+
+//////////////!    PDF AND EXCEL
+router.get('/download-excel', orders.downloadExcel);
+router.get('/download-pdf', orders.downloadPdf);
+
 
 
 module.exports = router

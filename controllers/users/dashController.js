@@ -3,6 +3,7 @@ const Adress = require('../../models/addressModel');
 const statusCodes = require('../../util/statusCodes');
 const Order = require('../../models/orderModel')
 const Coupon = require('../../models/couponModel')
+const Wallet = require('../../models/walletModel')
 const bcrypt = require("bcrypt")
 
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
@@ -15,7 +16,7 @@ exports.loadMyAccount = async (req, res) => {
 
     try {
         const userId = req.session.userId;
-        const [user, address, orders, coupons] = await Promise.all([
+        const [user, address, orders, coupons, wallet] = await Promise.all([
             User.findById(userId),
             Adress.find({ userId }),
             Order.find({ userId }).populate({
@@ -26,7 +27,8 @@ exports.loadMyAccount = async (req, res) => {
                     model: 'Products'
                 }
             }),
-            Coupon.find({})
+            Coupon.find({}),
+            Wallet.findOne({userID:userId})
         ]);
 
         if (!user) {
@@ -36,7 +38,7 @@ exports.loadMyAccount = async (req, res) => {
 
         // console.log('Orders:', JSON.stringify(orders, null, 2));
 
-        res.render('users/myAccount', { user, address, orders, coupons, errors: {} });
+        res.render('users/myAccount', { user, address, orders, coupons, wallet, errors: {} });
     } catch (error) {
         console.error('Load Account Error:', error);
         res.status(500).send('Internal Server Error');

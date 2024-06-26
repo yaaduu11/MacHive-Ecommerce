@@ -52,42 +52,39 @@
 	<!-- Start Header/Navigation -->
 	<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
-		<div class="container">
-			<a class="navbar-brand">MacHive</a>
+        <div class="container">
+            <a class="navbar-brand">MacHive</a>
 
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
-				aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-			<div class="collapse navbar-collapse" id="navbarsFurni">
-				<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-					<li><a class="nav-link" href="/">Home</a></li>
-					<li class="nav-item active">
-						<a class="nav-link" href="/shop">Shop</a>
-					</li>
-					<li><a class="nav-link" href="/views/users/about.ejs">About us</a></li>
-					<li><a class="nav-link" href="/views/users/services.ejs">Services</a></li>
-					<li><a class="nav-link" href="/views/users/blog.ejs">Blog</a></li>
-					<li><a class="nav-link" href="/views/users//contact.ejs">Contact us</a></li>
-				</ul>
+            <div class="collapse navbar-collapse" id="navbarsFurni">
+                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                    <li><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/shop">Shop</a>
+                    </li>
+                    <li><a class="nav-link" href="/views/users/about.ejs">About us</a></li>
+                    <li><a class="nav-link" href="/views/users/contact.ejs">Contact us</a></li>
+                </ul>
 
-				<ul class=" custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-					<li><a class="nav-link" href="#"><i class="fa-solid fa-heart"></i></a></li>
-					<li><a class="nav-link" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
-					<li><a class="nav-link" href="/myAccount"><i class="fa-solid fa-user"></i></a></li>
-				</ul>
+                <ul class=" custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                    <li><a class="nav-link" href="/wishlist"><i class="fa-solid fa-heart"></i></a></li>
+                    <li><a class="nav-link" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    <li><a class="nav-link" href="/myAccount"><i class="fa-solid fa-user"></i></a></li>
+                </ul>
 
-				<ul class="custom-navbar-nav navbar-nav ">
+                <ul class="custom-navbar-nav navbar-nav ">
 
-					<li><a class="nav-link login-nav" href="sign-in">SIGN IN</a></li>
+                    <li><a class="nav-link login-nav" href="/sign-in">SIGN IN</a></li>
 
-				</ul>
-
-			</div>
-		</div>
-
-	</nav>
+                </ul>
+                
+            </div>
+        </div>
+            
+    </nav>
 
 
 
@@ -113,38 +110,7 @@
 								</form>
 							</div>
 						</div>
-						<div class="product-widget mb-30">
-							<div class="single-widget">
-								<h5 class="pt-title pb-20">Filter By Price</h5>
-								<form action="#">
-									<div class="ui-price-slider">
-										<div class="slider-range">
-											<div id="slider-range"
-												class="mb-20 ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
-												<div class="ui-slider-range ui-corner-all ui-widget-header"></div><span
-													tabindex="0"
-													class="ui-slider-handle ui-corner-all ui-state-default"></span><span
-													tabindex="0"
-													class="ui-slider-handle ui-corner-all ui-state-default"></span>
-											</div>
-											<div class="row">
-												<div class="col-9">
-													<p>
-														<label for="amount">Price :</label>
-														<input type="text" id="amount" readonly="">
-													</p>
-												</div>
-												<div class="col-3">
-													<div class="text-end">
-														<a href="#" class="sm-filter-title">Filter</a>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
+						
 
 					</div>
 				</div>
@@ -526,7 +492,6 @@
 
 							</div>
 
-
 						</div>
 					</div>
 					<div class="shop-pagination">
@@ -534,9 +499,7 @@
 							<nav>
 								<ul>
 									<li>
-										<a href="shop.html">
-											<i class="far fa-angle-left"></i>
-										</a>
+										<a href="shop.html">❮</a>
 									</li>
 									<li>
 										<a href="shop.html" class="active">1</a>
@@ -545,12 +508,7 @@
 										<a href="shop.html">2</a>
 									</li>
 									<li>
-										<a href="shop.html">3</a>
-									</li>
-									<li>
-										<a href="shop.html">
-											<i class="far fa-angle-right"></i>
-										</a>
+										<a href="shop.html">❯</a>
 									</li>
 								</ul>
 							</nav>
@@ -560,149 +518,7 @@
 			</div>
 		</div>
 	</section>
-	<!-- product-details-end -->
-
-	<!-- shop modal start -->
-	<div class="modal fade" id="productModalId" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered product__modal" role="document">
-			<div class="modal-content">
-				<div class="product__modal-wrapper p-relative">
-					<div class="product__modal-close p-absolute">
-						<button data-bs-dismiss="modal"><i class="fal fa-times"></i></button>
-					</div>
-					<div class="product__modal-inner">
-						<div class="row">
-							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-								<div class="product__modal-box">
-									<div class="tab-content" id="modalTabContent">
-										<div class="tab-pane fade show active" id="nav1" role="tabpanel"
-											aria-labelledby="nav1-tab">
-											<div class="product__modal-img w-img">
-												<img src="/users/assets_2/img/products/quick-view/quick-view-1.jpg"
-													alt="">
-											</div>
-										</div>
-										<div class="tab-pane fade" id="nav2" role="tabpanel" aria-labelledby="nav2-tab">
-											<div class="product__modal-img w-img">
-												<img src="/users/assets_2/img/products/quick-view/quick-view-2.jpg"
-													alt="">
-											</div>
-										</div>
-										<div class="tab-pane fade" id="nav3" role="tabpanel" aria-labelledby="nav3-tab">
-											<div class="product__modal-img w-img">
-												<img src="/users/assets_2/img/products/quick-view/quick-view-3.jpg"
-													alt="">
-											</div>
-										</div>
-										<div class="tab-pane fade" id="nav4" role="tabpanel" aria-labelledby="nav4-tab">
-											<div class="product__modal-img w-img">
-												<img src="/users/assets_2/img/products/quick-view/quick-view-4.jpg"
-													alt="">
-											</div>
-										</div>
-									</div>
-									<ul class="nav nav-tabs" id="modalTab" role="tablist">
-										<li class="nav-item" role="presentation">
-											<button class="nav-link active" id="nav1-tab" data-bs-toggle="tab"
-												data-bs-target="#nav1" type="button" role="tab" aria-controls="nav1"
-												aria-selected="true">
-												<img src="/users/assets_2/img/products/quick-view/nav/quick-nav-1.jpg"
-													alt="">
-											</button>
-										</li>
-										<li class="nav-item" role="presentation">
-											<button class="nav-link" id="nav2-tab" data-bs-toggle="tab"
-												data-bs-target="#nav2" type="button" role="tab" aria-controls="nav2"
-												aria-selected="false">
-												<img src="/users/assets_2/img/products/quick-view/nav/quick-nav-2.jpg"
-													alt="">
-											</button>
-										</li>
-										<li class="nav-item" role="presentation">
-											<button class="nav-link" id="nav3-tab" data-bs-toggle="tab"
-												data-bs-target="#nav3" type="button" role="tab" aria-controls="nav3"
-												aria-selected="false">
-												<img src="/users/assets_2/img/products/quick-view/nav/quick-nav-3.jpg"
-													alt="">
-											</button>
-										</li>
-										<li class="nav-item" role="presentation">
-											<button class="nav-link" id="nav4-tab" data-bs-toggle="tab"
-												data-bs-target="#nav4" type="button" role="tab" aria-controls="nav4"
-												aria-selected="false">
-												<img src="/users/assets_2/img/products/quick-view/nav/quick-nav-4.jpg"
-													alt="">
-											</button>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-								<div class="product__modal-content">
-									<h4 class="product__modal-title"><a href="product-details.html">
-											<% products.name %>
-										</a></h4>
-									<div class="product__modal-des mb-40">
-										<p>Typi non habent claritatem insitam, est usus legentis in iis qui facit eorum
-											claritatem. Investigationes demonstraverunt </p>
-									</div>
-									<div class="product__modal-stock">
-										<span>Availability :</span>
-										<span>In Stock</span>
-									</div>
-									<div class="product__modal-stock sku mb-30">
-										<span>BRAND:</span>
-										<span>Samsung C49J89: £875, Debenhams Plus</span>
-									</div>
-									<div class="product__modal-review d-sm-flex">
-										<div class="rating mb-15 mr-35">
-											<ul>
-												<li><a href="#"><i class="fal fa-star"></i></a></li>
-												<li><a href="#"><i class="fal fa-star"></i></a></li>
-												<li><a href="#"><i class="fal fa-star"></i></a></li>
-												<li><a href="#"><i class="fal fa-star"></i></a></li>
-												<li><a href="#"><i class="fal fa-star"></i></a></li>
-											</ul>
-										</div>
-										<div class="product__modal-add-review mb-15">
-											<span><a href="#">1 Review</a></span>
-											<span><a href="#">Add Review</a></span>
-										</div>
-									</div>
-									<div class="product__modal-price">
-										<span>$560.00</span>
-									</div>
-									<div class="product__modal-form mb-30">
-										<form action="#">
-											<div class="pro-quan-area d-lg-flex align-items-center">
-												<div class="product-quantity mr-20 mb-25">
-													<div class="cart-plus-minus p-relative"><input type="text"
-															value="1" /></div>
-												</div>
-												<div class="pro-cart-btn mb-25">
-													<a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-												</div>
-											</div>
-										</form>
-									</div>
-									<div class="product__modal-links">
-										<ul>
-											<li><a href="#" title="Add to Wishlist"><i class="fal fa-heart"></i></a>
-											</li>
-											<li><a href="#" title="Compare"><i class="far fa-sliders-h"></i></a></li>
-											<li><a href="#" title="Print"><i class="fal fa-print"></i></a></li>
-											<li><a href="#" title="Print"><i class="fal fa-share-alt"></i></a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
+	
   <!-- Start Footer Section -->
   <footer class="footer-section">
 	<div class="container relative">
@@ -733,7 +549,7 @@
 		<div class="row g-5 mb-5">
 			<div class="col-lg-4">
 				<div class="mb-4 footer-logo-wrap"><a class="navbar-brand">MacHive</a></div>
-				<p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant</p>
+				<p class="mb-4">Discover the perfect blend of quality and convenience at our store. With a seamless shopping experience, we make it effortless and rewarding for you to find your ideal iPhone or MacBook, ensuring satisfaction with every purchase. Explore our collection today and elevate your tech journey!</p>
 
 				<ul class="list-unstyled custom-social">
 					<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
@@ -786,7 +602,7 @@
 		<div class="border-top copyright">
 			<div class="row pt-4">
 				<div class="col-lg-6">
-					<p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a hreff="https://themewagon.com">ThemeWagon</a>  <!-- License information: https://untree.co/license/ -->
+					<p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved.</p>
 	</p>
 				</div>
 

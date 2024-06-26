@@ -40,7 +40,7 @@
 <body>
 
     <!-- Start Header/Navigation -->
-    <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
         <div class="container">
             <a class="navbar-brand">MacHive</a>
@@ -54,18 +54,16 @@
                 <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
                     <li><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item active">
-                        <a class="nav-link " href="/shop">Shop</a>
+                        <a class="nav-link" href="/shop">Shop</a>
                     </li>
-                    <li><a class="nav-link" href="/users/about.ejs">About us</a></li>
-                    <li><a class="nav-link" href="/views/users/services.ejs">Services</a></li>
-                    <li><a class="nav-link" href="/views//users/blog.ejs">Blog</a></li>
-                    <li><a class="nav-link" href="/views/users//contact.ejs">Contact us</a></li>
+                    <li><a class="nav-link" href="/views/users/about.ejs">About us</a></li>
+                    <li><a class="nav-link" href="/views/users/contact.ejs">Contact us</a></li>
                 </ul>
 
                 <ul class=" custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                    <li><a class="nav-link" href="#"><i class="fa-solid fa-heart"></i></a></li>
+                    <li><a class="nav-link" href="/wishlist"><i class="fa-solid fa-heart"></i></a></li>
                     <li><a class="nav-link" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                    <li><a class="nav-link" href="#"><i class="fa-solid fa-user"></i></a></li>
+                    <li><a class="nav-link" href="/myAccount"><i class="fa-solid fa-user"></i></a></li>
                 </ul>
 
                 <ul class="custom-navbar-nav navbar-nav ">
@@ -73,6 +71,7 @@
                     <li><a class="nav-link login-nav" href="/sign-in">SIGN IN</a></li>
 
                 </ul>
+
             </div>
         </div>
 
@@ -90,27 +89,66 @@
                                     <a class="nav-item nav-link active" id="pro-one-tab" data-bs-toggle="tab"
                                         href="#pro-one" role="tab" aria-controls="pro-one" aria-selected="true">
                                         <div class="product__nav-img w-img">
-                                            <img src="<%= products.image %>" alt="" class="zoomable-image">
-                                        </div>
-                                        <div id="zoomed-image-container">
-                                            <img id="zoomed-image" src="" alt="Zoomed Image">
+                                            <img id="main-image" src="<%= products.image %>" alt=""
+                                                class="zoomable-image">
                                         </div>
                                     </a>
-                                    <a class="nav-item nav-link" id="pro-two-tab" data-bs-toggle="tab" href="#pro-two"
-                                        role="tab" aria-controls="pro-two" aria-selected="false">
-                                        <div class="product__nav-img w-img">
-                                            <img src="" alt="">
-                                        </div>
-                                    </a>
-                                    <a class="nav-item nav-link" id="pro-three-tab" data-bs-toggle="tab"
-                                        href="#pro-three" role="tab" aria-controls="pro-three" aria-selected="false">
-                                        <div class="product__nav-img w-img">
-                                            <img src="" alt="">
-                                        </div>
-                                    </a>
+                                    <br>
+                                    <div class="product__thumbnail-container">
+                                        <img class="thumbnail-image" src="/users/assets/images/black-iphone1.webp"
+                                            alt="Thumbnail 2">
+                                        <img class="thumbnail-image" src="/users/assets/images/black-iphone2.webp"
+                                            alt="Thumbnail 2">
+                                        <img class="thumbnail-image" src="/users/assets/images/black-iphone3.webp"
+                                            alt="Thumbnail 2">
+                                    </div>
                                 </div>
                             </nav>
                         </div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', (event) => {
+                                const mainImage = document.getElementById('main-image');
+                                const thumbnails = document.querySelectorAll('.thumbnail-image');
+
+                                thumbnails.forEach(thumbnail => {
+                                    thumbnail.addEventListener('click', () => {
+                                        mainImage.src = thumbnail.src;
+                                    });
+                                });
+                            });
+
+                        </script>
+
+                        <style>
+                            .main-image {
+                                width: 300px;
+                                /* Adjust size as needed */
+                                height: auto;
+                            }
+
+                            .product__thumbnail-container {
+                                display: flex;
+                                justify-content: center;
+                                gap: 10px;
+                            }
+
+                            .thumbnail-image {
+                                width: 150px;
+                                /* Adjust size as needed */
+                                height: 150px;
+                                /* Adjust size as needed */
+                                cursor: pointer;
+                                border: 1px solid #ccc;
+                                /* Optional: Add border for better visibility */
+                                transition: border 0.3s;
+                            }
+
+                            .thumbnail-image:hover {
+                                border: 1px solid #000;
+                                /* Optional: Add hover effect */
+                            }
+                        </style>
+
                         <div class="tab-content mb-20" id="product-detailsContent">
                             <div class="tab-pane fade active show" id="pro-one" role="tabpanel"
                                 aria-labelledby="pro-one-tab">
@@ -200,17 +238,23 @@
                                                                 <div class="variant-option">
                                                                     <div
                                                                         class="product__details-color d-sm-flex align-items-center mb-25">
-                                                                        <span>COLOR:&nbsp;<strong><%= variant.color %></strong></span>
+                                                                        <span>COLOR:&nbsp;<strong>
+                                                                                <%= variant.color %>
+                                                                            </strong></span>
                                                                     </div>
                                                                     <% if (products.categoryId.name==='Iphones' ||
                                                                         products.categoryId.name==='Macbooks' ) { %>
                                                                         <div
                                                                             class="product__details-size d-sm-flex align-items-center mb-30">
-                                                                            <span>RAM:&nbsp;<strong><%= variant.ram %>&nbsp;GB</strong></span>
+                                                                            <span>RAM:&nbsp;<strong>
+                                                                                    <%= variant.ram %>&nbsp;GB
+                                                                                </strong></span>
                                                                         </div>
                                                                         <div
                                                                             class="product__details-size d-sm-flex align-items-center mb-30">
-                                                                            <span>ROM:&nbsp;<strong><%= variant.rom %>&nbsp;GB</strong></span>
+                                                                            <span>ROM:&nbsp;<strong>
+                                                                                    <%= variant.rom %>&nbsp;GB
+                                                                                </strong></span>
                                                                         </div>
                                                                         <% } %>
                                                                 </div>
@@ -893,65 +937,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                                <div class="product__modal-content">
-                                    <h4 class="product__modal-title"><a href="product-details.html">Samsung C49J89:
-                                            £875, Debenhams Plus</a></h4>
-                                    <div class="product__modal-des mb-40">
-                                        <p>Typi non habent claritatem insitam, est usus legentis in iis qui facit
-                                            eorum claritatem. Investigationes demonstraverunt </p>
-                                    </div>
-                                    <div class="product__modal-stock">
-                                        <span>Availability :</span>
-                                        <span>In Stock</span>
-                                    </div>
-                                    <div class="product__modal-stock sku mb-30">
-                                        <span>SKU:</span>
-                                        <span>Samsung C49J89: £875, Debenhams Plus</span>
-                                    </div>
-                                    <div class="product__modal-review d-sm-flex">
-                                        <div class="rating mb-15 mr-35">
-                                            <ul>
-                                                <li><a href="#"><i class="fal fa-star"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-star"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-star"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-star"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-star"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="product__modal-add-review mb-15">
-                                            <span><a href="#">1 Review</a></span>
-                                            <span><a href="#">Add Review</a></span>
-                                        </div>
-                                    </div>
-                                    <div class="product__modal-price">
-                                        <span>$560.00</span>
-                                    </div>
-                                    <div class="product__modal-form mb-30">
-                                        <form action="#">
-                                            <div class="pro-quan-area d-lg-flex align-items-center">
-                                                <div class="product-quantity mr-20 mb-25">
-                                                    <div class="cart-plus-minus p-relative"><input type="text"
-                                                            value="1" /></div>
-                                                </div>
-                                                <div class="pro-cart-btn mb-25">
-                                                    <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="product__modal-links">
-                                        <ul>
-                                            <li><a href="#" title="Add to Wishlist"><i class="fal fa-heart"></i></a>
-                                            </li>
-                                            <li><a href="#" title="Compare"><i class="far fa-sliders-h"></i></a>
-                                            </li>
-                                            <li><a href="#" title="Print"><i class="fal fa-print"></i></a></li>
-                                            <li><a href="#" title="Print"><i class="fal fa-share-alt"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -1352,12 +1338,24 @@
                     })
                     .then(data => {
                         if (data.success) {
-                            Swal.fire({
-                                title: 'Success!',
-                                text: 'Product added to cart successfully!',
-                                icon: 'success',
-                                confirmButtonText: 'OK'
-                            });
+                            if (data.alreadyExists) {
+                                Swal.fire({
+                                    toast: true,
+                                    position: 'top-end',
+                                    icon: 'warning',
+                                    title: 'Product is already in your cart!',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Product added to cart successfully!',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
                         }
                     })
                     .catch(error => {
@@ -1372,13 +1370,15 @@
             });
         });
 
-
         document.querySelectorAll('.add-wishlist-btn').forEach(button => {
             button.addEventListener('click', function (event) {
                 event.preventDefault();
 
-                const productVariantId = event.target.getAttribute('data-product-id');
-                const quantity = '1'; 
+                const productId = event.target.getAttribute('data-product-id');
+                const variantBox = document.querySelector('.variants-box');
+                const productVariantId = variantBox ? variantBox.getAttribute('data-variant-id') : productId;
+                const quantity = '1';
+
                 fetch('/wishlist', {
                     method: 'POST',
                     headers: {
@@ -1399,12 +1399,24 @@
                     })
                     .then(data => {
                         if (data.success) {
-                            Swal.fire({
-                                title: 'Success!',
-                                text: 'Product added to wishlist successfully!',
-                                icon: 'success',
-                                confirmButtonText: 'OK'
-                            });
+                            if (data.alreadyExists) {
+                                Swal.fire({
+                                    toast: true,
+                                    position: 'top-end',
+                                    icon: 'warning',
+                                    title: 'Product is already in your wishlist!',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Product added to wishlist successfully!',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
                         }
                     })
                     .catch(error => {
@@ -1418,7 +1430,6 @@
                     });
             });
         });
-
 
 
 

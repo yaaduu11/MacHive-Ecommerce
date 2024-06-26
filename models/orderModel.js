@@ -25,6 +25,9 @@ const orderSchema = new mongoose.Schema({
             type: Number,
             required: true
         },
+        returnReason: {
+            type: String
+        },
     }],
     orderDate: {
         type: Date,
@@ -50,12 +53,12 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     shippingAddress: {
-        name: {type: String, required: true},
-        mobile: {type: Number, required: true},
-        address: {type: String, required: true},
-        city: {type: String, required: true},
-        state: {type: String, required: true},
-        pincode: {type: Number, required: true},
+        name: { type: String, required: true },
+        mobile: { type: Number, required: true },
+        address: { type: String, required: true },
+        city: { type: String, required: true },
+        state: { type: String, required: true },
+        pincode: { type: Number, required: true },
     },
     razorpayOrderId: {
         type: String,
@@ -63,44 +66,30 @@ const orderSchema = new mongoose.Schema({
     razorpayPaymentId: {
         type: String
     },
-},
-{timestamps: true});
+    couponDetails: {
+        discountPercentage: {
+            type: Number
+        },
+        claimedAmount: {
+            type: Number
+        },
+        couponCode: {
+            type: String
+        },
+        minPurchaseAmount: {
+            type: Number
+        },
+        maxDiscountAmount: {
+            type: Number
+        },
+    }
+}, { timestamps: true });
 
-module.exports = mongoose.model('orders', orderSchema);
+module.exports = mongoose.model('Order', orderSchema);
 
 
-
-
-
-//     razorpayOrder_id:{
-//         type : String,
-//     },
-//     razorPayment_id:{
-//         type : String
-//     },
-    
-//     couponDetails:{
-
-//         discountPercentage:{
-//             type:Number
-//         },
-//         claimedAmount:{
-//             type:Number
-//         },
-//         couponCode:{
-//             type:String
-//         },
-//         minPurchaseAmount:{
-//             type:Number
-//         },
-//         maxDiscountAmount:{
-//             type:Number
-//         },
-//         couponReversedAmount:{
-//             type:Number
-//         }
-//     },
 
 //     offerDiscount :{
 //         type : Number
 //     }
+

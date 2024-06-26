@@ -1,6 +1,6 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider,FacebookAuthProvider ,signInWithPopup } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider ,signInWithPopup } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCBH0sICNsYQL6ULvGEQoNlwAaab8P6l-s",
@@ -21,12 +21,6 @@ provider.setCustomParameters({
   prompt: 'select_account'
 });
 
-const facebookProvider = new FacebookAuthProvider();
-facebookProvider.setCustomParameters({
-  prompt: 'select_account',
-  display: 'popup'
-});
-
 
 const googleLogin = document.getElementById("google-login-btn");
 googleLogin.addEventListener("click", async function () { 
@@ -43,25 +37,6 @@ googleLogin.addEventListener("click", async function () {
   }
 });
 
-const facebookLoginButton = document.getElementById("facebook-login-btn");
-facebookLoginButton.addEventListener("click", async () => { 
-  try {
-    const result = await signInWithPopup(auth, facebookProvider);
-
-    await Swal.fire({
-      icon: 'success',
-      title: 'Sign-in Successful!',
-      text: 'Welcome to our homepage!',
-      showConfirmButton: false,
-      timer: 2000 
-    });
-
-    window.location.href = '/';
-
-  } catch (error) {
-    console.error("Facebook authentication failed:", error.code, error.message);
-  }
-});
 
 function showSignInSuccessMessage() {
   Swal.fire({

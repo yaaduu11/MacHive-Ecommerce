@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Codescandy">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M8S4MT3EYG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-M8S4MT3EYG');
+    </script>
+
+
+    <!-- Favicon icon-->
+    <link rel="shortcut icon" type="image/x-icon"
+        href="https://dashui.codescandy.com/dashuipro/assets/images/favicon/favicon.ico">
+
+
+    <!-- Libs CSS -->
+    <link href="/admin/assets/libs/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/admin/assets/libs/%40mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="/admin/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/users/assets/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="/admin/assets/css/trackOrder.css">
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+
+
+
+    <!-- Bootstrap CSS -->
+    <link href="/users/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="/users/assets/css/style.css" rel="stylesheet">
+    <link href="/users/assets_2/css/style.css" rel="stylesheet">
+
+
+    <title>Order Details | Dash UI - Bootstrap 5 Admin Dashboard Template</title>
+</head>
+
+<body>
+
+    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+
+        <div class="container">
+            <a class="navbar-brand">MacHive</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsFurni">
+                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                    <li><a class="nav-link" href="/">Home</a></li>
+                    <li><a class="nav-link" href="/shop">Shop</a></li>
+                    <li><a class="nav-link" href="/about">About us</a></li>
+                    <li><a class="nav-link" href="/contact">Contact us</a></li>
+                </ul>
+
+                <ul class=" custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                    <li><a class="nav-link" href="/wishlist"><i class="fa-solid fa-heart"></i></a></li>
+                    <li><a class="nav-link" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    <li><a class="nav-link" href="/myAccount"><i class="fa-solid fa-user"></i></a></li>
+                </ul>
+
+                <ul class="custom-navbar-nav navbar-nav ">
+
+                    <li><a class="nav-link login-nav" href="/sign-in">SIGN IN</a></li>
+
+                </ul>
+
+            </div>
+        </div>
+
+    </nav>
+
+
+    <div id="app-content">
+        <div class="app-content-area d-flex justify-content-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-12">
+                        <!-- Page header -->
+                        <div class="mb-5">
+                            <h3 class="spaced-letters">Track Order</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-7 col-xxl-9 col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="mb-1">Order ID: <%= orderDetails._id %></h4>
+                                        <div class="d-flex align-items-center">
+                                            <small>Order Date: <%= orderDetails.orderDate.toDateString() %></small>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <a href="#!" class="btn btn-primary">Invoice</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive table-card">
+                                    <table class="table text-nowrap mb-0 table-centered">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col">Products</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Amount</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Return Reason</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% orderDetails.orderItems.forEach(item => { %>
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <a href="#!"><img src="<%= item.product.productId.image %>"
+                                                                    alt="Product Image"
+                                                                    class="img-4by3-md rounded-3"></a>
+                                                            <div class="ms-3">
+                                                                <h5 class="mb-0"><a href="#!"
+                                                                        class="text-inherit"><%= item.product.productId.name %></a>
+                                                                </h5>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><%= item.quantity %></td>
+                                                    <td>₹ <%= item.productPrice %></td>
+                                                    <td><%= item.orderStatus %></td>
+                                                    <td><%= item.returnReason || '-' %></td>
+                                                </tr>
+                                            <% }); %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-6 col-xxl-6 col-12">
+                                <div class="card mb-4 mt-4 mt-lg-0">
+                                    <div class="card-header">
+                                        <h4 class="mb-0">Order Summary</h4>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-centered mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Order Status :</td>
+                                                    <td><%= orderDetails.orderItems[0].orderStatus %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Payment Method :</td>
+                                                    <td><%= orderDetails.paymentMethod %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Sub Total :</td>
+                                                    <td><%= orderDetails.subTotal %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Shipping Charge :</td>
+                                                    <td>₹ 100.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Total Amount</td>
+                                                    <td class="text-dark"><%= orderDetails.grandTotal %></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xxl-6 col-12">
+                                <div class="card mb-4 mt-4 mt-lg-0">
+                                    <div class="card-header table-light">
+                                        <h4 class="mb-0">User Address</h4>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-centered mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>name :</td>
+                                                    <td><%= orderDetails.shippingAddress.name %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>mobile :</td>
+                                                    <td><%= orderDetails.shippingAddress.mobile %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>city :</td>
+                                                    <td><%= orderDetails.shippingAddress.city %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>address :</td>
+                                                    <td><%= orderDetails.shippingAddress.address %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>state :</td>
+                                                    <td><%= orderDetails.shippingAddress.state %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>pincode :</td>
+                                                    <td><%= orderDetails.shippingAddress.pincode %></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <!-- Scripts -->
+
+    <!-- Libs JS -->
+    <script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/admin/assets/libs/feather-icons/dist/feather.min.js"></script>
+    <script src="/admin/assets/libs/simplebar/dist/simplebar.min.js"></script>
+
+
+
+
+    <!-- Theme JS -->
+    <script src="/admin/assets/js/theme.min.js"></script>
+
+
+
+</body>
+
+</html>

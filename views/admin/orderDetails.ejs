@@ -475,7 +475,6 @@
                   </ul>
                 </div>
               </div>
-
             </div> -->
 
             <div class="row">
@@ -487,7 +486,6 @@
                                   <h4 class="mb-1">Order ID: <%= order._id %></h4>
                                   <div class="d-flex align-items-center">
                                       <small>Order Date: <%= new Date(order.orderDate).toLocaleString() %></small>
-                                      <!-- <span class="badge badge-success-soft ms-2">Paid</span> -->
                                   </div>
                               </div>
                               <div>
@@ -503,6 +501,8 @@
                                           <th scope="col">Products</th>
                                           <th scope="col">Quantity</th>
                                           <th scope="col">Amount</th>
+                                          <th scope="col">Status</th>
+                                          <th scope="col">Return Reason</th>
                                       </tr>
                                   </thead>
                                   <tbody>
@@ -510,15 +510,22 @@
                                           <tr>
                                               <td>
                                                   <div class="d-flex align-items-center">
-                                                      <a href="#!"><img src="<%= item.product.productId.image %>" alt="Product Image" class="img-4by3-md rounded-3 "></a>
+                                                      <a href="#!"><img src="<%= item.product.productId.image %>" alt="Product Image" class="img-4by3-md rounded-3"></a>
                                                       <div class="ms-3">
-                                                          <h5 class="mb-0"> <a href="#!" class="text-inherit"><%= item.product.name %></a></h5>
+                                                          <h5 class="mb-0"><a href="#!" class="text-inherit"><%= item.product.productId.name %></a></h5>
                                                       </div>
                                                   </div>
                                               </td>
                                               <td><%= item.quantity %></td>
                                               <td>₹ <%= item.productPrice %></td>
+                                              <td><%= item.orderStatus %></td>
+                                              <td>
+                                                  <% if (item.orderStatus === 'Return requested') { %>
+                                                      <%= item.returnReason %>
+                                                  <% } %>
+                                              </td>
                                           </tr>
+                                      <% }); %>
                                   </tbody>
                               </table>
                           </div>
@@ -542,10 +549,8 @@
                                       <tbody>
                                           <tr>
                                               <td>Order Status :</td>
-                                              <td><%= item.orderStatus %></td>
+                                              <td><%= order.orderItems[0].orderStatus %></td>
                                           </tr>
-                                      <% }); %>
-
                                           <tr>
                                               <td>Payment Method :</td>
                                               <td><%= order.paymentMethod %></td>
@@ -607,6 +612,8 @@
                   </div>
               </div>
           </div>
+          
+          
           
 
           </div>

@@ -466,18 +466,7 @@
                     <div class="flex-grow-1">
                       <a href="/admin/AddProducts" class="btn btn-primary">+ Add Product</a>
                     </div>
-                    <div class="mt-3 mt-md-0">
-                      <a href="#!" class="btn btn-ghost btn-icon btn-sm rounded-circle texttooltip"
-                        data-template="settingOne">
-                        <i data-feather="settings" class="icon-xs"></i>
-                        <div id="settingOne" class="d-none">
-                          <span>Setting</span>
-                        </div>
-                      </a>
-
-                      <a href="#!" class="btn btn-outline-white ms-2">Import</a>
-                      <a href="#!" class="btn btn-outline-white ms-2">Export</a>
-                    </div>
+                    
                   </div>
                   <div class="card-body">
                     <div class="table-responsive table-card">
@@ -494,13 +483,14 @@
                             <th class="ps-1">Product</th>
                             <th>Category</th>
                             <th>Added Date</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
                             <th>Status</th>
                             <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
+                          <% 
+                            productss.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                          %>
                           <% for(let i = 0; i < productss.length; i++) { %>
                             <% const product = productss[i]; %>
                             <% const variant = variantss[i]; %>
@@ -526,8 +516,6 @@
                               <td><%= productss[i].categoryId.name %></td>
                               <td><%= new Date(productss[i].createdAt).toLocaleString('en-US', { dateStyle: 'medium',
                                 timeStyle: 'short' }) %></td>
-                              <td><%= variantss[i].salePrice %></td>
-                              <td><%= variantss[i].stock %></td>
                               <td>
                                 <span
                                   class="badge <%= productss[i].status ? 'badge-danger' : 'badge-success-soft' %> text-<%= productss[i].status ? 'danger' : 'success' %>">

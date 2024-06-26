@@ -34,6 +34,14 @@ const loadShop = async (req,res) =>{
     }
 }
 
+const loadAboutUs = async (req, res) => {
+    res.render('users/about');
+};
+
+const loadContactUs = async (req, res) => {
+    res.render('users/contact');
+};
+
 const loadSignIn = async (req,res) =>{
     try {
         res.status(200).render('users/sign-in')
@@ -204,6 +212,8 @@ const signIn = async (req, res) => {
 module.exports = {
     loadHome,
     loadShop,
+    loadAboutUs,
+    loadContactUs,
     loadSignIn,
     insertUser,
     loadSignUp,

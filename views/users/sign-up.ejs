@@ -16,6 +16,9 @@
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
         rel="stylesheet">
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
     <!-- CSS here -->
     <link rel="stylesheet" href="/users/assets_2/css/preloader.css">
     <link rel="stylesheet" href="/users/assets_2/css/bootstrap.css">
@@ -68,32 +71,36 @@
 
             <div class="container">
                 <a class="navbar-brand">MacHive</a>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
-                    aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+    
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
+    
                 <div class="collapse navbar-collapse" id="navbarsFurni">
                     <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-                        <!-- <li class="nav-item active">
-                                <a class="nav-link" href="/views/users/home.ejs">Home</a>
-                            </li> -->
                         <li><a class="nav-link" href="/">Home</a></li>
                         <li><a class="nav-link" href="/shop">Shop</a></li>
                         <li><a class="nav-link" href="/views/users/about.ejs">About us</a></li>
-                        <li><a class="nav-link" href="/views/users/services.ejs">Services</a></li>
-                        <li><a class="nav-link" href="/views//users/blog.ejs">Blog</a></li>
-                        <li><a class="nav-link" href="/views/users//contact.ejs">Contact us</a></li>
+                        <li><a class="nav-link" href="/views/users/contact.ejs">Contact us</a></li>
                     </ul>
-
-                    <!-- <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                            <li><a class="nav-link" href="sign-in"><i class="fa-solid fa-user"></i></a></li>
-                            <li><a class="nav-link" href="/views//users/cart.ejs"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                        </ul> -->
+    
+                    <ul class=" custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                        <li><a class="nav-link" href="/wishlist"><i class="fa-solid fa-heart"></i></a></li>
+                        <li><a class="nav-link" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                        <li><a class="nav-link" href="/myAccount"><i class="fa-solid fa-user"></i></a></li>
+                    </ul>
+    
+                    <ul class="custom-navbar-nav navbar-nav ">
+    
+                        <li class="nav-item active">
+                            <a class="nav-link login-nav" href="/sign-in">SIGN IN</a>
+                        </li>
+    
+                    </ul>
+                    
                 </div>
             </div>
-
+                
         </nav>
 
         <!-- signup__area start -->
@@ -103,14 +110,7 @@
                     <div class="col-xxl-6 offset-xxl-3 col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
                         <div class="sign__wrapper white-bg">
                             <div class="sign__header mb-35">
-                                <!--sign with facebook-->
-                                <div class="sign__in text-center">
-                                    <div id="facebook-login-btn" class="button-like">
-                                        <a class="sign__social text-start mb-15">
-                                            <i class="fab fa-facebook-f"></i> Sign In with Facebook
-                                        </a>
-                                    </div>
-                                </div>
+                                
                                 <!--sign with google-->
                                 <div class="sign__in text-center">
                                     <div id="google-login-btn" class="button-like">

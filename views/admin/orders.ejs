@@ -322,29 +322,33 @@
                     </li>
                     <!-- Nav item -->
                     <li class="nav-item">
-                        <a class="nav-link has-arrow  collapsed " href="#!" data-bs-toggle="collapse"
-                            data-bs-target="#navKanban" aria-expanded="false" aria-controls="navKanban">
-                            <i data-feather="layout" class="nav-icon me-2 icon-xxs">
-                            </i> Coupons
+                        <a class="nav-link has-arrow  collapsed " href="#!" data-bs-toggle="collapse" data-bs-target="#navCRM"
+                          aria-expanded="false" aria-controls="navCRM">
+                          <i data-feather="pie-chart" class="nav-icon me-2 icon-xxs">
+                          </i>
+            
+                          Coupons
                         </a>
-
-                        <div id="navKanban" class="collapse " data-bs-parent="#sideNavbar">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link has-arrow " href="/admin/coupons">
-
-                                        Coupons
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link has-arrow " href="">
-
-                                        Add Coupons
-                                    </a>
-                                </li>
-                            </ul>
+            
+                        <div id="navCRM" class="collapse" data-bs-parent="#sideNavbar">
+                          <ul class="nav flex-column">
+            
+            
+                            <li class="nav-item">
+                              <a class="nav-link has-arrow" href="/admin/coupons">
+            
+                                Coupons
+                              </a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link has-arrow " href="/admin/AddCoupons">
+            
+                                Add Coupons
+                              </a>
+                            </li>
+                          </ul>
                         </div>
-                    </li>
+                      </li>
                     <!-- Nav item -->
                     <li class="nav-item ">
                         <a class="nav-link   collapsed  " href="#!" data-bs-toggle="collapse"
@@ -488,13 +492,12 @@
                                                     <option value="Delivered">Delivered</option>
                                                     <option value="Completed">Completed</option>
                                                     <option value="Cancelled">Cancelled</option>
-                                                    <option value="Return approved">Return approved</option>
-                                                    <option value="Return Rejected">Return Rejected</option>
+                                                    <option value="Refunded">Refunded</option>
+                                                    <option value="Return approved">Return Approved</option>
+                                                    <option value="Return rejected">Return Rejected</option>
+                                                    <option value="Return requested">Return Requested</option>
                                                 </select>
                                             </div>
-
-
-
 
 
                                             <div class="col-lg-5 text-lg-end mt-3 mt-lg-0">
@@ -526,7 +529,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <% orders.forEach(order=> { %>
+                                                    <% [...orders].reverse().forEach(order => { %>
                                                         <tr>
                                                             <td class="pe-0">
                                                                 <div class="form-check">
@@ -561,6 +564,7 @@
                                                                             <i data-feather="more-vertical" class="icon-xs"></i>
                                                                         </a>
                                                                         <ul class="dropdown-menu" data-order-id="<%= order._id %>">
+                                                                            <li><a class="dropdown-item d-flex align-items-center" href="#!" data-status="Processing">Processing</a></li>
                                                                             <li><a class="dropdown-item d-flex align-items-center" href="#!" data-status="Delivered">Delivered</a></li>
                                                                             <li><a class="dropdown-item d-flex align-items-center" href="#!" data-status="Return approved">Return approved</a></li>
                                                                             <li><a class="dropdown-item d-flex align-items-center" href="#!" data-status="Return Rejected">Return Rejected</a></li>

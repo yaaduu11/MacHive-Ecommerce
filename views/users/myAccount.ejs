@@ -20,7 +20,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="/users/assets/css/tiny-slider.css" rel="stylesheet">
     <link href="/users/assets/css/style.css" rel="stylesheet">
-    
+
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +30,78 @@
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
         rel="stylesheet">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        .return-order-btn {
+            color: black;
+            border: 1px solid rgb(200, 190, 0);
+            background: none;
+            cursor: pointer;
+            width: 70px;
+            border-radius: 7px;
+        }
+
+        .return-order-btn:hover {
+            background: rgb(200, 190, 0);
+            color: rgb(0, 0, 0);
+        }
+
+        .cancel-order-btn {
+            color: black;
+            border: 1px solid rgb(255, 116, 116);
+            background: none;
+            cursor: pointer;
+            width: 70px;
+            border-radius: 7px;
+        }
+
+        .cancel-order-btn:hover {
+            background: rgb(255, 130, 130);
+            color: rgb(0, 0, 0);
+        }
+
+        .status-cancelled {
+            color: red;
+        }
+
+        .cancel-order-btn {
+            color: red;
+            border: 1px solid red;
+            background: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .cancel-order-btn:hover {
+            background: red;
+            color: white;
+        }
+
+        .total-row .heading {
+            font-weight: bold;
+        }
+
+        .toast {
+            position: fixed;
+            top: 85px;
+            right: 1rem;
+            background-color: rgba(203, 203, 203, 0.8);
+            color: #424242;
+            padding: 6px 7px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            font-size: 18px;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+
 
 </head>
 
@@ -48,6 +119,7 @@
 
     <!-- Start Header/Navigation -->
     <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+
         <div class="container">
             <a class="navbar-brand">MacHive</a>
 
@@ -61,24 +133,24 @@
                     <li><a class="nav-link" href="/">Home</a></li>
                     <li><a class="nav-link" href="/shop">Shop</a></li>
                     <li><a class="nav-link" href="/views/users/about.ejs">About us</a></li>
-                    <li><a class="nav-link" href="/views/users/services.ejs">Services</a></li>
-                    <li><a class="nav-link" href="/views/users/blog.ejs">Blog</a></li>
                     <li><a class="nav-link" href="/views/users/contact.ejs">Contact us</a></li>
                 </ul>
 
                 <ul class=" custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                    <li><a class="nav-link" href="#"><i class="fa-solid fa-heart"></i></a></li>
+                    <li><a class="nav-link" href="/wishlist"><i class="fa-solid fa-heart"></i></a></li>
                     <li><a class="nav-link" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
                     <li><a class="nav-link" href="/myAccount"><i class="fa-solid fa-user"></i></a></li>
                 </ul>
 
                 <ul class="custom-navbar-nav navbar-nav ">
 
-                    <li><a class="nav-link login-nav" href="sign-in">Sign In</a></li>
+                    <li><a class="nav-link login-nav" href="/sign-in">SIGN IN</a></li>
 
                 </ul>
+
             </div>
         </div>
+
     </nav>
 
 
@@ -134,22 +206,27 @@
                                 Parsonal Info
                             </span>
                         </button>
-                        <button class="nav-link" id="v-pills-payment-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-payment" type="button" role="tab" aria-controls="v-pills-payment"
+
+                        <button class="nav-link" id="v-pills-ticket-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-ticket" type="button" role="tab" aria-controls="v-pills-ticket"
                             aria-selected="false">
                             <span>
-                                <svg width="17" height="12" viewBox="0 0 17 12" fill="none"
+                                <svg width="18" height="20" viewBox="0 0 18 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        d="M12.7405 0.0107422H3.61054C1.81171 0.0136959 0.352563 1.46989 0.349609 3.27167H15.9985C15.9985 1.47284 14.5394 0.0136959 12.7405 0.0107422Z" />
+                                        d="M6.25959 11.7769C4.29097 12.7964 3.80544 13.2903 2.96997 15.1301C2.40643 14.5916 1.85349 14.0636 1.28388 13.519C1.61565 12.979 1.93756 12.4548 2.25872 11.9299C2.47914 11.5686 2.211 10.8982 1.80349 10.7967C1.20511 10.6483 0.605962 10.5051 0 10.3574C0 9.20229 0 8.06763 0 6.88903C0.588541 6.74739 1.18466 6.6065 1.77926 6.46031C2.21555 6.35276 2.48672 5.68923 2.25342 5.30671C1.93832 4.79089 1.62095 4.27582 1.31645 3.77969C2.14359 2.95179 2.95331 2.14283 3.78499 1.31191C4.28491 1.61868 4.80982 1.94211 5.33701 2.26327C5.67787 2.47081 6.35276 2.20116 6.44819 1.81713C6.59741 1.21798 6.73981 0.616567 6.88979 0C8.04263 0 9.18639 0 10.3627 0C10.5013 0.579451 10.6407 1.16496 10.7831 1.74972C10.8967 2.21555 11.5489 2.48975 11.9526 2.24206C12.4677 1.9262 12.9812 1.61034 13.4698 1.31039C14.2962 2.13677 15.0983 2.93892 15.936 3.77742C15.6391 4.26294 15.318 4.78559 14.9983 5.30974C14.7658 5.69074 15.04 6.35048 15.4778 6.45804C16.0641 6.60196 16.6526 6.74057 17.2502 6.88449C17.2502 8.04718 17.2502 9.1932 17.2502 10.3627C16.6943 10.4945 16.1428 10.624 15.5922 10.7551C14.9923 10.8982 14.7362 11.508 15.0559 12.0283C15.3521 12.5108 15.6475 12.9941 15.955 13.4948C15.4286 14.0583 14.9165 14.606 14.3689 15.1915C13.7614 13.5281 12.6692 12.4101 11.0634 11.7935C13.1335 9.92414 12.6858 7.32608 11.2823 6.01266C9.77341 4.60001 7.41092 4.6394 5.95055 6.11037C4.57047 7.50105 4.29248 10.0234 6.25959 11.7769Z" />
                                     <path
-                                        d="M0.349609 8.48814C0.352563 10.287 1.80876 11.7461 3.61054 11.7491H12.7405C14.5394 11.7461 15.9985 10.2899 16.0015 8.48814V4.57739H0.349609V8.48814ZM4.91314 8.16323C4.91314 8.70377 4.47598 9.14092 3.93545 9.14092C3.39492 9.14092 2.95776 8.70377 2.95776 8.16323C2.95776 7.6227 3.39492 7.18554 3.93545 7.18554C4.47598 7.18554 4.91314 7.6227 4.91314 8.16323Z" />
+                                        d="M13.4616 19.3677C10.2492 19.3677 7.08229 19.3677 3.85857 19.3677C3.85857 19.1518 3.85554 18.9428 3.85933 18.7337C3.87372 17.9141 3.8207 17.0855 3.92068 16.2758C4.17594 14.22 5.83098 12.7294 7.90488 12.6635C8.68203 12.6385 9.48266 12.6347 10.2386 12.7885C12.0527 13.1581 13.3479 14.7109 13.4525 16.5704C13.504 17.4869 13.4616 18.4088 13.4616 19.3677Z" />
+                                    <path
+                                        d="M8.64853 11.4512C7.17074 11.4421 5.97321 10.2294 5.99442 8.76523C6.01638 7.29123 7.22982 6.10582 8.69852 6.12324C10.1483 6.1399 11.339 7.34804 11.3337 8.79704C11.3292 10.2703 10.1248 11.4602 8.64853 11.4512Z" />
                                 </svg>
                             </span>
                             <span class="text">
-                                Payment Method
+                                My Wallet
                             </span>
                         </button>
+
+
                         <button class="nav-link" id="v-pills-order-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-order"
                             aria-selected="false">
@@ -163,10 +240,10 @@
                                 </svg>
                             </span>
                             <span class="text">
-                                Order
+                                Orders
                             </span>
                         </button>
-                        <button class="nav-link" id="v-pills-wishlist-tab" data-bs-toggle="pill"
+                        <!-- <button class="nav-link" id="v-pills-wishlist-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-wishlist" type="button" role="tab" aria-controls="v-pills-wishlist"
                             aria-selected="false">
                             <span>
@@ -186,7 +263,7 @@
                             <span class="text">
                                 Wishlist
                             </span>
-                        </button>
+                        </button> -->
                         <button class="nav-link" id="v-pills-address-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-address" type="button" role="tab" aria-controls="v-pills-address"
                             aria-selected="false">
@@ -210,35 +287,6 @@
                             </span>
                             <span class="text">
                                 Address
-                            </span>
-                        </button>
-                        <button class="nav-link" id="v-pills-review-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-review" type="button" role="tab" aria-controls="v-pills-review"
-                            aria-selected="false">
-                            <span>
-                                <svg width="16" height="18" viewBox="0 0 16 18" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0_113_3028)">
-                                        <path
-                                            d="M9.2481 10.6955C9.42603 10.6955 9.5544 10.6955 9.68504 10.6955C10.8044 10.6955 11.9238 10.6933 13.0431 10.6955C14.2729 10.7 14.8224 11.6158 14.2413 12.6692C14.2008 12.7401 14.2053 12.8665 14.2413 12.9419C14.4801 13.4365 14.4328 13.8888 14.104 14.3301C14.0454 14.41 14.0274 14.563 14.0612 14.6606C14.2278 15.1462 14.1625 15.5764 13.8382 15.9822C13.7706 16.0665 13.7436 16.2328 13.7751 16.3392C14.0341 17.1974 13.4756 17.9825 12.5612 17.9869C10.4418 17.9958 8.32242 17.9913 6.20305 17.9891C5.67603 17.9891 5.63549 17.9403 5.63549 17.4325C5.63549 15.0752 5.63098 12.718 5.6445 10.3629C5.64675 10.1633 5.72783 9.92604 5.8517 9.76859C6.6445 8.78178 7.16251 7.68408 7.35396 6.43781C7.48459 5.58404 8.0026 5.35563 8.74585 5.82354C9.45305 6.26927 9.71206 6.9545 9.76161 7.7373C9.81792 8.60437 9.61747 9.43596 9.37422 10.2609C9.34044 10.3851 9.30441 10.507 9.2481 10.6955Z" />
-                                        <path
-                                            d="M4.78 14.1924C4.78 15.2236 4.78 16.2548 4.78 17.2859C4.78 17.7272 4.57504 17.9778 4.13135 17.9845C3.10883 18.0022 2.08405 18.0044 1.06153 17.9845C0.570537 17.9756 0.270987 17.592 0.270987 17.0398C0.268735 15.2702 0.270987 13.5006 0.270987 11.7309C0.270987 11.5668 0.26423 11.4027 0.273239 11.2386C0.298014 10.7352 0.629095 10.3982 1.1336 10.3937C2.10883 10.3849 3.08405 10.3826 4.05928 10.3937C4.56603 10.3982 4.78 10.6332 4.78 11.1322C4.78 12.1523 4.78 13.1724 4.78 14.1924ZM1.92189 12.3629C2.31828 12.3674 2.53225 12.221 2.53225 11.9438C2.53225 11.6777 2.32054 11.5225 1.95792 11.5203C1.58855 11.518 1.3791 11.6622 1.36783 11.9261C1.35432 12.1966 1.56153 12.3585 1.92189 12.3629Z" />
-                                        <path
-                                            d="M6.03852 4.91866C6.10834 4.58159 6.1669 4.18686 6.27276 3.80322C6.34033 3.55929 6.26375 3.41293 6.08132 3.26435C5.80654 3.04038 5.53177 2.80975 5.29979 2.54586C5.18492 2.41724 5.08132 2.17331 5.13087 2.03804C5.18267 1.90055 5.4169 1.78302 5.59033 1.74532C5.93717 1.66992 6.29528 1.63444 6.65114 1.61892C6.88988 1.60783 7.00925 1.51691 7.09483 1.30402C7.23447 0.955863 7.38537 0.609923 7.57231 0.286158C7.64889 0.153104 7.83357 -0.00434352 7.9642 9.16175e-05C8.11285 0.00674432 8.31105 0.148669 8.39213 0.286158C8.59258 0.629881 8.72546 1.0113 8.91465 1.36168C8.97321 1.46812 9.12186 1.57013 9.24573 1.59231C9.61961 1.66105 10.0047 1.66549 10.3741 1.74532C10.5475 1.78302 10.7818 1.90277 10.8336 2.04025C10.8831 2.17553 10.7795 2.41946 10.6647 2.54808C10.4237 2.81862 10.1376 3.0559 9.85609 3.28875C9.69168 3.42402 9.63087 3.55264 9.68717 3.76996C9.78402 4.13142 9.8651 4.49954 9.90339 4.87209C9.91916 5.03397 9.86285 5.28899 9.75024 5.35774C9.61735 5.43757 9.3651 5.41318 9.20519 5.34221C8.84934 5.18477 8.52276 4.96079 8.17141 4.79004C8.0678 4.73904 7.89438 4.74125 7.79078 4.79226C7.41916 4.9741 7.0678 5.19585 6.69843 5.38657C6.32907 5.57284 6.016 5.37326 6.03852 4.91866Z" />
-                                        <path
-                                            d="M0.725777 6.07841C0.802353 5.68591 0.87893 5.37766 0.917218 5.06499C0.930732 4.94967 0.883434 4.79444 0.804606 4.71018C0.615416 4.50172 0.367669 4.34206 0.187488 4.12917C0.0793803 4.00055 -0.03098 3.78323 0.00956053 3.64796C0.0478488 3.51491 0.277579 3.34194 0.417218 3.34859C1.27082 3.38407 1.77758 3.01817 1.99605 2.20432C2.02983 2.07792 2.25731 1.91604 2.38569 1.92491C2.53659 1.93156 2.77082 2.08457 2.80461 2.21763C3.01407 3.02704 3.52082 3.37076 4.35866 3.34194C4.50506 3.3375 4.73929 3.51934 4.78884 3.66127C4.83163 3.78545 4.71902 4.04934 4.59515 4.12917C3.91046 4.56825 3.73479 5.1293 4.02082 5.87883C4.07488 6.01854 3.98479 6.30682 3.86316 6.39109C3.7438 6.47536 3.43974 6.46205 3.32262 6.3667C2.68298 5.85222 2.09064 5.88327 1.45776 6.37557C1.34064 6.46649 1.08839 6.46427 0.937488 6.40661C0.822624 6.36005 0.773074 6.15825 0.725777 6.07841Z" />
-                                        <path
-                                            d="M16.0005 3.82313C15.9509 3.89409 15.8946 4.05598 15.782 4.12694C15.1086 4.55493 14.8788 5.10045 15.1851 5.86108C15.2414 6.003 15.1649 6.30459 15.0477 6.37777C14.9104 6.46426 14.6018 6.45539 14.4757 6.35559C13.8608 5.86773 13.291 5.86995 12.6716 6.34672C12.541 6.44873 12.255 6.45982 12.0905 6.39329C11.8428 6.29129 11.8608 6.01852 11.9487 5.80564C12.2369 5.10932 12.0545 4.59041 11.4216 4.17572C11.2775 4.08037 11.1626 3.82978 11.1671 3.6546C11.1739 3.39071 11.4396 3.29979 11.6739 3.31974C12.4959 3.39071 12.9239 2.98933 13.1446 2.24866C13.1874 2.1023 13.4216 1.93376 13.577 1.92268C13.7077 1.91381 13.9419 2.09565 13.9802 2.23314C14.1964 3.01815 14.6829 3.38184 15.5117 3.32861C15.773 3.31309 15.9644 3.45502 16.0005 3.82313Z" />
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_113_3028">
-                                            <rect width="16" height="18" fill="white" />
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </span>
-                            <span class="text">
-                                Reviews
                             </span>
                         </button>
 
@@ -273,24 +321,7 @@
                                 Change Password
                             </span>
                         </button>
-                        <button class="nav-link" id="v-pills-ticket-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-ticket" type="button" role="tab" aria-controls="v-pills-ticket"
-                            aria-selected="false">
-                            <span>
-                                <svg width="18" height="20" viewBox="0 0 18 20" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M6.25959 11.7769C4.29097 12.7964 3.80544 13.2903 2.96997 15.1301C2.40643 14.5916 1.85349 14.0636 1.28388 13.519C1.61565 12.979 1.93756 12.4548 2.25872 11.9299C2.47914 11.5686 2.211 10.8982 1.80349 10.7967C1.20511 10.6483 0.605962 10.5051 0 10.3574C0 9.20229 0 8.06763 0 6.88903C0.588541 6.74739 1.18466 6.6065 1.77926 6.46031C2.21555 6.35276 2.48672 5.68923 2.25342 5.30671C1.93832 4.79089 1.62095 4.27582 1.31645 3.77969C2.14359 2.95179 2.95331 2.14283 3.78499 1.31191C4.28491 1.61868 4.80982 1.94211 5.33701 2.26327C5.67787 2.47081 6.35276 2.20116 6.44819 1.81713C6.59741 1.21798 6.73981 0.616567 6.88979 0C8.04263 0 9.18639 0 10.3627 0C10.5013 0.579451 10.6407 1.16496 10.7831 1.74972C10.8967 2.21555 11.5489 2.48975 11.9526 2.24206C12.4677 1.9262 12.9812 1.61034 13.4698 1.31039C14.2962 2.13677 15.0983 2.93892 15.936 3.77742C15.6391 4.26294 15.318 4.78559 14.9983 5.30974C14.7658 5.69074 15.04 6.35048 15.4778 6.45804C16.0641 6.60196 16.6526 6.74057 17.2502 6.88449C17.2502 8.04718 17.2502 9.1932 17.2502 10.3627C16.6943 10.4945 16.1428 10.624 15.5922 10.7551C14.9923 10.8982 14.7362 11.508 15.0559 12.0283C15.3521 12.5108 15.6475 12.9941 15.955 13.4948C15.4286 14.0583 14.9165 14.606 14.3689 15.1915C13.7614 13.5281 12.6692 12.4101 11.0634 11.7935C13.1335 9.92414 12.6858 7.32608 11.2823 6.01266C9.77341 4.60001 7.41092 4.6394 5.95055 6.11037C4.57047 7.50105 4.29248 10.0234 6.25959 11.7769Z" />
-                                    <path
-                                        d="M13.4616 19.3677C10.2492 19.3677 7.08229 19.3677 3.85857 19.3677C3.85857 19.1518 3.85554 18.9428 3.85933 18.7337C3.87372 17.9141 3.8207 17.0855 3.92068 16.2758C4.17594 14.22 5.83098 12.7294 7.90488 12.6635C8.68203 12.6385 9.48266 12.6347 10.2386 12.7885C12.0527 13.1581 13.3479 14.7109 13.4525 16.5704C13.504 17.4869 13.4616 18.4088 13.4616 19.3677Z" />
-                                    <path
-                                        d="M8.64853 11.4512C7.17074 11.4421 5.97321 10.2294 5.99442 8.76523C6.01638 7.29123 7.22982 6.10582 8.69852 6.12324C10.1483 6.1399 11.339 7.34804 11.3337 8.79704C11.3292 10.2703 10.1248 11.4602 8.64853 11.4512Z" />
-                                </svg>
-                            </span>
-                            <span class="text">
-                                Support Ticket
-                            </span>
-                        </button>
+
                         <div class="nav-link">
                             <a href="#" id="logout-button">
                                 <span>
@@ -321,78 +352,15 @@
                             aria-labelledby="v-pills-home-tab" tabindex="0">
                             <div class="user-profile">
                                 <div class="user-title">
-                                    <p class="paragraph">Hello, <%= user.name %>
-                                    </p>
-                                    <h5 class="heading">Welcome to your Profile </h5>
+                                    <p class="paragraph" style="font-size: 30px; ">Hello,<strong
+                                            style="color: rgb(205, 0, 164);">
+                                            <%= user.name %>
+                                        </strong></p>
+                                    <h5 class="paragraph" style="font-size: 17px;">Welcome to your Profile </h5>
                                 </div>
                                 <div class="profile-section">
                                     <div class="row g-5">
-                                        <div class="col-lg-4 col-sm-6">
-                                            <div class="product-wrapper">
-                                                <div class="wrapper-img">
-                                                    <span>
-                                                        <svg width="62" height="62" viewBox="0 0 62 62" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect width="62" height="62" rx="4" />
-                                                            <path
-                                                                d="M45.4473 20.0309C45.482 20.3788 45.5 20.7314 45.5 21.0883C45.5 26.919 40.7564 31.6625 34.9258 31.6625C29.0951 31.6625 24.3516 26.919 24.3516 21.0883C24.3516 20.7314 24.3695 20.3788 24.4042 20.0309H21.9805L21.0554 12.6289H13.7773V14.7438H19.1884L21.5676 33.7774H47.1868L48.8039 20.0309H45.4473Z" />
-                                                            <path
-                                                                d="M22.0967 38.0074H19.0648C17.3157 38.0074 15.8926 39.4305 15.8926 41.1797C15.8926 42.9289 17.3157 44.352 19.0648 44.352H19.2467C19.1293 44.6829 19.0648 45.0386 19.0648 45.4094C19.0648 47.1586 20.4879 48.5816 22.2371 48.5816C24.4247 48.5816 25.9571 46.4091 25.2274 44.352H35.1081C34.377 46.413 35.9157 48.5816 38.0985 48.5816C39.8476 48.5816 41.2707 47.1586 41.2707 45.4094C41.2707 45.0386 41.2061 44.6829 41.0888 44.352H43.3856V42.2371H19.0648C18.4818 42.2371 18.0074 41.7628 18.0074 41.1797C18.0074 40.5966 18.4818 40.1223 19.0648 40.1223H46.4407L46.9384 35.8926H21.8323L22.0967 38.0074Z" />
-                                                            <path
-                                                                d="M34.9262 29.5477C39.5907 29.5477 43.3856 25.7528 43.3856 21.0883C43.3856 16.4238 39.5907 12.6289 34.9262 12.6289C30.2616 12.6289 26.4668 16.4238 26.4668 21.0883C26.4668 25.7528 30.2617 29.5477 34.9262 29.5477ZM33.8688 17.916H35.9836V20.6503L37.7886 22.4554L36.2932 23.9508L33.8687 21.5262V17.916H33.8688Z" />
-                                                        </svg>
-                                                    </span>
-                                                </div>
-                                                <div class="wrapper-content">
-                                                    <p class="paragraph">New Orders</p>
-                                                    <h3 class="heading">656</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-6">
-                                            <div class="product-wrapper">
-                                                <div class="wrapper-img">
-                                                    <span>
-                                                        <svg width="62" height="62" viewBox="0 0 62 62" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect width="62" height="62" rx="4" fill="white" />
-                                                            <path
-                                                                d="M45.2253 29.8816H44.4827L43.6701 26.3651C43.376 25.1043 42.2552 24.2217 40.9662 24.2217H36.8474V20.8453C36.8474 19.038 35.3764 17.5811 33.5831 17.5811H18.1724C16.4631 17.5811 15.0762 18.968 15.0762 20.6772V37.0967C15.0762 38.8058 16.4631 40.1928 18.1724 40.1928H19.2931C19.8955 42.1962 21.7448 43.6533 23.9304 43.6533C26.1159 43.6533 27.9792 42.1962 28.5816 40.1928C28.8455 40.1928 35.3459 40.1928 35.1942 40.1928C35.7966 42.1962 37.6459 43.6533 39.8315 43.6533C42.031 43.6533 43.8803 42.1962 44.4827 40.1928H45.2253C46.7663 40.1928 47.9992 38.9599 47.9992 37.4189V32.6555C47.9992 31.1145 46.7663 29.8816 45.2253 29.8816ZM23.9304 40.8513C22.7897 40.8513 21.8849 39.8969 21.8849 38.7918C21.8849 37.657 22.7956 36.7324 23.9304 36.7324C25.0652 36.7324 25.9898 37.657 25.9898 38.7918C25.9898 39.9151 25.0692 40.8513 23.9304 40.8513ZM28.9739 25.0622L24.799 28.3125C24.2023 28.7767 23.3035 28.6903 22.8236 28.0604L21.2125 25.9449C20.7361 25.3284 20.8622 24.4458 21.4787 23.9835C22.0811 23.5072 22.9637 23.6332 23.4401 24.2496L24.1966 25.2303L27.2507 22.8487C27.8531 22.3864 28.7357 22.4845 29.2121 23.1009C29.6884 23.7173 29.5763 24.586 28.9739 25.0622ZM39.8315 40.8513C38.6906 40.8513 37.7861 39.8969 37.7861 38.7918C37.7861 37.657 38.7107 36.7324 39.8315 36.7324C40.9662 36.7324 41.8909 37.657 41.8909 38.7918C41.8909 39.9166 40.9683 40.8513 39.8315 40.8513ZM37.618 27.0236H40.2798C40.6021 27.0236 40.8962 27.2337 41.0083 27.542L41.8629 30.0497C42.031 30.5541 41.6667 31.0724 41.1344 31.0724H37.618C37.1976 31.0724 36.8474 30.7222 36.8474 30.3019V27.7942C36.8474 27.3739 37.1976 27.0236 37.618 27.0236Z"
-                                                                fill="#FFBB38" />
-                                                        </svg>
-                                                    </span>
-                                                </div>
-                                                <div class="wrapper-content">
-                                                    <p class="paragraph">Delivery Completed</p>
-                                                    <h3 class="heading">99783</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-6">
-                                            <div class="product-wrapper">
-                                                <div class="wrapper-img">
-                                                    <span>
-                                                        <svg width="62" height="62" viewBox="0 0 62 62" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <rect width="62" height="62" rx="4" fill="white" />
-                                                            <path
-                                                                d="M26.7975 34.4331C23.7162 36.0289 22.9563 36.8019 21.6486 39.6816C20.7665 38.8387 19.9011 38.0123 19.0095 37.1599C19.5288 36.3146 20.0327 35.4942 20.5353 34.6726C20.8803 34.1071 20.4607 33.0579 19.8228 32.899C18.8862 32.6666 17.9484 32.4426 17 32.2114C17 30.4034 17 28.6274 17 26.7827C17.9212 26.561 18.8542 26.3405 19.7849 26.1117C20.4678 25.9433 20.8922 24.9048 20.527 24.306C20.0339 23.4987 19.5371 22.6925 19.0605 21.916C20.3551 20.6201 21.6225 19.354 22.9243 18.0534C23.7067 18.5335 24.5283 19.0398 25.3535 19.5425C25.887 19.8673 26.9433 19.4452 27.0927 18.8442C27.3262 17.9064 27.5491 16.965 27.7839 16C29.5883 16 31.3785 16 33.2197 16C33.4366 16.907 33.6548 17.8234 33.8777 18.7386C34.0555 19.4678 35.0763 19.8969 35.7082 19.5093C36.5144 19.0149 37.3182 18.5205 38.0829 18.051C39.3763 19.3445 40.6318 20.6 41.943 21.9124C41.4783 22.6723 40.9756 23.4904 40.4753 24.3108C40.1114 24.9071 40.5405 25.9398 41.2258 26.1081C42.1434 26.3334 43.0646 26.5503 44 26.7756C44 28.5954 44 30.3892 44 32.2197C43.1298 32.426 42.2667 32.6287 41.4048 32.8338C40.4658 33.0579 40.0651 34.0122 40.5654 34.8267C41.029 35.5819 41.4914 36.3383 41.9727 37.122C41.1487 38.004 40.3473 38.8612 39.4901 39.7776C38.5393 37.1741 36.8297 35.4243 34.3163 34.4592C37.5565 31.5332 36.8558 27.4668 34.659 25.411C32.2973 23.1999 28.5995 23.2616 26.3138 25.5639C24.1537 27.7406 23.7186 31.6885 26.7975 34.4331Z"
-                                                                fill="#FFBB38" />
-                                                            <path
-                                                                d="M38.0695 46.3142C33.0415 46.3142 28.0847 46.3142 23.0389 46.3142C23.0389 45.9763 23.0342 45.6491 23.0401 45.3219C23.0626 44.0391 22.9796 42.7421 23.1361 41.4747C23.5357 38.2571 26.1261 35.9239 29.3722 35.8208C30.5886 35.7817 31.8417 35.7757 33.0249 36.0164C35.8643 36.595 37.8916 39.0254 38.0552 41.9359C38.1359 43.3704 38.0695 44.8133 38.0695 46.3142Z"
-                                                                fill="#FFBB38" />
-                                                            <path
-                                                                d="M30.5375 33.9233C28.2244 33.9091 26.3501 32.011 26.3832 29.7193C26.4176 27.4122 28.3169 25.5568 30.6157 25.584C32.8849 25.6101 34.7486 27.5011 34.7403 29.7691C34.7332 32.075 32.8481 33.9375 30.5375 33.9233Z"
-                                                                fill="#FFBB38" />
-                                                        </svg>
-                                                    </span>
-                                                </div>
-                                                <div class="wrapper-content">
-                                                    <p class="paragraph">Support Tickets</p>
-                                                    <h3 class="heading">09</h3>
-                                                </div>
-                                            </div>
-                                        </div>
+
                                         <div class="col-lg-12">
                                             <div class="info-section">
                                                 <div class="seller-info">
@@ -527,162 +495,6 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="v-pills-payment" role="tabpanel"
-                            aria-labelledby="v-pills-order-tab" tabindex="0">
-                            <div class="payment-section">
-                                <div class="wrapper">
-                                    <div class="wrapper-item">
-                                        <div class="wrapper-img">
-                                            <img src="/users/assets_3/images/homepage-one/payment-img-1.png"
-                                                alt="payment">
-                                        </div>
-                                        <div class="wrapper-content">
-                                            <h5 class="heading">Dutch Bangl Bank Lmtd</h5>
-                                            <p class="paragraph">Bank **********5535</p>
-                                            <p class="verified">Verified</p>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="shop-btn">Manage</a>
-                                </div>
-                                <hr>
-                                <div class="wrapper">
-                                    <div class="wrapper-item">
-                                        <div class="wrapper-img">
-                                            <img src="/users/assets_3/images/homepage-one/payment-img-2.png"
-                                                alt="payment">
-                                        </div>
-                                        <div class="wrapper-content">
-                                            <h5 class="heading">Master Card</h5>
-                                            <p class="paragraph">Bank **********5535</p>
-                                            <p class="verified">Verified</p>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="shop-btn">Manage</a>
-                                </div>
-                                <hr>
-                                <div class="wrapper">
-                                    <div class="wrapper-item">
-                                        <div class="wrapper-img">
-                                            <img src="/users/assets_3/images/homepage-one/payment-img-3.png"
-                                                alt="payment">
-                                        </div>
-                                        <div class="wrapper-content">
-                                            <h5 class="heading">Paypal Account</h5>
-                                            <p class="paragraph">Bank **********5535</p>
-                                            <p class="verified">Verified</p>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="shop-btn">Manage</a>
-                                </div>
-                                <hr>
-                                <div class="wrapper">
-                                    <div class="wrapper-item">
-                                        <div class="wrapper-img">
-                                            <img src="/users/assets_3/images/homepage-one/payment-img-4.png"
-                                                alt="payment">
-                                        </div>
-                                        <div class="wrapper-content">
-                                            <h5 class="heading">Visa Card</h5>
-                                            <p class="paragraph">Bank **********5535</p>
-                                            <p class="verified">Verified</p>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="shop-btn">Manage</a>
-                                </div>
-                                <hr>
-                                <div class="wrapper-btn">
-                                    <a href="#" class="shop-btn" onclick="modalAction('.cart')">Add Cart</a>
-
-                                    <div class="modal-wrapper cart">
-                                        <div onclick="modalAction('.cart')" class="anywhere-away"></div>
-
-                                        <div class="login-section account-section modal-main">
-                                            <div class="review-form">
-                                                <div class="review-content">
-                                                    <h5 class="comment-title">Add New Card</h5>
-                                                    <div class="close-btn">
-                                                        <img src="/users/assets_3/images/homepage-one/close-btn.png"
-                                                            onclick="modalAction('.cart')" alt="close-btn">
-                                                    </div>
-                                                </div>
-                                                <div class="review-form-name address-form">
-                                                    <label for="cnumber" class="form-label">Card Number*</label>
-                                                    <input type="number" id="cnumber" class="form-control"
-                                                        placeholder="*** *** ***">
-                                                </div>
-                                                <div class="review-form-name address-form">
-                                                    <label for="holdername" class="form-label">Card Holder Name*</label>
-                                                    <input type="text" id="holdername" class="form-control"
-                                                        placeholder="Demo Name">
-                                                </div>
-                                                <div class=" account-inner-form">
-                                                    <div class="review-form-name">
-                                                        <label for="expirydate" class="form-label">Expiry Date*</label>
-                                                        <input type="date" id="expirydate" class="form-control">
-                                                    </div>
-                                                    <div class="review-form-name">
-                                                        <label for="cvv" class="form-label">CVV*</label>
-                                                        <input type="number" id="cvv" class="form-control"
-                                                            placeholder="21232">
-                                                    </div>
-                                                </div>
-                                                <div class="login-btn text-center">
-                                                    <a href="#" onclick="modalAction('.cart')" class="shop-btn">Add
-                                                        Card</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <a href="#" class="shop-btn bank-btn" onclick="modalAction('.bank')">Add Bank</a>
-
-                                    <div class="modal-wrapper bank">
-                                        <div onclick="modalAction('.bank')" class="anywhere-away"></div>
-
-                                        <div class="login-section account-section modal-main">
-                                            <div class="review-form">
-                                                <div class="review-content">
-                                                    <h5 class="comment-title">Add Bank Account</h5>
-                                                    <div class="close-btn">
-                                                        <img src="/users/assets_3/images/homepage-one/close-btn.png"
-                                                            onclick="modalAction('.bank')" alt="close-btn">
-                                                    </div>
-                                                </div>
-                                                <div class="review-form-name address-form">
-                                                    <label for="accountnumber" class="form-label">Account
-                                                        Number*</label>
-                                                    <input type="number" id="accountnumber" class="form-control"
-                                                        placeholder="*** *** ***">
-                                                </div>
-                                                <div class="review-form-name address-form">
-                                                    <label for="accountholdername" class="form-label">Card Holder
-                                                        Name*</label>
-                                                    <input type="text" id="accountholdername" class="form-control"
-                                                        placeholder="Demo Name">
-                                                </div>
-                                                <div class=" account-inner-form">
-                                                    <div class="review-form-name">
-                                                        <label for="branchname" class="form-label">Branch*</label>
-                                                        <input type="text" id="branchname" class="form-control"
-                                                            placeholder="Demo Branch">
-                                                    </div>
-                                                    <div class="review-form-name">
-                                                        <label for="ipscode" class="form-label">IPSC Code</label>
-                                                        <input type="number" id="ipscode" class="form-control"
-                                                            placeholder="21232">
-                                                    </div>
-                                                </div>
-                                                <div class="login-btn text-center">
-                                                    <a href="#" onclick="modalAction('.bank')" class="shop-btn">Add Bank
-                                                        Account</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="tab-pane fade" id="v-pills-order" role="tabpanel"
                             aria-labelledby="v-pills-order-tab" tabindex="0">
@@ -693,7 +505,6 @@
                                             <td class="table-wrapper wrapper-product">
                                                 <h5 class="table-heading">PRODUCT</h5>
                                             </td>
-
                                             <td class="table-wrapper">
                                                 <div class="table-wrapper-center">
                                                     <h5 class="table-heading">QUANTITY</h5>
@@ -720,10 +531,10 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <% orders.reverse().forEach(order => { %>
-                                            <tr class="table-row ticket-row">
-                                                <td class="table-wrapper wrapper-product">
-                                                    <% order.orderItems.forEach(item=> { %>
+                                        <% orders.reverse().forEach(order=> { %>
+                                            <% order.orderItems.forEach(item=> { %>
+                                                <tr class="table-row ticket-row">
+                                                    <td class="table-wrapper wrapper-product">
                                                         <div class="wrapper">
                                                             <div class="wrapper-img">
                                                                 <% if (item.product && item.product.productId) { %>
@@ -736,104 +547,99 @@
                                                             <div class="wrapper-content">
                                                                 <% if (item.product && item.product.productId) { %>
                                                                     <h5 class="heading">
-                                                                        <%= item.product.productId.name %>
+                                                                        <a href="/trackOrder?orderId=<%= order._id %>">
+                                                                            <%= item.product.productId.name %>
+                                                                        </a>
                                                                     </h5>
                                                                     <% } else { %>
                                                                         <h5 class="heading">Product Not Found</h5>
                                                                         <% } %>
                                                             </div>
                                                         </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <h5 class="heading">
-                                                            <%= item.quantity %>
-                                                        </h5>
-                                                    </div>
-                                                </td>
-                                                <% }); %>
+                                                    </td>
                                                     <td class="table-wrapper">
                                                         <div class="table-wrapper-center">
-                                                            <h5 class="heading">₹<%= order.subTotal %>
+                                                            <h5 class="heading">
+                                                                <%= item.quantity %>
+                                                            </h5>
+                                                        </div>
+                                                    </td>
+                                                    <td class="table-wrapper">
+                                                        <div class="table-wrapper-center">
+                                                            <h5 class="heading">₹<%= item.productPrice %>
                                                             </h5>
                                                         </div>
                                                     </td>
                                                     <td class="table-wrapper wrapper-total">
                                                         <div class="table-wrapper-center">
-                                                            <h5 class="heading">₹<%= order.grandTotal %>
+                                                            <h5 class="heading">₹<%= item.quantity * item.productPrice
+                                                                    %>
                                                             </h5>
                                                         </div>
                                                     </td>
                                                     <td class="table-wrapper">
                                                         <div class="table-wrapper-center">
                                                             <h5 class="heading">
-                                                                <%= order.orderItems[0].orderStatus %>
+                                                                <%= item.orderStatus %>
                                                             </h5>
                                                         </div>
                                                     </td>
                                                     <td class="table-wrapper">
                                                         <div class="table-wrapper-center">
-                                                            <% if(order.orderItems[0].orderStatus =="Completed" ) { %>
+                                                            <% if (item.orderStatus=="Completed" ) { %>
                                                                 <h5 class="heading" style="color: green;">Completed</h5>
-                                                                <% } else if(order.orderItems[0].orderStatus =="Processing" ) { %>
-                                                                    <button class="cancel-order-btn"
-                                                                        onclick="confirmCancellation('<%= order._id %>')">Cancel</button>
-                                                                <% } else if(order.orderItems[0].orderStatus =="Delivered" ) { %>
-                                                                    <button class="return-order-btn"
-                                                                        onclick="confirmCancellation('<%= order._id %>')">Return</button>
-                                                                    <% } else if(order.orderItems[0].orderStatus =="Cancelled" ) {%>
-                                                                        <h5 class="heading status-cancelled">Cancelled</h5>
-                                                                    <% } %>
-
+                                                                <% }else if (item.orderStatus=="Refunded" ) { %>
+                                                                    <h5 class="heading"
+                                                                        style="color: rgb(201, 164, 0);">Refunded</h5>
+                                                                    <% } else if (item.orderStatus=="Processing" ) { %>
+                                                                        <button class="cancel-order-btn"
+                                                                            onclick="confirmCancellation('<%= item._id %>')">Cancel</button>
+                                                                        <% } else if (item.orderStatus=="Delivered" ) {
+                                                                            %>
+                                                                            <button class="return-order-btn"
+                                                                                onclick="showReturnModal('<%= item._id %>')">Return</button>
+                                                                            <% } else if(item.orderStatus=="Cancelled" )
+                                                                                { %>
+                                                                                <h5 class="heading status-cancelled">
+                                                                                    Cancelled</h5>
+                                                                                <% } %>
                                                         </div>
                                                     </td>
-                                            </tr>
-                                            <% }); %>
+                                                </tr>
+                                                <% }); %>
+                                                    <tr class="table-row total-row">
+                                                        <td colspan="2"></td>
+                                                        <td class="table-wrapper">
+                                                            <div class="table-wrapper-center">
+                                                                <h5 class="heading">Subtotal:</h5>
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-wrapper wrapper-total">
+                                                            <div class="table-wrapper-center">
+                                                                <h5 class="heading">₹<%= order.subTotal %>
+                                                                </h5>
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-wrapper">
+                                                            <div class="table-wrapper-center">
+                                                                <h5 class="heading">Grand Total:</h5>
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-wrapper">
+                                                            <div class="table-wrapper-center">
+                                                                <h5 class="heading">₹<%= order.grandTotal %>
+                                                                </h5>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <% }); %>
 
-                                                <style>
-                                                    .return-order-btn{
-                                                        color: black;
-                                                        border: 1px solid rgb(200, 190, 0);
-                                                        background: none;
-                                                        cursor: pointer;
-                                                        width: 70px;
-                                                        border-radius: 7px;
-                                                    }
-                                                    .cancel-order-btn {
-                                                        color: black;
-                                                        border: 1px solid rgb(255, 116, 116);
-                                                        background: none;
-                                                        cursor: pointer;
-                                                        width: 70px;
-                                                        border-radius: 7px;
-                                                    }
-
-                                                    .cancel-order-btn:hover {
-                                                        background: rgb(255, 130, 130);
-                                                        color: rgb(0, 0, 0);
-                                                    }
-
-                                                    .status-cancelled {
-                                                        color: red;
-                                                    }
-
-                                                    .cancel-order-btn {
-                                                        color: red;
-                                                        border: 1px solid red;
-                                                        background: none;
-                                                        padding: 5px 10px;
-                                                        cursor: pointer;
-                                                    }
-
-                                                    .cancel-order-btn:hover {
-                                                        background: red;
-                                                        color: white;
-                                                    }
-                                                </style>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
+
 
                         <div class="tab-pane fade" id="v-pills-wishlist" role="tabpanel"
                             aria-labelledby="v-pills-wishlist-tab" tabindex="0">
@@ -1028,7 +834,7 @@
                                                     </div>
                                                     <div class="buttons">
                                                         <button class="edit-button"
-                                                            onclick="modalAction('.edit')">Edit</button>
+                                                            onclick="modalAction('.edit')" data-adressid="<%= address[i]._id %>">Edit</button>
                                                         <button class="delete-button"
                                                             data-adressid="<%= address[i]._id %>">Delete</button>
                                                     </div>
@@ -1160,113 +966,48 @@
 
 
                                                             <div class="modal-wrapper edit">
-                                                                <div onclick="modalAction('.edit')"
-                                                                    class="anywhere-away"></div>
+                                                                <div onclick="modalAction('.edit')" class="anywhere-away"></div>
                                                                 <div class="login-section account-section modal-main">
                                                                     <div class="review-form">
                                                                         <div class="review-content">
-                                                                            <h5 class="comment-title">Edit Your Address
-                                                                            </h5>
+                                                                            <h5 class="comment-title">Edit Your Address</h5>
                                                                             <br>
                                                                             <div class="close-btn">
-                                                                                <img src="/users/assets_3/images/homepage-one/close-btn.png"
-                                                                                    onclick="modalAction('.edit')"
-                                                                                    alt="close-btn">
+                                                                                <img src="/users/assets_3/images/homepage-one/close-btn.png" onclick="modalAction('.edit')" alt="close-btn">
                                                                             </div>
                                                                         </div>
                                                                         <br>
-                                                                        <input type="hidden" id="editAddressId"
-                                                                            value="">
+                                                                        <input type="hidden" id="editAddressId" value="">
                                                                         <div class="account-inner-form">
                                                                             <div class="review-form-name">
-                                                                                <input name="name" type="text"
-                                                                                    id="editName" class="form-control"
-                                                                                    value="<%= address.name %>"
-                                                                                    required>
+                                                                                <input name="name" type="text" id="editName" class="form-control" required>
                                                                             </div>
                                                                         </div>
                                                                         <div class="account-inner-form">
                                                                             <div class="review-form-name">
-                                                                                <input name="mobile" type="tel"
-                                                                                    id="editMobile" class="form-control"
-                                                                                    value="<%= address.mobile %>"
-                                                                                    required>
+                                                                                <input name="mobile" type="tel" id="editMobile" class="form-control" required>
                                                                             </div>
                                                                             <div class="review-form-name">
-                                                                                <input name="city" type="text"
-                                                                                    id="editCity" class="form-control"
-                                                                                    value="<%= address.city %>"
-                                                                                    required>
+                                                                                <input name="city" type="text" id="editCity" class="form-control" required>
                                                                             </div>
                                                                         </div>
                                                                         <div class="review-form-name address-form">
-                                                                            <input type="text" name="address"
-                                                                                id="editAddress" class="form-control"
-                                                                                value="<%= address.address %>" required>
+                                                                            <input type="text" name="address" id="editAddress" class="form-control" required>
                                                                         </div>
                                                                         <div class="account-inner-form city-inner-form">
                                                                             <div class="review-form-name">
-                                                                                <label for="userstate"
-                                                                                    class="form-label">State</label>
-                                                                                <select name="state" id="editState"
-                                                                                    class="form-select" required>
-                                                                                    <option value="" disabled selected>
-                                                                                        Select State
-                                                                                    </option>
-                                                                                    <option>Andhra Pradesh</option>
-                                                                                    <option>Arunachal Pradesh</option>
-                                                                                    <option>Assam</option>
-                                                                                    <option>Bihar</option>
-                                                                                    <option>Chhattisgarh</option>
-                                                                                    <option>Goa</option>
-                                                                                    <option>Gujarat</option>
-                                                                                    <option>Haryana</option>
-                                                                                    <option>Himachal Pradesh</option>
-                                                                                    <option>Jharkhand</option>
-                                                                                    <option>Karnataka</option>
-                                                                                    <option>Kerala</option>
-                                                                                    <option>Madhya Pradesh</option>
-                                                                                    <option>Maharashtra</option>
-                                                                                    <option>Manipur</option>
-                                                                                    <option>Meghalaya</option>
-                                                                                    <option>Mizoram</option>
-                                                                                    <option>Nagaland</option>
-                                                                                    <option>Odisha</option>
-                                                                                    <option>Punjab</option>
-                                                                                    <option>Rajasthan</option>
-                                                                                    <option>Sikkim</option>
-                                                                                    <option>Tamil Nadu</option>
-                                                                                    <option>Telangana</option>
-                                                                                    <option>Tripura</option>
-                                                                                    <option>Uttar Pradesh</option>
-                                                                                    <option>Uttarakhand</option>
-                                                                                    <option>West Bengal</option>
-                                                                                    <option>Andaman and Nicobar Islands
-                                                                                    </option>
-                                                                                    <option>Chandigarh</option>
-                                                                                    <option>Dadra and Nagar Haveli and
-                                                                                        Daman and Diu</option>
-                                                                                    <option>Delhi</option>
-                                                                                    <option>Lakshadweep</option>
-                                                                                    <option>Puducherry</option>
-
+                                                                                <label for="userstate" class="form-label">State</label>
+                                                                                <select name="state" id="editState" class="form-select" required>
+                                                                                    <!-- List of states -->
                                                                                 </select>
                                                                             </div>
                                                                             <div class="review-form-name">
-                                                                                <input name="pincode" type="number"
-                                                                                    id="editPincode"
-                                                                                    class="form-control"
-                                                                                    value="<%= address.pincode %>"
-                                                                                    required>
+                                                                                <input name="pincode" type="number" id="editPincode" class="form-control" required>
                                                                             </div>
                                                                         </div>
                                                                         <br>
                                                                         <div class="login-btn text-center">
-                                                                            <button id="saveEditedAddressBtn"
-                                                                                data-address-id="<%= address.id %>"
-                                                                                onclick="editAddress(this.getAttribute('data-address-id'))"
-                                                                                class="shop-btn">Edit Address</button>
-
+                                                                            <button id="saveEditedAddressBtn" data-address-id="<%= address.id %>" class="shop-btn">Edit Address</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1276,193 +1017,6 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="v-pills-review" role="tabpanel"
-                            aria-labelledby="v-pills-review-tab" tabindex="0">
-                            <div class="top-selling-section">
-                                <div class="row g-5">
-                                    <div class="col-md-6">
-                                        <div class="product-wrapper">
-                                            <div class="product-img">
-                                                <img src="/users/assets_3/images/homepage-one/product-img/product-img-5.webp"
-                                                    alt="product-img">
-                                            </div>
-                                            <div class="product-info">
-                                                <div class="review-date">
-                                                    <p>July 22, 2022</p>
-                                                </div>
-                                                <div class="ratings">
-                                                    <span>
-                                                        <svg width="75" height="15" viewBox="0 0 75 15" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M22.5 0L24.1839 5.18237H29.6329L25.2245 8.38525L26.9084 13.5676L22.5 10.3647L18.0916 13.5676L19.7755 8.38525L15.3671 5.18237H20.8161L22.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M37.5 0L39.1839 5.18237H44.6329L40.2245 8.38525L41.9084 13.5676L37.5 10.3647L33.0916 13.5676L34.7755 8.38525L30.3671 5.18237H35.8161L37.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M52.5 0L54.1839 5.18237H59.6329L55.2245 8.38525L56.9084 13.5676L52.5 10.3647L48.0916 13.5676L49.7755 8.38525L45.3671 5.18237H50.8161L52.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M67.5 0L69.1839 5.18237H74.6329L70.2245 8.38525L71.9084 13.5676L67.5 10.3647L63.0916 13.5676L64.7755 8.38525L60.3671 5.18237H65.8161L67.5 0Z"
-                                                                fill="#FFA800" />
-                                                        </svg>
-                                                    </span>
-                                                </div>
-                                                <div class="product-description">
-                                                    <a href="product-sidebar.html" class="product-details">Rainbow
-                                                        Sequin Dress
-                                                    </a>
-                                                    <p>Didn't I tell you not put your phone on charge because weekend?
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="product-cart-btn">
-                                                <a href="cart.html" class="product-btn">Edit Review</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="product-wrapper">
-                                            <div class="product-img">
-                                                <img src="/users/assets_3/images/homepage-one/product-img/product-img-6.webp"
-                                                    alt="product-img">
-                                            </div>
-                                            <div class="product-info">
-                                                <div class="review-date">
-                                                    <p>July 22, 2022</p>
-                                                </div>
-                                                <div class="ratings">
-                                                    <span>
-                                                        <svg width="75" height="15" viewBox="0 0 75 15" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M22.5 0L24.1839 5.18237H29.6329L25.2245 8.38525L26.9084 13.5676L22.5 10.3647L18.0916 13.5676L19.7755 8.38525L15.3671 5.18237H20.8161L22.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M37.5 0L39.1839 5.18237H44.6329L40.2245 8.38525L41.9084 13.5676L37.5 10.3647L33.0916 13.5676L34.7755 8.38525L30.3671 5.18237H35.8161L37.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M52.5 0L54.1839 5.18237H59.6329L55.2245 8.38525L56.9084 13.5676L52.5 10.3647L48.0916 13.5676L49.7755 8.38525L45.3671 5.18237H50.8161L52.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M67.5 0L69.1839 5.18237H74.6329L70.2245 8.38525L71.9084 13.5676L67.5 10.3647L63.0916 13.5676L64.7755 8.38525L60.3671 5.18237H65.8161L67.5 0Z"
-                                                                fill="#FFA800" />
-                                                        </svg>
-                                                    </span>
-                                                </div>
-                                                <div class="product-description">
-                                                    <a href="product-sidebar.html" class="product-details">Rainbow
-                                                        Sequin Dress
-                                                    </a>
-                                                    <p>Didn't I tell you not put your phone on charge because weekend?
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="product-cart-btn">
-                                                <a href="cart.html" class="product-btn">Edit Review</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="product-wrapper">
-                                            <div class="product-img">
-                                                <img src="/users/assets_3/images/homepage-one/product-img/product-img-7.webp"
-                                                    alt="product-img">
-                                            </div>
-                                            <div class="product-info">
-                                                <div class="review-date">
-                                                    <p>July 22, 2022</p>
-                                                </div>
-                                                <div class="ratings">
-                                                    <span>
-                                                        <svg width="75" height="15" viewBox="0 0 75 15" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M22.5 0L24.1839 5.18237H29.6329L25.2245 8.38525L26.9084 13.5676L22.5 10.3647L18.0916 13.5676L19.7755 8.38525L15.3671 5.18237H20.8161L22.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M37.5 0L39.1839 5.18237H44.6329L40.2245 8.38525L41.9084 13.5676L37.5 10.3647L33.0916 13.5676L34.7755 8.38525L30.3671 5.18237H35.8161L37.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M52.5 0L54.1839 5.18237H59.6329L55.2245 8.38525L56.9084 13.5676L52.5 10.3647L48.0916 13.5676L49.7755 8.38525L45.3671 5.18237H50.8161L52.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M67.5 0L69.1839 5.18237H74.6329L70.2245 8.38525L71.9084 13.5676L67.5 10.3647L63.0916 13.5676L64.7755 8.38525L60.3671 5.18237H65.8161L67.5 0Z"
-                                                                fill="#FFA800" />
-                                                        </svg>
-                                                    </span>
-                                                </div>
-                                                <div class="product-description">
-                                                    <a href="product-sidebar.html" class="product-details">Rainbow
-                                                        Sequin Dress
-                                                    </a>
-                                                    <p>Didn't I tell you not put your phone on charge because weekend?
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="product-cart-btn">
-                                                <a href="cart.html" class="product-btn">Edit Review</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="product-wrapper">
-                                            <div class="product-img">
-                                                <img src="/users/assets_3/images/homepage-one/product-img/product-img-8.webp"
-                                                    alt="product-img">
-                                            </div>
-                                            <div class="product-info">
-                                                <div class="review-date">
-                                                    <p>July 22, 2022</p>
-                                                </div>
-                                                <div class="ratings">
-                                                    <span>
-                                                        <svg width="75" height="15" viewBox="0 0 75 15" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M22.5 0L24.1839 5.18237H29.6329L25.2245 8.38525L26.9084 13.5676L22.5 10.3647L18.0916 13.5676L19.7755 8.38525L15.3671 5.18237H20.8161L22.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M37.5 0L39.1839 5.18237H44.6329L40.2245 8.38525L41.9084 13.5676L37.5 10.3647L33.0916 13.5676L34.7755 8.38525L30.3671 5.18237H35.8161L37.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M52.5 0L54.1839 5.18237H59.6329L55.2245 8.38525L56.9084 13.5676L52.5 10.3647L48.0916 13.5676L49.7755 8.38525L45.3671 5.18237H50.8161L52.5 0Z"
-                                                                fill="#FFA800" />
-                                                            <path
-                                                                d="M67.5 0L69.1839 5.18237H74.6329L70.2245 8.38525L71.9084 13.5676L67.5 10.3647L63.0916 13.5676L64.7755 8.38525L60.3671 5.18237H65.8161L67.5 0Z"
-                                                                fill="#FFA800" />
-                                                        </svg>
-                                                    </span>
-                                                </div>
-                                                <div class="product-description">
-                                                    <a href="product-sidebar.html" class="product-details">Rainbow
-                                                        Sequin Dress
-                                                    </a>
-                                                    <p>Didn't I tell you not put your phone on charge because weekend?
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="product-cart-btn">
-                                                <a href="cart.html" class="product-btn">Edit Review</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="tab-pane fade" id="v-pills-coupons" role="tabpanel"
                             aria-labelledby="v-pills-coupons-tab" tabindex="0">
@@ -1477,20 +1031,32 @@
                                                 </div>
                                                 <div class="product-info">
                                                     <div class="product-description">
-                                                        <a class="coupon-code" id="couponCode<%= i %>"><%= coupons[i].couponCode %></a>
-                                                        <i class="fa-solid fa-copy" onclick="copyToClipboard('<%= coupons[i].couponCode %>')" style="margin-left: 10px; cursor: pointer;"></i>
-                                                        <p style="font-weight: 400; margin-top: 5px; margin-bottom: 3px;"><%= coupons[i].description %></p>
-                                                        <p style="font-weight: 700; margin-bottom: 3px;">Discount Per: <%= coupons[i].discountPercentage %> %</p>
-                                                        <p style="font-weight: 700; margin-bottom: 3px;">Min Pur Amount: <%= coupons[i].minPurchaseAmount %>/-</p>
+                                                        <a class="coupon-code" id="couponCode<%= i %>">
+                                                            <%= coupons[i].couponCode %>
+                                                        </a>
+                                                        <i class="fa-solid fa-copy"
+                                                            onclick="copyToClipboard('<%= coupons[i].couponCode %>')"
+                                                            style="margin-left: 10px; cursor: pointer;"></i>
+                                                        <p
+                                                            style="font-weight: 400; margin-top: 5px; margin-bottom: 3px;">
+                                                            <%= coupons[i].description %>
+                                                        </p>
+                                                        <p style="font-weight: 700; margin-bottom: 3px;">Discount Per:
+                                                            <%= coupons[i].discountPercentage %> %
+                                                        </p>
+                                                        <p style="font-weight: 700; margin-bottom: 3px;">Min Pur Amount:
+                                                            <%= coupons[i].minPurchaseAmount %>/-
+                                                        </p>
                                                     </div>
                                                     <div class="review-date">
-                                                        <p style="color: red; font-weight: 600;">Expiry Date: <%= coupons[i].expiryDate %></p>
+                                                        <p style="color: red; font-weight: 600;">Expiry Date: <%=
+                                                                coupons[i].expiryDate %>
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     <% } %>
-                
                                 </div>
                             </div>
                         </div>
@@ -1538,9 +1104,6 @@
                                         </form>
                                     </div>
                                 </div>
-
-
-
                                 <div class="col-lg-6">
                                     <div class="reset-img text-end">
                                         <img src="/users/assets_3/images/homepage-one/reset.webp" alt="reset">
@@ -1549,387 +1112,91 @@
                             </div>
                         </div>
 
+
                         <div class="tab-pane fade" id="v-pills-ticket" role="tabpanel"
                             aria-labelledby="v-pills-ticket-tab" tabindex="0">
                             <div class="support-ticket">
-                                <a href="#" class="shop-btn" onclick="modalAction('.ticket')">Add New Support</a>
+                                <p style="font-weight: 600; font-size: 27px; color: rgb(98, 98, 98);">New Balance</p>
+                                <h2 style="font-weight: 700; color: rgb(0, 133, 0); font-size: 27px;">
+                                    ₹ <%= wallet ? wallet.balance.toFixed(2) : '0.00' %>
+                                </h2>
 
-                                <div class="modal-wrapper ticket">
-                                    <div onclick="modalAction('.ticket')" class="anywhere-away"></div>
+                                <br><br>
 
-                                    <div class="login-section account-section modal-main">
-                                        <div class="review-form">
-                                            <div class="review-content">
-                                                <h5 class="comment-title">Add New Ticket</h5>
-                                                <div class="close-btn">
-                                                    <img src="/users/assets_3/images/homepage-one/close-btn.png"
-                                                        onclick="modalAction('.ticket')" alt="close-btn">
-                                                </div>
-                                            </div>
-                                            <div class="review-form-name address-form">
-                                                <label for="ticket" class="form-label">First Name*</label>
-                                                <input type="text" id="ticket" class="form-control" placeholder="Name">
-                                            </div>
-                                            <div class=" account-inner-form">
-                                                <div class="review-form-name">
-                                                    <label for="ticketaddress" class="form-label">Email Address*</label>
-                                                    <input type="email" id="ticketaddress" class="form-control"
-                                                        placeholder="email@gmail.com">
-                                                </div>
-                                                <div class="review-form-name">
-                                                    <label for="ticketphone" class="form-label">Phone Number*</label>
-                                                    <input type="tel" id="ticketphone" class="form-control"
-                                                        placeholder="******">
-                                                </div>
-                                            </div>
-                                            <div class="review-form-name address-form">
-                                                <label for="ticketmassage" class="form-label">Description*</label>
-                                                <textarea name="ticketmassage" id="ticketmassage" cols="10" rows="3"
-                                                    class="form-control"
-                                                    placeholder="Write Here your Description"></textarea>
-                                            </div>
-                                            <div class="login-btn text-center">
-                                                <a href="#" onclick="modalAction('.ticket')" class="shop-btn">Add Ticekt
-                                                    Now</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
                                 <div class="ticket-section">
-                                    <table>
+                                    <h2
+                                        style="font-size: 22px; font-weight: 600; text-decoration:underline; color: rgb(207, 0, 121);">
+                                        Transactions
+                                    </h2>
+
+                                    <table style="margin-top: 10px;">
                                         <tbody>
                                             <tr class="table-row table-top-row">
                                                 <td class="table-wrapper">
-                                                    <h5 class="table-heading">NO</h5>
+                                                    <h5 class="table-heading">DATE & TIME</h5>
                                                 </td>
                                                 <td class="table-wrapper">
                                                     <div class="table-wrapper-center">
-                                                        <h5 class="table-heading">TIME</h5>
+                                                        <h5 class="table-heading">STATUS</h5>
                                                     </div>
                                                 </td>
                                                 <td class="table-wrapper">
                                                     <div class="table-wrapper-center">
-                                                        <h5 class="table-heading">REPORT</h5>
+                                                        <h5 class="table-heading">AMOUNT</h5>
                                                     </div>
                                                 </td>
                                                 <td class="table-wrapper">
                                                     <div class="table-wrapper-center">
-                                                        <h5 class="table-heading">ACTION</h5>
+                                                        <h5 class="table-heading">DESCRIPTION</h5>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr class="table-row ticket-row">
-                                                <td class="table-wrapper">
-                                                    <p class="ticker-number">#354</p>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-date">11th Oct, 2023</p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-info">Printing and typesetting industry
-                                                            standard <span class="inner-text">dummy text ever
-                                                                since</span></p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center table-wrapper-img">
-                                                        <div class="comment-img">
-                                                            <span>
-                                                                <svg width="18" height="17" viewBox="0 0 18 17"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M9.34526 0.0234375C12.2264 0.133021 14.9269 1.30005 16.7549 4.04172C18.878 7.22662 18.2288 11.3601 15.1868 13.87C12.3535 16.2076 9.12958 16.6592 5.65976 15.5326C5.41809 15.4537 5.23754 15.4516 5.0071 15.5696C3.56972 16.3032 2.03046 16.7262 0.439223 16.9705C0.315577 16.9893 0.142753 16.923 0.0528284 16.8351C0.000840854 16.7841 0.0268346 16.5747 0.0914679 16.4986C0.912029 15.5403 1.12209 14.3635 1.33847 13.1811C1.42909 12.6855 1.33144 12.2891 1.06799 11.8466C-1.05226 8.27848 0.068284 3.93424 3.68564 1.57994C5.29725 0.530871 7.07607 0.043679 9.34526 0.0234375ZM7.79406 8.08444C7.80179 8.72589 8.33993 9.25705 8.98556 9.25845C9.64384 9.25984 10.189 8.71053 10.1813 8.05373C10.1735 7.40461 9.64665 6.88949 8.98978 6.8881C8.31886 6.8874 7.78633 7.42066 7.79406 8.08444ZM4.80618 6.8874C4.14018 6.87972 3.59009 7.41647 3.5915 8.07118C3.5929 8.70844 4.12894 9.24588 4.77457 9.25845C5.41809 9.27031 5.96326 8.74613 5.97731 8.10259C5.99206 7.42834 5.4778 6.89508 4.80618 6.8874ZM11.9966 8.08235C12.0022 8.72868 12.532 9.25635 13.1797 9.25984C13.8316 9.26333 14.3923 8.70355 14.3838 8.05722C14.3747 7.41298 13.8415 6.89089 13.1895 6.8888C12.5151 6.886 11.991 7.41089 11.9966 8.08235Z" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                        <div class="delete-img">
-                                                            <span>
-                                                                <svg width="16" height="19" viewBox="0 0 16 19"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M14.7879 5.95508C14.7102 6.91333 14.6353 7.84896 14.5582 8.7853C14.3801 10.9315 14.2028 13.0776 14.0219 15.2238C13.9604 15.9503 13.9208 16.6802 13.8176 17.4018C13.7074 18.1756 13.0827 18.719 12.3039 18.7225C9.39528 18.7352 6.48733 18.7367 3.57867 18.7218C2.71582 18.7176 2.09748 18.0823 2.01904 17.158C1.79291 14.4959 1.58161 11.8332 1.36254 9.17114C1.28269 8.19735 1.19859 7.22426 1.11733 6.25117C1.10955 6.15931 1.10673 6.06744 1.10107 5.95578C5.66688 5.95508 10.2171 5.95508 14.7879 5.95508ZM4.26485 8.06096C4.26343 8.06096 4.26272 8.06096 4.26131 8.06096C4.28675 8.46023 4.31219 8.8595 4.33692 9.25877C4.47826 11.5258 4.61818 13.7921 4.76234 16.0591C4.78354 16.3926 5.0019 16.6067 5.29305 16.6053C5.59834 16.6039 5.81175 16.3665 5.8167 16.0188C5.81811 15.9368 5.81246 15.8541 5.8068 15.7722C5.66476 13.4818 5.52413 11.1915 5.37997 8.90119C5.34959 8.41995 5.32273 7.938 5.27256 7.45817C5.24076 7.15783 5.04289 7.00025 4.74185 7.00095C4.45635 7.00166 4.25142 7.22143 4.24153 7.53166C4.23729 7.70833 4.25707 7.885 4.26485 8.06096ZM11.6213 8.05813C11.6199 8.05813 11.6185 8.05813 11.6171 8.05813C11.6262 7.89348 11.6432 7.72883 11.6418 7.56488C11.6397 7.24758 11.451 7.0271 11.1733 7.00166C10.8991 6.97622 10.6595 7.16561 10.6072 7.46736C10.5775 7.64049 10.5726 7.81787 10.5613 7.99383C10.4737 9.39092 10.386 10.788 10.2998 12.1851C10.2214 13.4529 10.1387 14.7213 10.0687 15.9898C10.049 16.346 10.2574 16.5848 10.5606 16.6032C10.8673 16.6223 11.0991 16.4046 11.121 16.0534C11.2899 13.3886 11.4552 10.7237 11.6213 8.05813ZM8.47025 11.8169C8.47025 10.4757 8.47096 9.1344 8.47025 7.79384C8.47025 7.25394 8.29712 6.99742 7.93954 6.99954C7.57914 7.00095 7.41307 7.25111 7.41307 7.79879C7.41236 10.4693 7.41236 13.1398 7.41378 15.8103C7.41378 15.951 7.38197 16.1319 7.45405 16.2223C7.58055 16.3792 7.77701 16.5778 7.94307 16.5771C8.10914 16.5764 8.30418 16.3757 8.42856 16.2181C8.50064 16.1269 8.46813 15.946 8.46813 15.8061C8.47166 14.4754 8.47025 13.1462 8.47025 11.8169Z" />
-                                                                    <path
-                                                                        d="M4.21259 2.75226C4.22602 2.49644 4.22955 2.29646 4.24863 2.09788C4.32848 1.26118 4.94611 0.650617 5.78564 0.63931C7.22231 0.62023 8.66039 0.62023 10.0971 0.63931C10.9366 0.650617 11.5549 1.26048 11.6348 2.09718C11.6539 2.29575 11.6574 2.49574 11.6694 2.7353C11.7966 2.74095 11.9196 2.75085 12.0425 2.75155C12.9379 2.75297 13.8332 2.74873 14.7286 2.75367C15.4197 2.75721 15.8868 3.18969 15.8861 3.81439C15.8854 4.43838 15.419 4.87298 14.7272 4.87369C10.2038 4.87581 5.67964 4.87581 1.15623 4.87369C0.464398 4.87298 -0.0027105 4.43909 -0.00341717 3.8151C-0.00412384 3.1911 0.462987 2.75721 1.15411 2.75438C2.16536 2.74873 3.17661 2.75226 4.21259 2.75226ZM10.591 2.7353C10.591 2.59821 10.5917 2.49291 10.591 2.38832C10.5861 1.86821 10.4129 1.69508 9.88717 1.69437C8.56993 1.69296 7.2534 1.69155 5.93616 1.69508C5.49661 1.69649 5.31147 1.8774 5.2938 2.30706C5.28815 2.44415 5.29309 2.58195 5.29309 2.7353C7.06967 2.7353 8.80525 2.7353 10.591 2.7353Z"
-                                                                        fill="#EB5757" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="table-row ticket-row">
-                                                <td class="table-wrapper">
-                                                    <p class="ticker-number">#355</p>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-date">11th Oct, 2023</p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-info">Printing and typesetting industry
-                                                            standard <span class="inner-text">dummy text ever
-                                                                since</span></p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center table-wrapper-img">
-                                                        <div class="comment-img">
-                                                            <span>
-                                                                <svg width="18" height="17" viewBox="0 0 18 17"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M9.34526 0.0234375C12.2264 0.133021 14.9269 1.30005 16.7549 4.04172C18.878 7.22662 18.2288 11.3601 15.1868 13.87C12.3535 16.2076 9.12958 16.6592 5.65976 15.5326C5.41809 15.4537 5.23754 15.4516 5.0071 15.5696C3.56972 16.3032 2.03046 16.7262 0.439223 16.9705C0.315577 16.9893 0.142753 16.923 0.0528284 16.8351C0.000840854 16.7841 0.0268346 16.5747 0.0914679 16.4986C0.912029 15.5403 1.12209 14.3635 1.33847 13.1811C1.42909 12.6855 1.33144 12.2891 1.06799 11.8466C-1.05226 8.27848 0.068284 3.93424 3.68564 1.57994C5.29725 0.530871 7.07607 0.043679 9.34526 0.0234375ZM7.79406 8.08444C7.80179 8.72589 8.33993 9.25705 8.98556 9.25845C9.64384 9.25984 10.189 8.71053 10.1813 8.05373C10.1735 7.40461 9.64665 6.88949 8.98978 6.8881C8.31886 6.8874 7.78633 7.42066 7.79406 8.08444ZM4.80618 6.8874C4.14018 6.87972 3.59009 7.41647 3.5915 8.07118C3.5929 8.70844 4.12894 9.24588 4.77457 9.25845C5.41809 9.27031 5.96326 8.74613 5.97731 8.10259C5.99206 7.42834 5.4778 6.89508 4.80618 6.8874ZM11.9966 8.08235C12.0022 8.72868 12.532 9.25635 13.1797 9.25984C13.8316 9.26333 14.3923 8.70355 14.3838 8.05722C14.3747 7.41298 13.8415 6.89089 13.1895 6.8888C12.5151 6.886 11.991 7.41089 11.9966 8.08235Z"
-                                                                        fill="#27AE60" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                        <div class="delete-img">
-                                                            <span>
-                                                                <svg width="16" height="19" viewBox="0 0 16 19"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M14.7879 5.95508C14.7102 6.91333 14.6353 7.84896 14.5582 8.7853C14.3801 10.9315 14.2028 13.0776 14.0219 15.2238C13.9604 15.9503 13.9208 16.6802 13.8176 17.4018C13.7074 18.1756 13.0827 18.719 12.3039 18.7225C9.39528 18.7352 6.48733 18.7367 3.57867 18.7218C2.71582 18.7176 2.09748 18.0823 2.01904 17.158C1.79291 14.4959 1.58161 11.8332 1.36254 9.17114C1.28269 8.19735 1.19859 7.22426 1.11733 6.25117C1.10955 6.15931 1.10673 6.06744 1.10107 5.95578C5.66688 5.95508 10.2171 5.95508 14.7879 5.95508ZM4.26485 8.06096C4.26343 8.06096 4.26272 8.06096 4.26131 8.06096C4.28675 8.46023 4.31219 8.8595 4.33692 9.25877C4.47826 11.5258 4.61818 13.7921 4.76234 16.0591C4.78354 16.3926 5.0019 16.6067 5.29305 16.6053C5.59834 16.6039 5.81175 16.3665 5.8167 16.0188C5.81811 15.9368 5.81246 15.8541 5.8068 15.7722C5.66476 13.4818 5.52413 11.1915 5.37997 8.90119C5.34959 8.41995 5.32273 7.938 5.27256 7.45817C5.24076 7.15783 5.04289 7.00025 4.74185 7.00095C4.45635 7.00166 4.25142 7.22143 4.24153 7.53166C4.23729 7.70833 4.25707 7.885 4.26485 8.06096ZM11.6213 8.05813C11.6199 8.05813 11.6185 8.05813 11.6171 8.05813C11.6262 7.89348 11.6432 7.72883 11.6418 7.56488C11.6397 7.24758 11.451 7.0271 11.1733 7.00166C10.8991 6.97622 10.6595 7.16561 10.6072 7.46736C10.5775 7.64049 10.5726 7.81787 10.5613 7.99383C10.4737 9.39092 10.386 10.788 10.2998 12.1851C10.2214 13.4529 10.1387 14.7213 10.0687 15.9898C10.049 16.346 10.2574 16.5848 10.5606 16.6032C10.8673 16.6223 11.0991 16.4046 11.121 16.0534C11.2899 13.3886 11.4552 10.7237 11.6213 8.05813ZM8.47025 11.8169C8.47025 10.4757 8.47096 9.1344 8.47025 7.79384C8.47025 7.25394 8.29712 6.99742 7.93954 6.99954C7.57914 7.00095 7.41307 7.25111 7.41307 7.79879C7.41236 10.4693 7.41236 13.1398 7.41378 15.8103C7.41378 15.951 7.38197 16.1319 7.45405 16.2223C7.58055 16.3792 7.77701 16.5778 7.94307 16.5771C8.10914 16.5764 8.30418 16.3757 8.42856 16.2181C8.50064 16.1269 8.46813 15.946 8.46813 15.8061C8.47166 14.4754 8.47025 13.1462 8.47025 11.8169Z"
-                                                                        fill="#EB5757" />
-                                                                    <path
-                                                                        d="M4.21259 2.75226C4.22602 2.49644 4.22955 2.29646 4.24863 2.09788C4.32848 1.26118 4.94611 0.650617 5.78564 0.63931C7.22231 0.62023 8.66039 0.62023 10.0971 0.63931C10.9366 0.650617 11.5549 1.26048 11.6348 2.09718C11.6539 2.29575 11.6574 2.49574 11.6694 2.7353C11.7966 2.74095 11.9196 2.75085 12.0425 2.75155C12.9379 2.75297 13.8332 2.74873 14.7286 2.75367C15.4197 2.75721 15.8868 3.18969 15.8861 3.81439C15.8854 4.43838 15.419 4.87298 14.7272 4.87369C10.2038 4.87581 5.67964 4.87581 1.15623 4.87369C0.464398 4.87298 -0.0027105 4.43909 -0.00341717 3.8151C-0.00412384 3.1911 0.462987 2.75721 1.15411 2.75438C2.16536 2.74873 3.17661 2.75226 4.21259 2.75226ZM10.591 2.7353C10.591 2.59821 10.5917 2.49291 10.591 2.38832C10.5861 1.86821 10.4129 1.69508 9.88717 1.69437C8.56993 1.69296 7.2534 1.69155 5.93616 1.69508C5.49661 1.69649 5.31147 1.8774 5.2938 2.30706C5.28815 2.44415 5.29309 2.58195 5.29309 2.7353C7.06967 2.7353 8.80525 2.7353 10.591 2.7353Z"
-                                                                        fill="#EB5757" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="table-row ticket-row">
-                                                <td class="table-wrapper">
-                                                    <p class="ticker-number">#356</p>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-date">11th Oct, 2023</p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-info">Printing and typesetting industry
-                                                            standard <span class="inner-text">dummy text ever
-                                                                since</span></p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center table-wrapper-img">
-                                                        <div class="comment-img">
-                                                            <span>
-                                                                <svg width="18" height="17" viewBox="0 0 18 17"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M9.34526 0.0234375C12.2264 0.133021 14.9269 1.30005 16.7549 4.04172C18.878 7.22662 18.2288 11.3601 15.1868 13.87C12.3535 16.2076 9.12958 16.6592 5.65976 15.5326C5.41809 15.4537 5.23754 15.4516 5.0071 15.5696C3.56972 16.3032 2.03046 16.7262 0.439223 16.9705C0.315577 16.9893 0.142753 16.923 0.0528284 16.8351C0.000840854 16.7841 0.0268346 16.5747 0.0914679 16.4986C0.912029 15.5403 1.12209 14.3635 1.33847 13.1811C1.42909 12.6855 1.33144 12.2891 1.06799 11.8466C-1.05226 8.27848 0.068284 3.93424 3.68564 1.57994C5.29725 0.530871 7.07607 0.043679 9.34526 0.0234375ZM7.79406 8.08444C7.80179 8.72589 8.33993 9.25705 8.98556 9.25845C9.64384 9.25984 10.189 8.71053 10.1813 8.05373C10.1735 7.40461 9.64665 6.88949 8.98978 6.8881C8.31886 6.8874 7.78633 7.42066 7.79406 8.08444ZM4.80618 6.8874C4.14018 6.87972 3.59009 7.41647 3.5915 8.07118C3.5929 8.70844 4.12894 9.24588 4.77457 9.25845C5.41809 9.27031 5.96326 8.74613 5.97731 8.10259C5.99206 7.42834 5.4778 6.89508 4.80618 6.8874ZM11.9966 8.08235C12.0022 8.72868 12.532 9.25635 13.1797 9.25984C13.8316 9.26333 14.3923 8.70355 14.3838 8.05722C14.3747 7.41298 13.8415 6.89089 13.1895 6.8888C12.5151 6.886 11.991 7.41089 11.9966 8.08235Z"
-                                                                        fill="#27AE60" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                        <div class="delete-img">
-                                                            <span>
-                                                                <svg width="16" height="19" viewBox="0 0 16 19"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M14.7879 5.95508C14.7102 6.91333 14.6353 7.84896 14.5582 8.7853C14.3801 10.9315 14.2028 13.0776 14.0219 15.2238C13.9604 15.9503 13.9208 16.6802 13.8176 17.4018C13.7074 18.1756 13.0827 18.719 12.3039 18.7225C9.39528 18.7352 6.48733 18.7367 3.57867 18.7218C2.71582 18.7176 2.09748 18.0823 2.01904 17.158C1.79291 14.4959 1.58161 11.8332 1.36254 9.17114C1.28269 8.19735 1.19859 7.22426 1.11733 6.25117C1.10955 6.15931 1.10673 6.06744 1.10107 5.95578C5.66688 5.95508 10.2171 5.95508 14.7879 5.95508ZM4.26485 8.06096C4.26343 8.06096 4.26272 8.06096 4.26131 8.06096C4.28675 8.46023 4.31219 8.8595 4.33692 9.25877C4.47826 11.5258 4.61818 13.7921 4.76234 16.0591C4.78354 16.3926 5.0019 16.6067 5.29305 16.6053C5.59834 16.6039 5.81175 16.3665 5.8167 16.0188C5.81811 15.9368 5.81246 15.8541 5.8068 15.7722C5.66476 13.4818 5.52413 11.1915 5.37997 8.90119C5.34959 8.41995 5.32273 7.938 5.27256 7.45817C5.24076 7.15783 5.04289 7.00025 4.74185 7.00095C4.45635 7.00166 4.25142 7.22143 4.24153 7.53166C4.23729 7.70833 4.25707 7.885 4.26485 8.06096ZM11.6213 8.05813C11.6199 8.05813 11.6185 8.05813 11.6171 8.05813C11.6262 7.89348 11.6432 7.72883 11.6418 7.56488C11.6397 7.24758 11.451 7.0271 11.1733 7.00166C10.8991 6.97622 10.6595 7.16561 10.6072 7.46736C10.5775 7.64049 10.5726 7.81787 10.5613 7.99383C10.4737 9.39092 10.386 10.788 10.2998 12.1851C10.2214 13.4529 10.1387 14.7213 10.0687 15.9898C10.049 16.346 10.2574 16.5848 10.5606 16.6032C10.8673 16.6223 11.0991 16.4046 11.121 16.0534C11.2899 13.3886 11.4552 10.7237 11.6213 8.05813ZM8.47025 11.8169C8.47025 10.4757 8.47096 9.1344 8.47025 7.79384C8.47025 7.25394 8.29712 6.99742 7.93954 6.99954C7.57914 7.00095 7.41307 7.25111 7.41307 7.79879C7.41236 10.4693 7.41236 13.1398 7.41378 15.8103C7.41378 15.951 7.38197 16.1319 7.45405 16.2223C7.58055 16.3792 7.77701 16.5778 7.94307 16.5771C8.10914 16.5764 8.30418 16.3757 8.42856 16.2181C8.50064 16.1269 8.46813 15.946 8.46813 15.8061C8.47166 14.4754 8.47025 13.1462 8.47025 11.8169Z"
-                                                                        fill="#EB5757" />
-                                                                    <path
-                                                                        d="M4.21259 2.75226C4.22602 2.49644 4.22955 2.29646 4.24863 2.09788C4.32848 1.26118 4.94611 0.650617 5.78564 0.63931C7.22231 0.62023 8.66039 0.62023 10.0971 0.63931C10.9366 0.650617 11.5549 1.26048 11.6348 2.09718C11.6539 2.29575 11.6574 2.49574 11.6694 2.7353C11.7966 2.74095 11.9196 2.75085 12.0425 2.75155C12.9379 2.75297 13.8332 2.74873 14.7286 2.75367C15.4197 2.75721 15.8868 3.18969 15.8861 3.81439C15.8854 4.43838 15.419 4.87298 14.7272 4.87369C10.2038 4.87581 5.67964 4.87581 1.15623 4.87369C0.464398 4.87298 -0.0027105 4.43909 -0.00341717 3.8151C-0.00412384 3.1911 0.462987 2.75721 1.15411 2.75438C2.16536 2.74873 3.17661 2.75226 4.21259 2.75226ZM10.591 2.7353C10.591 2.59821 10.5917 2.49291 10.591 2.38832C10.5861 1.86821 10.4129 1.69508 9.88717 1.69437C8.56993 1.69296 7.2534 1.69155 5.93616 1.69508C5.49661 1.69649 5.31147 1.8774 5.2938 2.30706C5.28815 2.44415 5.29309 2.58195 5.29309 2.7353C7.06967 2.7353 8.80525 2.7353 10.591 2.7353Z"
-                                                                        fill="#EB5757" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="table-row ticket-row">
-                                                <td class="table-wrapper">
-                                                    <p class="ticker-number">#357</p>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-date">11th Oct, 2023</p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-info">Printing and typesetting industry
-                                                            standard <span class="inner-text">dummy text ever
-                                                                since</span></p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center table-wrapper-img">
-                                                        <div class="comment-img">
-                                                            <span>
-                                                                <svg width="18" height="17" viewBox="0 0 18 17"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M9.34526 0.0234375C12.2264 0.133021 14.9269 1.30005 16.7549 4.04172C18.878 7.22662 18.2288 11.3601 15.1868 13.87C12.3535 16.2076 9.12958 16.6592 5.65976 15.5326C5.41809 15.4537 5.23754 15.4516 5.0071 15.5696C3.56972 16.3032 2.03046 16.7262 0.439223 16.9705C0.315577 16.9893 0.142753 16.923 0.0528284 16.8351C0.000840854 16.7841 0.0268346 16.5747 0.0914679 16.4986C0.912029 15.5403 1.12209 14.3635 1.33847 13.1811C1.42909 12.6855 1.33144 12.2891 1.06799 11.8466C-1.05226 8.27848 0.068284 3.93424 3.68564 1.57994C5.29725 0.530871 7.07607 0.043679 9.34526 0.0234375ZM7.79406 8.08444C7.80179 8.72589 8.33993 9.25705 8.98556 9.25845C9.64384 9.25984 10.189 8.71053 10.1813 8.05373C10.1735 7.40461 9.64665 6.88949 8.98978 6.8881C8.31886 6.8874 7.78633 7.42066 7.79406 8.08444ZM4.80618 6.8874C4.14018 6.87972 3.59009 7.41647 3.5915 8.07118C3.5929 8.70844 4.12894 9.24588 4.77457 9.25845C5.41809 9.27031 5.96326 8.74613 5.97731 8.10259C5.99206 7.42834 5.4778 6.89508 4.80618 6.8874ZM11.9966 8.08235C12.0022 8.72868 12.532 9.25635 13.1797 9.25984C13.8316 9.26333 14.3923 8.70355 14.3838 8.05722C14.3747 7.41298 13.8415 6.89089 13.1895 6.8888C12.5151 6.886 11.991 7.41089 11.9966 8.08235Z"
-                                                                        fill="#27AE60" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                        <div class="delete-img">
-                                                            <span>
-                                                                <svg width="16" height="19" viewBox="0 0 16 19"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M14.7879 5.95508C14.7102 6.91333 14.6353 7.84896 14.5582 8.7853C14.3801 10.9315 14.2028 13.0776 14.0219 15.2238C13.9604 15.9503 13.9208 16.6802 13.8176 17.4018C13.7074 18.1756 13.0827 18.719 12.3039 18.7225C9.39528 18.7352 6.48733 18.7367 3.57867 18.7218C2.71582 18.7176 2.09748 18.0823 2.01904 17.158C1.79291 14.4959 1.58161 11.8332 1.36254 9.17114C1.28269 8.19735 1.19859 7.22426 1.11733 6.25117C1.10955 6.15931 1.10673 6.06744 1.10107 5.95578C5.66688 5.95508 10.2171 5.95508 14.7879 5.95508ZM4.26485 8.06096C4.26343 8.06096 4.26272 8.06096 4.26131 8.06096C4.28675 8.46023 4.31219 8.8595 4.33692 9.25877C4.47826 11.5258 4.61818 13.7921 4.76234 16.0591C4.78354 16.3926 5.0019 16.6067 5.29305 16.6053C5.59834 16.6039 5.81175 16.3665 5.8167 16.0188C5.81811 15.9368 5.81246 15.8541 5.8068 15.7722C5.66476 13.4818 5.52413 11.1915 5.37997 8.90119C5.34959 8.41995 5.32273 7.938 5.27256 7.45817C5.24076 7.15783 5.04289 7.00025 4.74185 7.00095C4.45635 7.00166 4.25142 7.22143 4.24153 7.53166C4.23729 7.70833 4.25707 7.885 4.26485 8.06096ZM11.6213 8.05813C11.6199 8.05813 11.6185 8.05813 11.6171 8.05813C11.6262 7.89348 11.6432 7.72883 11.6418 7.56488C11.6397 7.24758 11.451 7.0271 11.1733 7.00166C10.8991 6.97622 10.6595 7.16561 10.6072 7.46736C10.5775 7.64049 10.5726 7.81787 10.5613 7.99383C10.4737 9.39092 10.386 10.788 10.2998 12.1851C10.2214 13.4529 10.1387 14.7213 10.0687 15.9898C10.049 16.346 10.2574 16.5848 10.5606 16.6032C10.8673 16.6223 11.0991 16.4046 11.121 16.0534C11.2899 13.3886 11.4552 10.7237 11.6213 8.05813ZM8.47025 11.8169C8.47025 10.4757 8.47096 9.1344 8.47025 7.79384C8.47025 7.25394 8.29712 6.99742 7.93954 6.99954C7.57914 7.00095 7.41307 7.25111 7.41307 7.79879C7.41236 10.4693 7.41236 13.1398 7.41378 15.8103C7.41378 15.951 7.38197 16.1319 7.45405 16.2223C7.58055 16.3792 7.77701 16.5778 7.94307 16.5771C8.10914 16.5764 8.30418 16.3757 8.42856 16.2181C8.50064 16.1269 8.46813 15.946 8.46813 15.8061C8.47166 14.4754 8.47025 13.1462 8.47025 11.8169Z"
-                                                                        fill="#EB5757" />
-                                                                    <path
-                                                                        d="M4.21259 2.75226C4.22602 2.49644 4.22955 2.29646 4.24863 2.09788C4.32848 1.26118 4.94611 0.650617 5.78564 0.63931C7.22231 0.62023 8.66039 0.62023 10.0971 0.63931C10.9366 0.650617 11.5549 1.26048 11.6348 2.09718C11.6539 2.29575 11.6574 2.49574 11.6694 2.7353C11.7966 2.74095 11.9196 2.75085 12.0425 2.75155C12.9379 2.75297 13.8332 2.74873 14.7286 2.75367C15.4197 2.75721 15.8868 3.18969 15.8861 3.81439C15.8854 4.43838 15.419 4.87298 14.7272 4.87369C10.2038 4.87581 5.67964 4.87581 1.15623 4.87369C0.464398 4.87298 -0.0027105 4.43909 -0.00341717 3.8151C-0.00412384 3.1911 0.462987 2.75721 1.15411 2.75438C2.16536 2.74873 3.17661 2.75226 4.21259 2.75226ZM10.591 2.7353C10.591 2.59821 10.5917 2.49291 10.591 2.38832C10.5861 1.86821 10.4129 1.69508 9.88717 1.69437C8.56993 1.69296 7.2534 1.69155 5.93616 1.69508C5.49661 1.69649 5.31147 1.8774 5.2938 2.30706C5.28815 2.44415 5.29309 2.58195 5.29309 2.7353C7.06967 2.7353 8.80525 2.7353 10.591 2.7353Z"
-                                                                        fill="#EB5757" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="table-row ticket-row">
-                                                <td class="table-wrapper">
-                                                    <p class="ticker-number">#358</p>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-date">11th Oct, 2023</p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-info">Printing and typesetting industry
-                                                            standard <span class="inner-text">dummy text ever
-                                                                since</span></p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center table-wrapper-img">
-                                                        <div class="comment-img">
-                                                            <span>
-                                                                <svg width="18" height="17" viewBox="0 0 18 17"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M9.34526 0.0234375C12.2264 0.133021 14.9269 1.30005 16.7549 4.04172C18.878 7.22662 18.2288 11.3601 15.1868 13.87C12.3535 16.2076 9.12958 16.6592 5.65976 15.5326C5.41809 15.4537 5.23754 15.4516 5.0071 15.5696C3.56972 16.3032 2.03046 16.7262 0.439223 16.9705C0.315577 16.9893 0.142753 16.923 0.0528284 16.8351C0.000840854 16.7841 0.0268346 16.5747 0.0914679 16.4986C0.912029 15.5403 1.12209 14.3635 1.33847 13.1811C1.42909 12.6855 1.33144 12.2891 1.06799 11.8466C-1.05226 8.27848 0.068284 3.93424 3.68564 1.57994C5.29725 0.530871 7.07607 0.043679 9.34526 0.0234375ZM7.79406 8.08444C7.80179 8.72589 8.33993 9.25705 8.98556 9.25845C9.64384 9.25984 10.189 8.71053 10.1813 8.05373C10.1735 7.40461 9.64665 6.88949 8.98978 6.8881C8.31886 6.8874 7.78633 7.42066 7.79406 8.08444ZM4.80618 6.8874C4.14018 6.87972 3.59009 7.41647 3.5915 8.07118C3.5929 8.70844 4.12894 9.24588 4.77457 9.25845C5.41809 9.27031 5.96326 8.74613 5.97731 8.10259C5.99206 7.42834 5.4778 6.89508 4.80618 6.8874ZM11.9966 8.08235C12.0022 8.72868 12.532 9.25635 13.1797 9.25984C13.8316 9.26333 14.3923 8.70355 14.3838 8.05722C14.3747 7.41298 13.8415 6.89089 13.1895 6.8888C12.5151 6.886 11.991 7.41089 11.9966 8.08235Z"
-                                                                        fill="#27AE60" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                        <div class="delete-img">
-                                                            <span>
-                                                                <svg width="16" height="19" viewBox="0 0 16 19"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M14.7879 5.95508C14.7102 6.91333 14.6353 7.84896 14.5582 8.7853C14.3801 10.9315 14.2028 13.0776 14.0219 15.2238C13.9604 15.9503 13.9208 16.6802 13.8176 17.4018C13.7074 18.1756 13.0827 18.719 12.3039 18.7225C9.39528 18.7352 6.48733 18.7367 3.57867 18.7218C2.71582 18.7176 2.09748 18.0823 2.01904 17.158C1.79291 14.4959 1.58161 11.8332 1.36254 9.17114C1.28269 8.19735 1.19859 7.22426 1.11733 6.25117C1.10955 6.15931 1.10673 6.06744 1.10107 5.95578C5.66688 5.95508 10.2171 5.95508 14.7879 5.95508ZM4.26485 8.06096C4.26343 8.06096 4.26272 8.06096 4.26131 8.06096C4.28675 8.46023 4.31219 8.8595 4.33692 9.25877C4.47826 11.5258 4.61818 13.7921 4.76234 16.0591C4.78354 16.3926 5.0019 16.6067 5.29305 16.6053C5.59834 16.6039 5.81175 16.3665 5.8167 16.0188C5.81811 15.9368 5.81246 15.8541 5.8068 15.7722C5.66476 13.4818 5.52413 11.1915 5.37997 8.90119C5.34959 8.41995 5.32273 7.938 5.27256 7.45817C5.24076 7.15783 5.04289 7.00025 4.74185 7.00095C4.45635 7.00166 4.25142 7.22143 4.24153 7.53166C4.23729 7.70833 4.25707 7.885 4.26485 8.06096ZM11.6213 8.05813C11.6199 8.05813 11.6185 8.05813 11.6171 8.05813C11.6262 7.89348 11.6432 7.72883 11.6418 7.56488C11.6397 7.24758 11.451 7.0271 11.1733 7.00166C10.8991 6.97622 10.6595 7.16561 10.6072 7.46736C10.5775 7.64049 10.5726 7.81787 10.5613 7.99383C10.4737 9.39092 10.386 10.788 10.2998 12.1851C10.2214 13.4529 10.1387 14.7213 10.0687 15.9898C10.049 16.346 10.2574 16.5848 10.5606 16.6032C10.8673 16.6223 11.0991 16.4046 11.121 16.0534C11.2899 13.3886 11.4552 10.7237 11.6213 8.05813ZM8.47025 11.8169C8.47025 10.4757 8.47096 9.1344 8.47025 7.79384C8.47025 7.25394 8.29712 6.99742 7.93954 6.99954C7.57914 7.00095 7.41307 7.25111 7.41307 7.79879C7.41236 10.4693 7.41236 13.1398 7.41378 15.8103C7.41378 15.951 7.38197 16.1319 7.45405 16.2223C7.58055 16.3792 7.77701 16.5778 7.94307 16.5771C8.10914 16.5764 8.30418 16.3757 8.42856 16.2181C8.50064 16.1269 8.46813 15.946 8.46813 15.8061C8.47166 14.4754 8.47025 13.1462 8.47025 11.8169Z"
-                                                                        fill="#EB5757" />
-                                                                    <path
-                                                                        d="M4.21259 2.75226C4.22602 2.49644 4.22955 2.29646 4.24863 2.09788C4.32848 1.26118 4.94611 0.650617 5.78564 0.63931C7.22231 0.62023 8.66039 0.62023 10.0971 0.63931C10.9366 0.650617 11.5549 1.26048 11.6348 2.09718C11.6539 2.29575 11.6574 2.49574 11.6694 2.7353C11.7966 2.74095 11.9196 2.75085 12.0425 2.75155C12.9379 2.75297 13.8332 2.74873 14.7286 2.75367C15.4197 2.75721 15.8868 3.18969 15.8861 3.81439C15.8854 4.43838 15.419 4.87298 14.7272 4.87369C10.2038 4.87581 5.67964 4.87581 1.15623 4.87369C0.464398 4.87298 -0.0027105 4.43909 -0.00341717 3.8151C-0.00412384 3.1911 0.462987 2.75721 1.15411 2.75438C2.16536 2.74873 3.17661 2.75226 4.21259 2.75226ZM10.591 2.7353C10.591 2.59821 10.5917 2.49291 10.591 2.38832C10.5861 1.86821 10.4129 1.69508 9.88717 1.69437C8.56993 1.69296 7.2534 1.69155 5.93616 1.69508C5.49661 1.69649 5.31147 1.8774 5.2938 2.30706C5.28815 2.44415 5.29309 2.58195 5.29309 2.7353C7.06967 2.7353 8.80525 2.7353 10.591 2.7353Z"
-                                                                        fill="#EB5757" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="table-row ticket-row">
-                                                <td class="table-wrapper">
-                                                    <p class="ticker-number">#359</p>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-date">11th Oct, 2023</p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-info">Printing and typesetting industry
-                                                            standard <span class="inner-text">dummy text ever
-                                                                since</span></p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center table-wrapper-img">
-                                                        <div class="comment-img">
-                                                            <span>
-                                                                <svg width="18" height="17" viewBox="0 0 18 17"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M9.34526 0.0234375C12.2264 0.133021 14.9269 1.30005 16.7549 4.04172C18.878 7.22662 18.2288 11.3601 15.1868 13.87C12.3535 16.2076 9.12958 16.6592 5.65976 15.5326C5.41809 15.4537 5.23754 15.4516 5.0071 15.5696C3.56972 16.3032 2.03046 16.7262 0.439223 16.9705C0.315577 16.9893 0.142753 16.923 0.0528284 16.8351C0.000840854 16.7841 0.0268346 16.5747 0.0914679 16.4986C0.912029 15.5403 1.12209 14.3635 1.33847 13.1811C1.42909 12.6855 1.33144 12.2891 1.06799 11.8466C-1.05226 8.27848 0.068284 3.93424 3.68564 1.57994C5.29725 0.530871 7.07607 0.043679 9.34526 0.0234375ZM7.79406 8.08444C7.80179 8.72589 8.33993 9.25705 8.98556 9.25845C9.64384 9.25984 10.189 8.71053 10.1813 8.05373C10.1735 7.40461 9.64665 6.88949 8.98978 6.8881C8.31886 6.8874 7.78633 7.42066 7.79406 8.08444ZM4.80618 6.8874C4.14018 6.87972 3.59009 7.41647 3.5915 8.07118C3.5929 8.70844 4.12894 9.24588 4.77457 9.25845C5.41809 9.27031 5.96326 8.74613 5.97731 8.10259C5.99206 7.42834 5.4778 6.89508 4.80618 6.8874ZM11.9966 8.08235C12.0022 8.72868 12.532 9.25635 13.1797 9.25984C13.8316 9.26333 14.3923 8.70355 14.3838 8.05722C14.3747 7.41298 13.8415 6.89089 13.1895 6.8888C12.5151 6.886 11.991 7.41089 11.9966 8.08235Z"
-                                                                        fill="#27AE60" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                        <div class="delete-img">
-                                                            <span>
-                                                                <svg width="16" height="19" viewBox="0 0 16 19"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M14.7879 5.95508C14.7102 6.91333 14.6353 7.84896 14.5582 8.7853C14.3801 10.9315 14.2028 13.0776 14.0219 15.2238C13.9604 15.9503 13.9208 16.6802 13.8176 17.4018C13.7074 18.1756 13.0827 18.719 12.3039 18.7225C9.39528 18.7352 6.48733 18.7367 3.57867 18.7218C2.71582 18.7176 2.09748 18.0823 2.01904 17.158C1.79291 14.4959 1.58161 11.8332 1.36254 9.17114C1.28269 8.19735 1.19859 7.22426 1.11733 6.25117C1.10955 6.15931 1.10673 6.06744 1.10107 5.95578C5.66688 5.95508 10.2171 5.95508 14.7879 5.95508ZM4.26485 8.06096C4.26343 8.06096 4.26272 8.06096 4.26131 8.06096C4.28675 8.46023 4.31219 8.8595 4.33692 9.25877C4.47826 11.5258 4.61818 13.7921 4.76234 16.0591C4.78354 16.3926 5.0019 16.6067 5.29305 16.6053C5.59834 16.6039 5.81175 16.3665 5.8167 16.0188C5.81811 15.9368 5.81246 15.8541 5.8068 15.7722C5.66476 13.4818 5.52413 11.1915 5.37997 8.90119C5.34959 8.41995 5.32273 7.938 5.27256 7.45817C5.24076 7.15783 5.04289 7.00025 4.74185 7.00095C4.45635 7.00166 4.25142 7.22143 4.24153 7.53166C4.23729 7.70833 4.25707 7.885 4.26485 8.06096ZM11.6213 8.05813C11.6199 8.05813 11.6185 8.05813 11.6171 8.05813C11.6262 7.89348 11.6432 7.72883 11.6418 7.56488C11.6397 7.24758 11.451 7.0271 11.1733 7.00166C10.8991 6.97622 10.6595 7.16561 10.6072 7.46736C10.5775 7.64049 10.5726 7.81787 10.5613 7.99383C10.4737 9.39092 10.386 10.788 10.2998 12.1851C10.2214 13.4529 10.1387 14.7213 10.0687 15.9898C10.049 16.346 10.2574 16.5848 10.5606 16.6032C10.8673 16.6223 11.0991 16.4046 11.121 16.0534C11.2899 13.3886 11.4552 10.7237 11.6213 8.05813ZM8.47025 11.8169C8.47025 10.4757 8.47096 9.1344 8.47025 7.79384C8.47025 7.25394 8.29712 6.99742 7.93954 6.99954C7.57914 7.00095 7.41307 7.25111 7.41307 7.79879C7.41236 10.4693 7.41236 13.1398 7.41378 15.8103C7.41378 15.951 7.38197 16.1319 7.45405 16.2223C7.58055 16.3792 7.77701 16.5778 7.94307 16.5771C8.10914 16.5764 8.30418 16.3757 8.42856 16.2181C8.50064 16.1269 8.46813 15.946 8.46813 15.8061C8.47166 14.4754 8.47025 13.1462 8.47025 11.8169Z"
-                                                                        fill="#EB5757" />
-                                                                    <path
-                                                                        d="M4.21259 2.75226C4.22602 2.49644 4.22955 2.29646 4.24863 2.09788C4.32848 1.26118 4.94611 0.650617 5.78564 0.63931C7.22231 0.62023 8.66039 0.62023 10.0971 0.63931C10.9366 0.650617 11.5549 1.26048 11.6348 2.09718C11.6539 2.29575 11.6574 2.49574 11.6694 2.7353C11.7966 2.74095 11.9196 2.75085 12.0425 2.75155C12.9379 2.75297 13.8332 2.74873 14.7286 2.75367C15.4197 2.75721 15.8868 3.18969 15.8861 3.81439C15.8854 4.43838 15.419 4.87298 14.7272 4.87369C10.2038 4.87581 5.67964 4.87581 1.15623 4.87369C0.464398 4.87298 -0.0027105 4.43909 -0.00341717 3.8151C-0.00412384 3.1911 0.462987 2.75721 1.15411 2.75438C2.16536 2.74873 3.17661 2.75226 4.21259 2.75226ZM10.591 2.7353C10.591 2.59821 10.5917 2.49291 10.591 2.38832C10.5861 1.86821 10.4129 1.69508 9.88717 1.69437C8.56993 1.69296 7.2534 1.69155 5.93616 1.69508C5.49661 1.69649 5.31147 1.8774 5.2938 2.30706C5.28815 2.44415 5.29309 2.58195 5.29309 2.7353C7.06967 2.7353 8.80525 2.7353 10.591 2.7353Z"
-                                                                        fill="#EB5757" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="table-row ticket-row">
-                                                <td class="table-wrapper">
-                                                    <p class="ticker-number">#360</p>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-date">11th Oct, 2023</p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center">
-                                                        <p class="ticket-info">Printing and typesetting industry
-                                                            standard <span class="inner-text">dummy text ever
-                                                                since</span></p>
-                                                    </div>
-                                                </td>
-                                                <td class="table-wrapper">
-                                                    <div class="table-wrapper-center table-wrapper-img">
-                                                        <div class="comment-img">
-                                                            <span>
-                                                                <svg width="18" height="17" viewBox="0 0 18 17"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M9.34526 0.0234375C12.2264 0.133021 14.9269 1.30005 16.7549 4.04172C18.878 7.22662 18.2288 11.3601 15.1868 13.87C12.3535 16.2076 9.12958 16.6592 5.65976 15.5326C5.41809 15.4537 5.23754 15.4516 5.0071 15.5696C3.56972 16.3032 2.03046 16.7262 0.439223 16.9705C0.315577 16.9893 0.142753 16.923 0.0528284 16.8351C0.000840854 16.7841 0.0268346 16.5747 0.0914679 16.4986C0.912029 15.5403 1.12209 14.3635 1.33847 13.1811C1.42909 12.6855 1.33144 12.2891 1.06799 11.8466C-1.05226 8.27848 0.068284 3.93424 3.68564 1.57994C5.29725 0.530871 7.07607 0.043679 9.34526 0.0234375ZM7.79406 8.08444C7.80179 8.72589 8.33993 9.25705 8.98556 9.25845C9.64384 9.25984 10.189 8.71053 10.1813 8.05373C10.1735 7.40461 9.64665 6.88949 8.98978 6.8881C8.31886 6.8874 7.78633 7.42066 7.79406 8.08444ZM4.80618 6.8874C4.14018 6.87972 3.59009 7.41647 3.5915 8.07118C3.5929 8.70844 4.12894 9.24588 4.77457 9.25845C5.41809 9.27031 5.96326 8.74613 5.97731 8.10259C5.99206 7.42834 5.4778 6.89508 4.80618 6.8874ZM11.9966 8.08235C12.0022 8.72868 12.532 9.25635 13.1797 9.25984C13.8316 9.26333 14.3923 8.70355 14.3838 8.05722C14.3747 7.41298 13.8415 6.89089 13.1895 6.8888C12.5151 6.886 11.991 7.41089 11.9966 8.08235Z"
-                                                                        fill="#27AE60" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                        <div class="delete-img">
-                                                            <span>
-                                                                <svg width="16" height="19" viewBox="0 0 16 19"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M14.7879 5.95508C14.7102 6.91333 14.6353 7.84896 14.5582 8.7853C14.3801 10.9315 14.2028 13.0776 14.0219 15.2238C13.9604 15.9503 13.9208 16.6802 13.8176 17.4018C13.7074 18.1756 13.0827 18.719 12.3039 18.7225C9.39528 18.7352 6.48733 18.7367 3.57867 18.7218C2.71582 18.7176 2.09748 18.0823 2.01904 17.158C1.79291 14.4959 1.58161 11.8332 1.36254 9.17114C1.28269 8.19735 1.19859 7.22426 1.11733 6.25117C1.10955 6.15931 1.10673 6.06744 1.10107 5.95578C5.66688 5.95508 10.2171 5.95508 14.7879 5.95508ZM4.26485 8.06096C4.26343 8.06096 4.26272 8.06096 4.26131 8.06096C4.28675 8.46023 4.31219 8.8595 4.33692 9.25877C4.47826 11.5258 4.61818 13.7921 4.76234 16.0591C4.78354 16.3926 5.0019 16.6067 5.29305 16.6053C5.59834 16.6039 5.81175 16.3665 5.8167 16.0188C5.81811 15.9368 5.81246 15.8541 5.8068 15.7722C5.66476 13.4818 5.52413 11.1915 5.37997 8.90119C5.34959 8.41995 5.32273 7.938 5.27256 7.45817C5.24076 7.15783 5.04289 7.00025 4.74185 7.00095C4.45635 7.00166 4.25142 7.22143 4.24153 7.53166C4.23729 7.70833 4.25707 7.885 4.26485 8.06096ZM11.6213 8.05813C11.6199 8.05813 11.6185 8.05813 11.6171 8.05813C11.6262 7.89348 11.6432 7.72883 11.6418 7.56488C11.6397 7.24758 11.451 7.0271 11.1733 7.00166C10.8991 6.97622 10.6595 7.16561 10.6072 7.46736C10.5775 7.64049 10.5726 7.81787 10.5613 7.99383C10.4737 9.39092 10.386 10.788 10.2998 12.1851C10.2214 13.4529 10.1387 14.7213 10.0687 15.9898C10.049 16.346 10.2574 16.5848 10.5606 16.6032C10.8673 16.6223 11.0991 16.4046 11.121 16.0534C11.2899 13.3886 11.4552 10.7237 11.6213 8.05813ZM8.47025 11.8169C8.47025 10.4757 8.47096 9.1344 8.47025 7.79384C8.47025 7.25394 8.29712 6.99742 7.93954 6.99954C7.57914 7.00095 7.41307 7.25111 7.41307 7.79879C7.41236 10.4693 7.41236 13.1398 7.41378 15.8103C7.41378 15.951 7.38197 16.1319 7.45405 16.2223C7.58055 16.3792 7.77701 16.5778 7.94307 16.5771C8.10914 16.5764 8.30418 16.3757 8.42856 16.2181C8.50064 16.1269 8.46813 15.946 8.46813 15.8061C8.47166 14.4754 8.47025 13.1462 8.47025 11.8169Z"
-                                                                        fill="#EB5757" />
-                                                                    <path
-                                                                        d="M4.21259 2.75226C4.22602 2.49644 4.22955 2.29646 4.24863 2.09788C4.32848 1.26118 4.94611 0.650617 5.78564 0.63931C7.22231 0.62023 8.66039 0.62023 10.0971 0.63931C10.9366 0.650617 11.5549 1.26048 11.6348 2.09718C11.6539 2.29575 11.6574 2.49574 11.6694 2.7353C11.7966 2.74095 11.9196 2.75085 12.0425 2.75155C12.9379 2.75297 13.8332 2.74873 14.7286 2.75367C15.4197 2.75721 15.8868 3.18969 15.8861 3.81439C15.8854 4.43838 15.419 4.87298 14.7272 4.87369C10.2038 4.87581 5.67964 4.87581 1.15623 4.87369C0.464398 4.87298 -0.0027105 4.43909 -0.00341717 3.8151C-0.00412384 3.1911 0.462987 2.75721 1.15411 2.75438C2.16536 2.74873 3.17661 2.75226 4.21259 2.75226ZM10.591 2.7353C10.591 2.59821 10.5917 2.49291 10.591 2.38832C10.5861 1.86821 10.4129 1.69508 9.88717 1.69437C8.56993 1.69296 7.2534 1.69155 5.93616 1.69508C5.49661 1.69649 5.31147 1.8774 5.2938 2.30706C5.28815 2.44415 5.29309 2.58195 5.29309 2.7353C7.06967 2.7353 8.80525 2.7353 10.591 2.7353Z"
-                                                                        fill="#EB5757" />
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
+
+                                            <% if (wallet && wallet.transactions.length> 0) { %>
+                                                <% wallet.transactions.forEach(transaction=> { %>
+                                                    <tr class="table-row ticket-row">
+                                                        <td class="table-wrapper">
+                                                            <p class="ticker-number">
+                                                                <%= new Date(transaction.date).toLocaleString() %>
+                                                            </p>
+                                                        </td>
+                                                        <td class="table-wrapper">
+                                                            <div class="table-wrapper-center">
+                                                                <p class="ticket-date">
+                                                                    <%= transaction.transactionMethod %>
+                                                                </p>
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-wrapper">
+                                                            <div class="table-wrapper-center">
+                                                                <p class="ticket-info"
+                                                                    style="color: green; font-weight:500;">
+                                                                    ₹ <%= transaction.amount.toFixed(2) %>
+                                                                </p>
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-wrapper">
+                                                            <div class="table-wrapper-center">
+                                                                <p class="ticket-info">Refunded form returned product.
+                                                                </p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <% }) %>
+                                                        <% } else { %>
+                                                            <tr>
+                                                                <td colspan="4" class="table-wrapper-center">
+                                                                    <p>No transactions found</p>
+                                                                </td>
+                                                            </tr>
+                                                            <% } %>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+
+
 
                     </div>
                 </div>
@@ -1939,105 +1206,115 @@
 
 
     <!-- Start Footer Section -->
-		<footer class="footer-section">
-			<div class="container relative">
+    <footer class="footer-section">
+        <div class="container relative">
 
-				<div class="row">
-					<div class="col-lg-8">
-						<div class="subscription-form">
-							<h3 class="d-flex align-items-center"><span class="me-1"><img src="/users/assets/images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="subscription-form">
+                        <h3 class="d-flex align-items-center"><span class="me-1"><img
+                                    src="/users/assets/images/envelope-outline.svg" alt="Image"
+                                    class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
 
-							<form action="#" class="row g-3">
-								<div class="col-auto">
-									<input type="text" class="form-control" placeholder="Enter your name">
-								</div>
-								<div class="col-auto">
-									<input type="email" class="form-control" placeholder="Enter your email">
-								</div>
-								<div class="col-auto">
-									<button class="btn btn-primary">
-										<span class="fa fa-paper-plane"></span>
-									</button>
-								</div>
-							</form>
+                        <form action="#" class="row g-3">
+                            <div class="col-auto">
+                                <input type="text" class="form-control" placeholder="Enter your name">
+                            </div>
+                            <div class="col-auto">
+                                <input type="email" class="form-control" placeholder="Enter your email">
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary">
+                                    <span class="fa fa-paper-plane"></span>
+                                </button>
+                            </div>
+                        </form>
 
-						</div>
-					</div>
-				</div>
+                    </div>
+                </div>
+            </div>
 
-				<div class="row g-5 mb-5">
-					<div class="col-lg-4">
-						<div class="mb-4 footer-logo-wrap"><a class="navbar-brand">MacHive</a></div>
-						<p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant</p>
+            <div class="row g-5 mb-5">
+                <div class="col-lg-4">
+                    <div class="mb-4 footer-logo-wrap"><a class="navbar-brand">MacHive</a></div>
+                    <p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus
+                        malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.
+                        Pellentesque habitant</p>
 
-						<ul class="list-unstyled custom-social">
-							<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
-						</ul>
-					</div>
+                    <ul class="list-unstyled custom-social">
+                        <li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+                        <li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+                        <li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+                        <li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+                    </ul>
+                </div>
 
-					<div class="col-lg-8">
-						<div class="row links-wrap">
-							<div class="col-6 col-sm-6 col-md-3">
-								<ul class="list-unstyled">
-									<li><a href="#">About us</a></li>
-									<li><a href="#">Services</a></li>
-									<li><a href="#">Blog</a></li>
-									<li><a href="#">Contact us</a></li>
-								</ul>
-							</div>
+                <div class="col-lg-8">
+                    <div class="row links-wrap">
+                        <div class="col-6 col-sm-6 col-md-3">
+                            <ul class="list-unstyled">
+                                <li><a href="#">About us</a></li>
+                                <li><a href="#">Services</a></li>
+                                <li><a href="#">Blog</a></li>
+                                <li><a href="#">Contact us</a></li>
+                            </ul>
+                        </div>
 
-							<div class="col-6 col-sm-6 col-md-3">
-								<ul class="list-unstyled">
-									<li><a href="#">Support</a></li>
-									<li><a href="#">Knowledge base</a></li>
-									<li><a href="#">Live chat</a></li>
-								</ul>
-							</div>
+                        <div class="col-6 col-sm-6 col-md-3">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Support</a></li>
+                                <li><a href="#">Knowledge base</a></li>
+                                <li><a href="#">Live chat</a></li>
+                            </ul>
+                        </div>
 
-							<div class="col-6 col-sm-6 col-md-3">
-								<ul class="list-unstyled">
-									<li><a href="#">Jobs</a></li>
-									<li><a href="#">Our team</a></li>
-									<li><a href="#">Leadership</a></li>
-									<li><a href="#">Privacy Policy</a></li>
-								</ul>
-							</div>
+                        <div class="col-6 col-sm-6 col-md-3">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Jobs</a></li>
+                                <li><a href="#">Our team</a></li>
+                                <li><a href="#">Leadership</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                            </ul>
+                        </div>
 
-							<div class="col-6 col-sm-6 col-md-3">
-								<ul class="list-unstyled">
-									<li><a href="#">Nordic Chair</a></li>
-									<li><a href="#">Kruzo Aero</a></li>
-									<li><a href="#">Ergonomic Chair</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
+                        <div class="col-6 col-sm-6 col-md-3">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Nordic Chair</a></li>
+                                <li><a href="#">Kruzo Aero</a></li>
+                                <li><a href="#">Ergonomic Chair</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
-				</div>
+            </div>
 
-				<div class="border-top copyright">
-					<div class="row pt-4">
-						<div class="col-lg-6">
-							<p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a hreff="https://themewagon.com">ThemeWagon</a>  <!-- License information: https://untree.co/license/ -->
-            </p>
-						</div>
+            <div class="border-top copyright">
+                <div class="row pt-4">
+                    <div class="col-lg-6">
+                        <p class="mb-2 text-center text-lg-start">Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash;
+                            Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a
+                                hreff="https://themewagon.com">ThemeWagon</a>
+                            <!-- License information: https://untree.co/license/ -->
+                        </p>
+                    </div>
 
-						<div class="col-lg-6 text-center text-lg-end">
-							<ul class="list-unstyled d-inline-flex ms-auto">
-								<li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
-								<li><a href="#">Privacy Policy</a></li>
-							</ul>
-						</div>
+                    <div class="col-lg-6 text-center text-lg-end">
+                        <ul class="list-unstyled d-inline-flex ms-auto">
+                            <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
 
-					</div>
-				</div>
+                </div>
+            </div>
 
-			</div>
-		</footer>
-		<!-- End Footer Section -->	
+        </div>
+    </footer>
+    <!-- End Footer Section -->
+
+
 
 
 
@@ -2171,29 +1448,93 @@
 
 
         function confirmCancellation(orderId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to cancel this order?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, cancel it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            cancelOrder(orderId);
+        }
+    });
+}
+
+function cancelOrder(orderId) {
+    fetch(`/cancel-order/${orderId}`, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire(
+                    'Cancelled!',
+                    'Your order has been cancelled.',
+                    'success'
+                );
+                location.reload();
+            } else {
+                Swal.fire(
+                    'Error!',
+                    data.message || 'Failed to cancel the order.',
+                    'error'
+                );
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire(
+                'Error!',
+                'An unexpected error occurred.',
+                'error'
+            );
+        });
+}
+
+
+
+        function showReturnModal(orderId) {
             Swal.fire({
-                title: 'Are you sure?',
-                text: "want to cancel this order!",
-                icon: 'warning',
+                title: 'Return Reason',
+                input: 'select',
+                inputOptions: {
+                    'Poor Quality': 'Poor Quality',
+                    'Wrong Product': 'Wrong Product',
+                    'Damaged Product': 'Damaged Product',
+                    'Not as Described': 'Not as Described',
+                    'Received Too Late': 'Received Too Late',
+                    'Ordered by Mistake': 'Ordered by Mistake',
+                    'Other': 'Other'
+                },
+                inputPlaceholder: 'Select a reason',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, cancel it!'
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'You need to select a reason!'
+                    }
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    cancelOrder(orderId);
+                    requestReturn(orderId, result.value);
                 }
             });
         }
 
-        function cancelOrder(orderId) {
-            fetch(`/cancel-order/${orderId}`, { method: 'POST' })
+        function requestReturn(orderId, reason) {
+            fetch(`/request-return/${orderId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ reason: reason })
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         Swal.fire(
-                            'Cancelled!',
-                            'Your order has been cancelled.',
+                            'Return Requested!',
+                            'Your return request has been submitted.',
                             'success'
                         );
 
@@ -2201,7 +1542,7 @@
                     } else {
                         Swal.fire(
                             'Error!',
-                            'Failed to cancel the order.',
+                            'Failed to submit the return request.',
                             'error'
                         );
                     }
@@ -2215,7 +1556,6 @@
                     );
                 });
         }
-
 
 
         document.querySelectorAll('.delete-button').forEach(button => {
@@ -2266,82 +1606,115 @@
 
 
 
-        function editAddress(addressId) {
-            fetch(`/myAccount/${addressId}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('editName').value = data.name;
-                    document.getElementById('editMobile').value = data.mobile;
-                    document.getElementById('editCity').value = data.city;
-                    document.getElementById('editAddress').value = data.address;
-                    document.getElementById('editState').value = data.state;
-                    document.getElementById('editPincode').value = data.pincode;
-                    // document.getElementById('editAddressId').value = data.id; 
+        // Function to open the edit modal with address data
+        function openEditModal(addressId) {
+    fetch(`/myAccount/${addressId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Populate the modal fields with fetched data
+            document.getElementById('editAddressId').value = data._id;
+            document.getElementById('editName').value = data.name;
+            document.getElementById('editMobile').value = data.mobile;
+            document.getElementById('editCity').value = data.city;
+            document.getElementById('editAddress').value = data.address;
+            document.getElementById('editState').value = data.state;
+            document.getElementById('editPincode').value = data.pincode;
 
-                    modalAction('.edit');
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        document.getElementById('saveEditedAddressBtn').addEventListener('click', function () {
-            // const addressId = document.getElementById('editAddressId').value;
-            const name = document.getElementById('editName').value;
-            const mobile = document.getElementById('editMobile').value;
-            const city = document.getElementById('editCity').value;
-            const address = document.getElementById('editAddress').value;
-            const state = document.getElementById('editState').value;
-            const pincode = document.getElementById('editPincode').value;
-
-            const data = {
-                id: addressId,
-                name: name,
-                mobile: mobile,
-                city: city,
-                address: address,
-                state: state,
-                pincode: pincode
-            };
-
-            fetch(`/myAccount/${addressId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    Swal.fire({
-                        title: 'Success!',
-                        text: 'Address has been updated.',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = '/myAccount';
-                        }
-                    });
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Failed to update address.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                });
+            // Open the modal
+            modalAction('.edit');
+        })
+        .catch(error => {
+            console.error('Error fetching address data:', error);
         });
+}
+
+// Add event listeners to all edit buttons
+document.querySelectorAll('.edit-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const addressId = this.getAttribute('data-addressid');
+        openEditModal(addressId);
+    });
+});
+
+// Function to save the edited address
+document.getElementById('saveEditedAddressBtn').addEventListener('click', function () {
+    const addressId = document.getElementById('editAddressId').value;
+    const name = document.getElementById('editName').value;
+    const mobile = document.getElementById('editMobile').value;
+    const city = document.getElementById('editCity').value;
+    const address = document.getElementById('editAddress').value;
+    const state = document.getElementById('editState').value;
+    const pincode = document.getElementById('editPincode').value;
+
+    const data = {
+        name: name,
+        mobile: mobile,
+        city: city,
+        address: address,
+        state: state,
+        pincode: pincode
+    };
+
+    fetch(`/myAccount/${addressId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => {
+            Swal.fire({
+                title: 'Success!',
+                text: 'Address has been updated.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/myAccount';
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error updating address:', error);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Failed to update address.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        });
+});
+
 
         function copyToClipboard(text) {
             var tempInput = document.createElement('textarea');
             tempInput.value = text;
             document.body.appendChild(tempInput);
             tempInput.select();
-            tempInput.setSelectionRange(0, 99999); // For mobile devices
+            tempInput.setSelectionRange(0, 99999);
             document.execCommand('copy');
             document.body.removeChild(tempInput);
+
+            var toastEl = document.createElement('div');
+            toastEl.className = 'toast show';
+            toastEl.textContent = 'Copied!';
+            document.body.appendChild(toastEl);
+
+            setTimeout(function () {
+                toastEl.classList.remove('show');
+                setTimeout(function () {
+                    document.body.removeChild(toastEl);
+                }, 300);
+            }, 1000);
         }
+
+
 
     </script>
 

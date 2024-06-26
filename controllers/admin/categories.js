@@ -38,16 +38,19 @@ exports.insertCategory = async (req, res) => {
     try {
         const { name, description } = req.body;
 
-        const existingCategory = await Categories.findOne({ name });
+        const normalizedCategoryName = name.toLowerCase();
+
+        const existingCategory = await Categories.findOne({ name: { $regex: new RegExp(`^${normalizedCategoryName}$`, 'i') } });
+        
         if (existingCategory) {
-            return res.status(statusCodes.BAD_REQUEST).json({ success: false, message: 'This category already exists' });
+            return res.status(400).json({ success: false, message: 'This category already exists' });
         }
 
         if (!name || !description || !req.file) {
             return res.status(400).json({ success: false, message: 'All fields are required' });
         }
 
-        const imagePath = `/admin/uploads/category/${req.file.filename}`
+        const imagePath = `/admin/uploads/category/${req.file.filename}`;
 
         const category = new Categories({
             name,
@@ -65,6 +68,7 @@ exports.insertCategory = async (req, res) => {
     }
 };
 
+
 exports.editCategory = async (req, res) => {
     try {
         const categoryId = req.params.categoryId;
@@ -77,16 +81,21 @@ exports.editCategory = async (req, res) => {
         if (imagePath) {
             updatedCategoryData.image = imagePath;
         }
-        const existingCategory = await Categories.findOne({ name: updatedCategoryData.name })
+
+        const normalizedCategoryName = name.toLowerCase();
+
+        const existingCategory = await Categories.findOne({ name: { $regex: new RegExp(`^${normalizedCategoryName}$`, 'i') } });
 
         if (existingCategory && existingCategory._id.toString() !== categoryId) {
-            return res.status(statusCodes.BAD_REQUEST).json({ success: false, message: 'Category already exists, Give another name' })
+            return res.status(400).json({ success: false, message: 'Category already exists, Give another name' });
         }
+
         const updatedCategory = await Categories.findByIdAndUpdate(
             categoryId,
             updatedCategoryData,
             { new: true }
         );
+
         if (!updatedCategory) {
             return res.status(404).json({ success: false, message: 'Category not found' });
         }
@@ -97,6 +106,7 @@ exports.editCategory = async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to update category', error: error.message });
     }
 };
+
 
 
 exports.categoryUnlist = async (req, res) => {

@@ -9,8 +9,7 @@
 			<div class="container">
 				<a class="navbar-brand">MacHive</a>
 
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
-					aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 
@@ -19,26 +18,24 @@
 						<li><a class="nav-link" href="/">Home</a></li>
 						<li><a class="nav-link" href="/shop">Shop</a></li>
 						<li><a class="nav-link" href="/views/users/about.ejs">About us</a></li>
-						<li><a class="nav-link" href="/views/users/services.ejs">Services</a></li>
-						<li><a class="nav-link" href="/views/users/blog.ejs">Blog</a></li>
-						<li><a class="nav-link" href="/views/users//contact.ejs">Contact us</a></li>
+						<li><a class="nav-link" href="/views/users/contact.ejs">Contact us</a></li>
 					</ul>
 
 					<ul class=" custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						<li><a class="nav-link" href="#"><i class="fa-solid fa-heart"></i></a></li>
+						<li><a class="nav-link" href="/wishlist"><i class="fa-solid fa-heart"></i></a></li>
 						<li><a class="nav-link" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
 						<li><a class="nav-link" href="/myAccount"><i class="fa-solid fa-user"></i></a></li>
 					</ul>
 
 					<ul class="custom-navbar-nav navbar-nav ">
 
-						<li><a class="nav-link login-nav" href="sign-in">SIGN IN</a></li>
+						<li><a class="nav-link login-nav" href="/sign-in">SIGN IN</a></li>
 
 					</ul>
-
+					
 				</div>
 			</div>
-
+				
 		</nav>
 		<!-- End Header/Navigation -->
 
@@ -391,6 +388,7 @@
 			document.querySelectorAll('.remove-item').forEach(button => {
 				button.addEventListener('click', function (event) {
 					event.preventDefault();
+					
 					const productVariantId = this.getAttribute('data-product-id');
 
 					fetch('/remove-from-cart', {

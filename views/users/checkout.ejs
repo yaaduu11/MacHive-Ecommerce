@@ -45,10 +45,8 @@
 
 		<div class="untree_co-section">
 			<h2 class="main-allpro">CHECKOUT</h2>
-			<div class="container ">
-				<div class="row mb-5">
-
-				</div>
+			<div class="container">
+				<div class="row mb-5"></div>
 				<div class="container mt-5">
 					<div class="row">
 						<div class="row mb-5">
@@ -137,6 +135,13 @@
 													id="button-addon2">Apply</button>
 											</div>
 										</div>
+										<p id="coupon-error" class="text-danger mt-2"></p> <!-- Coupon error message -->
+										<p id="applied-coupon" class="text-success mt-2" style="display: none;">
+											Coupon applied: <span id="applied-coupon-code"></span>
+											<span id="applied-coupon-details"></span>
+											<button type="button" id="remove-coupon"
+												class="c-btn btn-link text-danger">X</button>
+										</p>
 									</div>
 								</div>
 							</div>
@@ -198,15 +203,27 @@
 																						<tr>
 																							<td
 																								class="text-black font-weight-bold">
+																								<i>Coupon Discount</i>
+																							</td>
+																							<td class="text-black">
+																								<i id="discount-amount">₹
+																									0.00</i>
+																							</td>
+																						</tr>
+																						<tr>
+																							<td
+																								class="text-black font-weight-bold">
 																								<strong>Order
 																									Total</strong>
 																							</td>
 																							<td
 																								class="text-black font-weight-bold">
-																								<strong>₹ <%= (subtotal
-																										+
-																										100).toFixed(2)
-																										%></strong>
+																								<strong>₹ <span
+																										id="order-total">
+																										<%= (subtotal +
+																											100).toFixed(2)
+																											%>
+																									</span></strong>
 																							</td>
 																						</tr>
 											</tbody>
@@ -239,19 +256,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="border p-3 mb-5 payment-method" data-method="Wallet">
-											<h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse"
-													href="#collapsepaypal" role="button" aria-expanded="false"
-													aria-controls="collapsepaypal">My Wallet</a></h3>
-											<div class="collapse" id="collapsepaypal">
-												<div class="py-2">
-													<p class="mb-0">Make your payment directly into our bank account.
-														Please use your Order ID as the payment reference. Your order
-														won’t be shipped until the funds have cleared in our account.
-													</p>
-												</div>
-											</div>
-										</div>
+										
 										<div class="form-group">
 											<button class="btn btn-black btn-lg py-3 btn-block"
 												id="place-order-button">Place Order</button>
@@ -398,6 +403,20 @@
 				});
 			});
 
+
+			document.addEventListener('DOMContentLoaded', (event) => {
+				const paymentMethods = document.querySelectorAll('.payment-method');
+
+				paymentMethods.forEach(method => {
+					method.addEventListener('click', () => {
+						paymentMethods.forEach(item => item.classList.remove('active'));
+
+						method.classList.add('active');
+					});
+				});
+			});
+
+
 			$(document).ready(function () {
 				let selectedPaymentMethod = null;
 
@@ -407,8 +426,59 @@
 					selectedPaymentMethod = $(this).data('method');
 				});
 
+				$('#button-addon2').on('click', function () {
+					const couponCode = $('#c_code').val();
+
+					$.ajax({
+						url: '/applyCoupon',
+						method: 'POST',
+						data: { couponCode },
+						success: function (response) {
+							if (response.error) {
+								$('#coupon-error').text(response.error).show();
+							} else {
+								$('#coupon-error').hide();
+								$('#applied-coupon-code').text(response.couponCode);
+								$('#discount-amount').text(`${response.discountAmount.toFixed(2)}`);
+								const newTotal = response.grandTotal;
+								$('#order-total').text(`${newTotal.toFixed(2)}`);
+								$('#applied-coupon').show();
+							}
+						},
+						error: function (xhr, status, error) {
+							if (xhr.responseJSON && xhr.responseJSON.error) {
+								// Display specific error message from backend
+								$('#coupon-error').text(xhr.responseJSON.error).show();
+							} else {
+								// Fallback to generic error message
+								$('#coupon-error').text('Failed to apply coupon').show();
+							}
+						}
+					});
+				});
+
+				$('#remove-coupon').on('click', function () {
+					$('#applied-coupon').hide();
+					$('#c_code').val('');
+					$('#discount-amount').text('0.00'); // Set discount amount to 0
+
+					// Fetch the original subtotal without coupon discount
+					const originalSubtotal = parseFloat($('#subtotal-value').text().replace('₹ ', ''));
+
+					// Calculate new total including shipping charge (assuming 100)
+					const newTotal = isNaN(originalSubtotal) ? 100 : originalSubtotal + 100;
+
+					// Update the order total display
+					$('#order-total').text(`${newTotal.toFixed(2)}`);
+				});
+
+
+
+
+
 				$('#place-order-button').on('click', function () {
 					const selectedAddress = $('input[name="selected_address"]:checked').val();
+					const couponCode = document.getElementById('c_code').value;
 
 					if (!selectedPaymentMethod) {
 						Swal.fire({
@@ -431,59 +501,51 @@
 						method: 'POST',
 						data: {
 							addressId: selectedAddress,
-							paymentMethod: selectedPaymentMethod
+							paymentMethod: selectedPaymentMethod,
+							couponCode: couponCode // Include coupon code in the order placement
 						},
 						success: function (response) {
 							if (response.razorpayOrderId) {
 								const options = {
-									"key": response.key_id,
-									"amount": response.amount,
+									"key": response.razorpayKey,
+									"amount": response.orderTotal * 100,
 									"currency": "INR",
-									"name": "MacHive",
+									"name": "E-Commerce",
 									"description": "Test Transaction",
-									"image": "/your_logo.png",
 									"order_id": response.razorpayOrderId,
-									"handler": function (paymentResponse) {
-										$.ajax({
-											url: '/verifyPayment',
-											method: 'POST',
-											data: {
-												orderId: response.razorpayOrderId,
-												paymentId: paymentResponse.razorpay_payment_id,
-												signature: paymentResponse.razorpay_signature
-											},
-											success: function () {
-												window.location.href = '/thankyou';
-											},
-											error: function () {
-												Swal.fire({
-													icon: 'error',
-													title: 'Payment verification failed'
-												});
-											}
-										});
-									},
+									"callback_url": "/payment/callback",
 									"prefill": {
-										"name": "Your Name",
-										"email": "email@example.com",
-										"contact": "9999999999"
+										"name": response.customerName,
+										"email": response.customerEmail,
+										"contact": response.customerPhone
+									},
+									"notes": {
+										"address": "note value"
 									},
 									"theme": {
-										"color": "#F37254"
+										"color": "#3399cc"
 									}
 								};
-
-								const rzp = new Razorpay(options);
-								rzp.open();
+								const rzp1 = new Razorpay(options);
+								rzp1.open();
+							
 							} else {
-								window.location.href = '/thankyou';
+								Swal.fire({
+									icon: 'success',
+									title: 'Order Placed Successfully!',
+									text: 'Your order has been placed successfully.',
+									showConfirmButton: false,
+									timer: 2000
+								}).then(() => {
+									window.location.href = '/thankyou';
+								});
 							}
 						},
-						error: function (error) {
+						error: function () {
 							Swal.fire({
 								icon: 'error',
-								title: 'Order placement failed',
-								text: error.responseText
+								title: 'Error',
+								text: 'Failed to place the order. Please try again.'
 							});
 						}
 					});
@@ -491,17 +553,69 @@
 			});
 
 
-			document.addEventListener('DOMContentLoaded', (event) => {
-				const paymentMethods = document.querySelectorAll('.payment-method');
 
-				paymentMethods.forEach(method => {
-					method.addEventListener('click', () => {
-						paymentMethods.forEach(item => item.classList.remove('active'));
 
-						method.classList.add('active');
-					});
-				});
-			});
+
+
+
+			// document.getElementById('button-addon2').addEventListener('click', async () => {
+			// 	const couponCode = document.getElementById('c_code').value;
+			// 	const subtotal = parseFloat('<%= subtotal %>'); // Ensure this value is replaced correctly
+			// 	const userId = '<%= user._id %>'; // Ensure this value is replaced correctly
+			// 	console.log(couponCode)
+
+			// 	if (!userId) {
+			// 		document.getElementById('coupon-error').textContent = 'User not found';
+			// 		return;
+			// 	}
+
+			// 	try {
+			// 		const response = await fetch('/placeOrder', {
+			// 			method: 'POST',
+			// 			headers: {
+			// 				'Content-Type': 'application/json'
+			// 			},
+			// 			body: JSON.stringify({ couponCode, subtotal, userId })
+			// 		});
+
+			// 		if (!response.ok) {
+			// 			throw new Error('Failed to place order');
+			// 		}
+
+			// 		const data = await response.json();
+
+			// 		const discountElement = document.getElementById('discount-amount');
+			// 		const orderTotalElement = document.getElementById('order-total');
+			// 		const shippingCharge = 100; // You can change this value accordingly
+
+			// 		discountElement.textContent = `₹ ${data.discountAmount.toFixed(2)}`;
+			// 		orderTotalElement.textContent = `₹ ${(subtotal + shippingCharge - data.discountAmount).toFixed(2)}`;
+			// 		document.getElementById('coupon-error').textContent = ''; // Clear any previous error message
+
+			// 		// Show applied coupon
+			// 		document.getElementById('applied-coupon').style.display = 'block';
+			// 		document.getElementById('applied-coupon-code').textContent = couponCode;
+
+			// 	} catch (error) {
+			// 		console.error('An error occurred while placing the order:', error);
+			// 		document.getElementById('coupon-error').textContent = 'An error occurred while placing the order';
+			// 	}
+			// });
+
+
+
+			// document.getElementById('remove-coupon').addEventListener('click', () => {
+			// 	const discountElement = document.getElementById('discount-amount');
+			// 	const orderTotalElement = document.getElementById('order-total');
+			// 	const subtotal = parseFloat('<%= subtotal %>'); // Ensure this value is replaced correctly
+			// 	const shippingCharge = 100; // You can change this value accordingly
+
+			// 	discountElement.textContent = '₹ 0.00';
+			// 	orderTotalElement.textContent = `₹ ${(subtotal + shippingCharge).toFixed(2)}`;
+			// 	document.getElementById('applied-coupon').style.display = 'none';
+			// 	document.getElementById('c_code').value = '';
+			// });
+
 		</script>
 
 	</body>

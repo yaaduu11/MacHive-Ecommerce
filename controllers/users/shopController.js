@@ -24,13 +24,14 @@ exports.loadProductDetails = async (req,res)=>{
     }
 }
 
-exports.loadWishlist = async(req,res)=>{
+exports.loadWishlist = async (req, res) => {
     try {
-        const userId = req.session.userId; 
+        const userId = req.session.userId;
         if (!userId) {
             return res.redirect('/sign-in');
         }
-        const wishlist = await Wishlist.find({ userId:userId }).populate({
+
+        const wishlist = await Wishlist.findOne({ userId: userId }).populate({
             path: 'products.productVariantId',
             model: 'Varients', 
             populate: {
@@ -38,43 +39,21 @@ exports.loadWishlist = async(req,res)=>{
                 model: 'Products' 
             }
         });
-        
-        res.render('users/wishlist',{ wishlist })
-    } catch (error) {
-        console.log(error)
-    }
-}
 
-exports.addToWishlist = async (req, res) => {
-    const { productVariantId } = req.body;
-    const userId = req.session.userId;
-
-    if (!userId) {
-        return res.status(401).json({ success: false, message: "User not authenticated" });
-    }
-
-    try {
-        let wishlist = await Wishlist.findOne({ userId: userId });
         if (wishlist) {
-            let itemIndex = wishlist.products.findIndex(p => p.productVariantId.equals(productVariantId));
-            if (itemIndex > -1) {
-                return res.status(200).json({ success: true, message: "Item already in wishlist", wishlist });
-            } else {
-                wishlist.products.push({ productVariantId, quantity: 1 });
-            }
-            wishlist = await wishlist.save();
-            return res.status(200).json({ success: true, wishlist });
-        } else {
-            const newWishlist = await Wishlist.create({
-                userId,
-                products: [{ productVariantId, quantity: 1 }]
-            });
-            return res.status(201).json({ success: true, wishlist: newWishlist });
+            res.render('users/wishlist', { wishlist: wishlist });
+        }else{
+            res.status(404).render('users/wishlist', { wishlist: null, message: "Wishlist not found" });
         }
+
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Could not add item to wishlist", error: error.message });
+        console.error('Error loading wishlist:', error);
+        res.status(500).send('Internal Server Error');
     }
 };
+
+
+
 
 exports.loadCart = async (req, res) => {
     try {
@@ -103,12 +82,46 @@ exports.loadCart = async (req, res) => {
     }
 };
 
+
+exports.addToWishlist = async (req, res) => {
+    const { productVariantId, quantity } = req.body;
+    const userId = req.session.userId;
+
+    if (!userId) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
+
+    try {
+        let wishlist = await Wishlist.findOne({ userId: userId });
+        if (wishlist) {
+            let itemIndex = wishlist.products.findIndex(p => p.productVariantId.equals(productVariantId));
+            if (itemIndex > -1) {
+                return res.status(200).json({ success: true, alreadyExists: true, message: "Product is already in your wishlist" });
+            } else {
+                wishlist.products.push({ productVariantId, quantity: quantity || 1 });
+                wishlist = await wishlist.save();
+                return res.status(200).json({ success: true, wishlist, alreadyExists: false });
+            }
+        } else {
+            const newWishlist = await Wishlist.create({
+                userId,
+                products: [{ productVariantId, quantity: quantity || 1 }]
+            });
+            return res.status(201).json({ success: true, wishlist: newWishlist, alreadyExists: false });
+        }
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Could not add item to wishlist", error: error.message });
+    }
+};
+
+
+
 exports.addToCart = async (req, res) => {
     const { productVariantId, quantity } = req.body;
     const userId = req.session.userId;
 
     if (!userId) {
-        return res.redirect('/sign-in')
+        return res.status(401).json({ success: false, message: "User not authenticated" });
     }
 
     try {
@@ -116,25 +129,24 @@ exports.addToCart = async (req, res) => {
         if (cart) {
             let itemIndex = cart.products.findIndex(p => p.productVariantId.equals(productVariantId));
             if (itemIndex > -1) {
-                let productItem = cart.products[itemIndex];
-                productItem.quantity = parseInt(productItem.quantity) + parseInt(quantity);
-                cart.products[itemIndex] = productItem;
+                return res.status(200).json({ success: true, alreadyExists: true, message: "Product is already in your cart" });
             } else {
                 cart.products.push({ productVariantId, quantity });
+                cart = await cart.save();
+                return res.status(200).json({ success: true, cart, alreadyExists: false });
             }
-            cart = await cart.save();
-            return res.status(200).json({ success: true, cart });
         } else {
             const newCart = await Cart.create({
                 userId,
                 products: [{ productVariantId, quantity }]
             });
-            return res.status(201).json({ success: true, cart: newCart });
+            return res.status(201).json({ success: true, cart: newCart, alreadyExists: false });
         }
     } catch (error) {
         return res.status(500).json({ success: false, message: "Could not add item to cart", error: error.message });
     }
 };
+
 
 
 exports.checkStock = async (req, res) => {
@@ -216,3 +228,25 @@ exports.removeItemCart = async (req, res) => {
 };
 
 
+exports.removeFromWishlist = async (req, res) => {
+    const userId = req.session.userId;
+    const { productVariantId } = req.body;  // Updated to get productVariantId from the request body
+
+    if (!userId) {
+        return res.status(401).json({ success: false, message: 'Not authenticated' });
+    }
+
+    try {
+        const wishlist = await Wishlist.findOne({ userId: userId });
+        if (wishlist) {
+            wishlist.products = wishlist.products.filter(product => !product.productVariantId.equals(productVariantId));
+
+            await wishlist.save();
+            return res.json({ success: true, wishlist });
+        } else {
+            return res.status(404).json({ success: false, message: 'Wishlist not found' });
+        }
+    } catch (error) {
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};

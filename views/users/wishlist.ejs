@@ -42,19 +42,36 @@
     <link rel="stylesheet" href="/users/assets_2/css/default.css">
     <link rel="stylesheet" href="/users/assets_2/css/style.css">
     <link rel="stylesheet" href="/users/assets/css/style.css">
+
+    <style>
+        .empty-cart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: -80px;
+            padding: 50px;
+        }
+
+        .empty-cart-image {
+            width: 200px;
+            height: 200px;
+        }
+
+        .empty-cart-message {
+            font-family: "Indie Flower", cursive;
+            font-size: 36px;
+            color: #555;
+            font-weight: 400;
+            font-style: normal;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <div id="loading">
-        <div id="loading-center">
-            <div id="loading-center-absolute">
-                <div class="object" id="first_object"></div>
-                <div class="object" id="second_object"></div>
-                <div class="object" id="third_object"></div>
-            </div>
-        </div>
-    </div>
 
     <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
@@ -71,8 +88,6 @@
                     <li><a class="nav-link" href="/">Home</a></li>
                     <li><a class="nav-link" href="/shop">Shop</a></li>
                     <li><a class="nav-link" href="/views/users/about.ejs">About us</a></li>
-                    <li><a class="nav-link" href="/views/users/services.ejs">Services</a></li>
-                    <li><a class="nav-link" href="/views/users/blog.ejs">Blog</a></li>
                     <li><a class="nav-link" href="/views/users/contact.ejs">Contact us</a></li>
                 </ul>
 
@@ -84,7 +99,7 @@
 
                 <ul class="custom-navbar-nav navbar-nav ">
 
-                    <li><a class="nav-link login-nav" href="sign-in">SIGN IN</a></li>
+                    <li><a class="nav-link login-nav" href="/sign-in">SIGN IN</a></li>
 
                 </ul>
 
@@ -98,62 +113,69 @@
 
         <!-- cart-area start -->
         <section class="cart-area pb-120 pt-120">
-            <h3 style="text-align: center; 
-                        font-family: 'Lato', sans-serif;
-                        font-size: 32px;
-                        margin-top: -100px;
-                        font-weight: 400;
-                        color: #555; 
-                        text-align: center;
-                        margin: 20px auto;
-                        position: relative;
-                        margin-top: -50px;
-                        cursor: pointer; ">WISHLIST</h3>
+           
             <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        
-
-
-                        <div class="table-content table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="product-thumbnail">Image</th>
-                                        <th class="cart-product-name">Product</th>
-                                        <th class="product-price">Price</th>
-                                        <th class="product-subtotal"></th>
-                                        <th class="product-remove">Remove</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                  <% wishlist.products.forEach((item, index) => { %>
-                                    <tr>
-                                        <td class="product-thumbnail"><a><img
-                                                    src="<%= item.productVariantId.productId.image %>" alt="<%= item.productVariantId.productId.name %>"></a></td>
-                                        <td class="product-name"><a><%= item.productVariantId.productId.name %></a>
-                                        </td>
-                                        <td class="product-subtotal"><span class="amount">
-                                            <% if (item.productVariantId.is_blocked) { %>
-                                                <span class="text-danger">Product is unavailable</span>
-                                            <% } else if (item.productVariantId.stock === 0) { %>
-                                                <span class="text-danger">This product is out of stock</span>
-                                            <% } else { %>
-                                                ₹ <%= item.productVariantId.salePrice %>
-                                            <% } %></span>
-                                        </td>
-                                        <td class="product-quantity">
-                                            <a href="cart.html" class="btn-tp">Add To Cart</a>
-                                        </td>
-                                        <td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
-                                    </tr>
-                                  <% }) %>
-                                </tbody>
-                            </table>
+                <% if (wishlist && wishlist.products && wishlist.products.length> 0) { %>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-content table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="product-thumbnail">Image</th>
+                                            <th class="cart-product-name">Product</th>
+                                            <th class="product-price">Price</th>
+                                            <th class="product-subtotal"></th>
+                                            <th class="product-remove">Remove</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="wishlist-items">
+                                        <% wishlist.products.forEach((item)=> { %>
+                                            <tr data-product-id="<%= item.productVariantId._id %>">
+                                                <td class="product-thumbnail">
+                                                    <a>
+                                                        <img style="width: auto; height: 80px;"
+                                                            src="<%= item.productVariantId.productId.image %>"
+                                                            alt="<%= item.productVariantId.productId.name %>">
+                                                    </a>
+                                                </td>
+                                                <td class="product-name">
+                                                    <a>
+                                                        <%= item.productVariantId.productId.name %>
+                                                    </a>
+                                                </td>
+                                                <td class="product-subtotal">
+                                                    <span class="amount">
+                                                        ₹ <%= item.productVariantId.salePrice %>
+                                                    </span>
+                                                </td>
+                                                <td class="product-quantity">
+                                                    <a href="#" class="btn-tp add-to-cart-btn"
+                                                        data-product-variant-id="<%= item.productVariantId._id %>">Add
+                                                        To Cart</a>
+                                                </td>
+                                                <td class="product-remove">
+                                                    <a href="#" class="remove-from-wishlist" data-product-variant-id="<%= item.productVariantId._id %>">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </td>
+                                                
+                                            </tr>
+                                            <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-
                     </div>
-                </div>
+                    <% } else { %>
+                        <div class="empty-cart">
+                            <p class="empty-cart-message">Your wishlist is empty.</p>
+                            <br>
+                            <img src="users/assets/images/cart_empty.png" alt="Sad Emoji" class="empty-cart-image">
+                            <br>
+                            <p><a href="/shop" class="btn btn-secondary me-2">Shop Now 🡢</a></p>
+                        </div>
+                        <% } %>
             </div>
         </section>
         <!-- cart-area end -->
@@ -167,9 +189,7 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="subscription-form">
-                        <h3 class="d-flex align-items-center"><span class="me-1"><img
-                                    src="/users/assets/images/envelope-outline.svg" alt="Image"
-                                    class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+                        <h3 class="d-flex align-items-center"><span class="me-1"><img src="/users/assets/images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
 
                         <form action="#" class="row g-3">
                             <div class="col-auto">
@@ -191,10 +211,8 @@
 
             <div class="row g-5 mb-5">
                 <div class="col-lg-4">
-                    <div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>
-                    <p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus
-                        malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.
-                        Pellentesque habitant</p>
+                    <div class="mb-4 footer-logo-wrap"><a class="navbar-brand">MacHive</a></div>
+                    <p class="mb-4">Discover the perfect blend of quality and convenience at our store. With a seamless shopping experience, we make it effortless and rewarding for you to find your ideal iPhone or MacBook, ensuring satisfaction with every purchase. Explore our collection today and elevate your tech journey!</p>
 
                     <ul class="list-unstyled custom-social">
                         <li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
@@ -247,12 +265,8 @@
             <div class="border-top copyright">
                 <div class="row pt-4">
                     <div class="col-lg-6">
-                        <p class="mb-2 text-center text-lg-start">Copyright &copy;
-                            <script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash;
-                            Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a
-                                hreff="https://themewagon.com">ThemeWagon</a>
-                            <!-- License information: https://untree.co/license/ -->
-                        </p>
+                        <p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved.</p>
+        </p>
                     </div>
 
                     <div class="col-lg-6 text-center text-lg-end">
@@ -268,6 +282,9 @@
         </div>
     </footer>
     <!-- footer area end -->
+
+    <!-- SweetAlert CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
     <!-- JS here -->
@@ -290,8 +307,90 @@
     <script src="/users/assets_2/js/imagesloaded-pkgd.js"></script>
     <script src="/users/assets_2/js/ajax-form.js"></script>
     <script src="/users/assets_2/js/main.js"></script>
-</body>
 
-<!-- Mirrored from wphix.com/html/blackwood-prv/blackwood/wishlist.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 07 Apr 2024 11:31:31 GMT -->
+    <script>
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                const productVariantId = event.target.getAttribute('data-product-variant-id');
+                const quantity = '1';
+
+                fetch('/cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ productVariantId, quantity }),
+                })
+                    .then(response => {
+                        if (response.status === 401) {
+                            window.location.href = '/sign-in';
+                            return;
+                        } else if (!response.ok) {
+                            return response.json().then(data => {
+                                throw new Error(data.message || 'Failed to add product to cart.');
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Product added to cart successfully!',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                window.location.href = '/cart'; // Redirect to cart page
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: error.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+            });
+        });
+
+
+        document.querySelectorAll('.remove-from-wishlist').forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                const productVariantId = this.getAttribute('data-product-variant-id');
+                const productRow = this.closest('tr');
+
+                fetch('/remove-from-wishlist', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ productVariantId }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                            productRow.remove();
+                          
+                        } else {
+                            console.error('Failed to remove item:', data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+
+    </script>
+
+</body>
 
 </html>
