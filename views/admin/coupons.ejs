@@ -467,129 +467,145 @@
                   display: flex;
                   align-items: center;
                 }
-
+    
                 .header {
                   flex-grow: 1;
                 }
               </style>
-
             </div>
           </div>
           <br>
           <!-- row -->
           <div class="row">
-            <% for (let i=coupons.length - 1; i>= 0; i--) { %>
-              <div class="col-lg-5 mb-6">
-                <div class="card">
-                  <div class="card-body">
-                    <table id="example" style="width: 100%">
-                      <thead>
-                        <tr></tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td style="vertical-align: top;">
-                            <img src="/users/assets/images/couponImg.png" alt="Sample Image"
-                              style="width: 200px; height: 200px;">
-                          </td>
-                          <td style="vertical-align: top;">
-                            <div style="text-align: left;">
-                              <h2>
-                                <%= coupons[i].couponCode %>
-                              </h2>
-                              <h4 style="color: red;"><strong>Expiry Date: <%= coupons[i].expiryDate %></strong></h4>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="2">
-                            <div class="coupon-inputs">
-                              <p style="font-size: 18px; font-weight: bold; margin-bottom: 6px;">Description: <span
-                                  class="value">
-                                  <%= coupons[i].description %>
+            <div class="coupon-wrapper">
+              <% for (let i = 0; i < coupons.length; i++) { %>
+                <div class="col-lg-5 mb-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <table id="example" style="width: 100%">
+                        <thead>
+                          <tr></tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td style="vertical-align: top;">
+                              <img src="/users/assets/images/couponImg.png" alt="Sample Image" style="width: 200px; height: 200px;">
+                            </td>
+                            <td style="vertical-align: top;">
+                              <div style="text-align: left;">
+                                <h2><%= coupons[i].couponCode %></h2>
+                                <h4 style="color: red;"><strong>Expiry Date: <%= coupons[i].expiryDate %></strong></h4>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div class="coupon-inputs">
+                                <p style="font-size: 18px; font-weight: bold; margin-bottom: 6px;">Description: <span class="value"><%= coupons[i].description %></span></p>
+                                <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Discount Percentage: <span class="value"><%= coupons[i].discountPercentage %>%
                                 </span></p>
-                              <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Discount Percentage:
-                                <span class="value">
-                                  <%= coupons[i].discountPercentage %>%
-                                </span>
-                              </p>
-                              <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Min Purchase Amount:
-                                <span class="value">
-                                  <%= coupons[i].minPurchaseAmount %>
-                                </span>
-                              </p>
-                              <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Max Discount Amount:
-                                <span class="value">
-                                  <%= coupons[i].maxDiscountAmount %>
-                                </span>
-                              </p>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="2">
-                            <div style="text-align: center;">
-                              <button type="button" class="btn btn-primary" style="margin-right: 22px;"
-                                data-coupon-id="<%= coupons[i]._id %>"
-                                onclick="navigateToEdit('<%= coupons[i]._id %>')">Edit</button>
-
-                              <button style="margin-right: 22px;"
-                                class="btn <%= coupons[i].block ? 'btn-success' : 'btn-danger' %>"
-                                onclick="toggleBlockStatus('<%= coupons[i]._id %>', this, this.closest('tr').querySelector('.badge'))">
-                                <%= coupons[i].block ? 'List' : 'Unlist' %>
-                              </button>
-
-
-                              <!-- <button type="button" class="btn btn-danger">Delete</button> -->
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                                <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Min Purchase Amount: <span class="value"><%= coupons[i].minPurchaseAmount %></span>
+                                </p>
+                                <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Max Discount Amount: <span class="value"><%= coupons[i].maxDiscountAmount %></span>
+                                </p>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="text-align: center;">
+                                <button type="button" class="btn btn-primary" style="margin-right: 22px;" data-coupon-id="<%= coupons[i]._id %>" onclick="navigateToEdit('<%= coupons[i]._id %>')">Edit</button>
+                                <button style="margin-right: 22px;" class="btn <%= coupons[i].block ? 'btn-success' : 'btn-danger' %>" onclick="toggleBlockStatus('<%= coupons[i]._id %>', this, this.closest('tr').querySelector('.badge'))">
+                                  <%= coupons[i].block ? 'List' : 'Unlist' %>
+                                </button>
+                                <!-- <button type="button" class="btn btn-danger">Delete</button> -->
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
-              </div>
               <% } %>
+            </div>
           </div>
-
+          <!-- Pagination controls -->
+          <div class="pagination">
+            <% if (currentPage > 1) { %>
+              <a href="?page=<%= currentPage - 1 %>">Previous</a>
+            <% } %>
+            <% for (let i = 1; i <= totalPages; i++) { %>
+              <a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+            <% } %>
+            <% if (currentPage < totalPages) { %>
+              <a href="?page=<%= currentPage + 1 %>">Next</a>
+            <% } %>
+          </div>
           <style>
+            .coupon-wrapper {
+              display: flex;
+              justify-content: center;
+              flex-wrap: wrap;
+              gap: 20px;
+            }
+    
             #example {
               width: 100%;
               border-collapse: collapse;
             }
-
+    
             #example td {
               padding: 10px;
               vertical-align: top;
             }
-
+    
             #example img {
               width: 200px;
               height: 200px;
               margin-left: -20px;
               margin-top: -57px;
             }
-
+    
             #example .text-container {
               text-align: left;
             }
-
+    
             #example .headings-container {
               margin-top: 20px;
             }
-
+    
             #example .coupon-inputs {
               margin-top: -55px;
             }
-
+    
             .coupon-inputs span.value {
               color: blue;
             }
+    
+            .pagination {
+              display: flex;
+              justify-content: center;
+              margin-top: 20px;
+            }
+    
+            .pagination a {
+              margin: 0 5px;
+              padding: 10px 15px;
+              text-decoration: none;
+              color: #007bff;
+            }
+    
+            .pagination a.active {
+              background-color: #007bff;
+              color: white;
+              border-radius: 5px;
+            }
           </style>
-
         </div>
       </div>
     </div>
+    
   </main>
 
   <!-- Modal -->

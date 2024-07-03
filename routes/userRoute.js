@@ -16,21 +16,21 @@ router.get('/contact', userController.loadContactUs);
 
 
 //////////////! sign-up side
-router.get('/sign-up', authUser.isAuthenticated, userController.loadSignUp)
+router.get('/sign-up',authUser.loginedUser, userController.loadSignUp)
 router.post('/sign-up', userController.insertUser)
 
 
 //////////////! sign in side
-router.get('/sign-in', authUser.isAuthenticated, userController.loadSignIn)
+router.get('/sign-in',authUser.loginedUser, userController.loadSignIn)
 router.post('/sign-in', userController.signIn)
 
 
 //////////////!  logout side
-router.get('/logout', dashController.logoutUser)
+router.get('/logout',authUser.isAuthenticated,  dashController.logoutUser)
 
 
 //////////////! otp route
-router.get('/otp', userController.loadOtp)
+router.get('/otp',authUser.loginedUser, userController.loadOtp)
 router.post('/otp', userController.userVerification)
 
 
@@ -43,33 +43,33 @@ router.get('/product_Details/:productId', shopController.loadProductDetails)
 
 
 //////////////! My account
-router.get('/myAccount', dashController.loadMyAccount)
+router.get('/myAccount',authUser.isAuthenticated,  dashController.loadMyAccount)
 router.post('/update-profile', dashController.userDataEdit)
 router.post('/update-password', dashController.changePassword)
 
 
 //////////////! address
 router.post('/myAccount', dashController.insertAddress)
-router.post('/myAccount/:addressId', dashController.editAddress)
+router.post('/myAccount/:addressId', dashController.editAddress);
 router.delete('/delete-address/:id', dashController.deleteAddress)
 
 
 //////////////! Cart
-router.get('/cart', authUser.isAuthenticate, shopController.loadCart)
-router.post('/cart', authUser.isAuthenticate, shopController.addToCart)
+router.get('/cart', authUser.isAuthenticated, shopController.loadCart)
+router.post('/cart', shopController.addToCart)
 router.post('/update-cart-quantity', shopController.cartQuantityUpdate)
 router.post('/check-stock', shopController.checkStock)
 router.delete('/remove-from-cart', shopController.removeItemCart)
 
 
 ////////////////!  wishlist
-router.get('/wishlist', shopController.loadWishlist)
+router.get('/wishlist',authUser.isAuthenticated,  shopController.loadWishlist)
 router.post('/wishlist', shopController.addToWishlist)
 router.delete('/remove-from-wishlist', shopController.removeFromWishlist);
 
 
 //////////////! Checkout
-router.get('/checkout', orderController.loadCheckout)
+router.get('/checkout',authUser.isAuthenticated,  orderController.loadCheckout)
 
 
 //////////////!  Coupon 
@@ -77,11 +77,12 @@ router.post('/applyCoupon', couponController.applyCoupon)
 
 //////////////! Order
 router.post('/placeOrder', orderController.placeOrder)
-router.post('/verifyPayment', orderController.verifyPayment)
-router.post('/request-return/:id', orderController.returnOrder)
-router.post('/cancel-order/:orderId', orderController.cancelOrder);
-router.get('/thankyou', orderController.loadThankYou)
-router.get('/trackOrder', orderController.loadTrackOrder)
+router.post('/verifyPayment',  orderController.verifyPayment)
+router.post('/request-return/:orderId/:itemId', orderController.returnOrder)
+router.post('/cancel-order/:orderId/:itemId', orderController.cancelOrder);
+router.get('/thankyou',authUser.isAuthenticated, orderController.loadThankYou)
+router.get('/trackOrder',authUser.isAuthenticated, orderController.loadTrackOrder)
+router.post('/generate-invoice', orderController.invoice);
 
 
 module.exports = router

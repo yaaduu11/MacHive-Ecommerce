@@ -100,6 +100,30 @@
         .toast.show {
             opacity: 1;
         }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            margin: 0 5px;
+            padding: 4px 10px;
+            text-decoration: none;
+            color: #000;
+            border: 1px solid #ddd;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
     </style>
 
 
@@ -531,7 +555,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <% orders.reverse().forEach(order=> { %>
+                                        <% orders.forEach(order=> { %>
                                             <% order.orderItems.forEach(item=> { %>
                                                 <tr class="table-row ticket-row">
                                                     <td class="table-wrapper wrapper-product">
@@ -588,18 +612,18 @@
                                                         <div class="table-wrapper-center">
                                                             <% if (item.orderStatus=="Completed" ) { %>
                                                                 <h5 class="heading" style="color: green;">Completed</h5>
-                                                                <% }else if (item.orderStatus=="Refunded" ) { %>
+                                                                <% } else if (item.orderStatus=="Refunded" ) { %>
                                                                     <h5 class="heading"
                                                                         style="color: rgb(201, 164, 0);">Refunded</h5>
                                                                     <% } else if (item.orderStatus=="Processing" ) { %>
                                                                         <button class="cancel-order-btn"
-                                                                            onclick="confirmCancellation('<%= item._id %>')">Cancel</button>
+                                                                            onclick="confirmCancellation('<%= order._id %>', '<%= item._id %>')">Cancel</button>
                                                                         <% } else if (item.orderStatus=="Delivered" ) {
                                                                             %>
                                                                             <button class="return-order-btn"
-                                                                                onclick="showReturnModal('<%= item._id %>')">Return</button>
-                                                                            <% } else if(item.orderStatus=="Cancelled" )
-                                                                                { %>
+                                                                                onclick="showReturnModal('<%= order._id %>', '<%= item._id %>')">Return</button>
+                                                                            <% } else if (item.orderStatus=="Cancelled"
+                                                                                ) { %>
                                                                                 <h5 class="heading status-cancelled">
                                                                                     Cancelled</h5>
                                                                                 <% } %>
@@ -633,6 +657,23 @@
                                                         </td>
                                                     </tr>
                                                     <% }); %>
+                                                        <div class="pagination">
+                                                            <% if (currentPage> 1) { %>
+                                                                <a href="?page=<%= currentPage - 1 %>">&laquo;
+                                                                    Previous</a>
+                                                                <% } %>
+                                                                    <% for (let i=1; i <=totalPages; i++) { %>
+                                                                        <a href="?page=<%= i %>"
+                                                                            class="<%= currentPage === i ? 'active' : '' %>">
+                                                                            <%= i %>
+                                                                        </a>
+                                                                        <% } %>
+                                                                            <% if (currentPage < totalPages) { %>
+                                                                                <a href="?page=<%= currentPage + 1 %>">Next
+                                                                                    &raquo;</a>
+                                                                                <% } %>
+                                                        </div>
+                                                        <br>
 
                                     </tbody>
                                 </table>
@@ -834,10 +875,12 @@
                                                     </div>
                                                     <div class="buttons">
                                                         <button class="edit-button"
-                                                            onclick="modalAction('.edit')" data-adressid="<%= address[i]._id %>">Edit</button>
+                                                            onclick="modalAction('.edit'); openEditModal('<%= address[i]._id %>', '<%= address[i].name %>', '<%= address[i].mobile %>', '<%= address[i].address %>', '<%= address[i].city %>', '<%= address[i].state %>', '<%= address[i].pincode %>');"
+                                                            data-addressid="<%= address[i]._id %>">Edit</button>
                                                         <button class="delete-button"
                                                             data-adressid="<%= address[i]._id %>">Delete</button>
                                                     </div>
+
                                                 </div>
                                             </div>
                                             <% } %>
@@ -966,48 +1009,104 @@
 
 
                                                             <div class="modal-wrapper edit">
-                                                                <div onclick="modalAction('.edit')" class="anywhere-away"></div>
+                                                                <div onclick="modalAction('.edit')"
+                                                                    class="anywhere-away"></div>
                                                                 <div class="login-section account-section modal-main">
                                                                     <div class="review-form">
                                                                         <div class="review-content">
-                                                                            <h5 class="comment-title">Edit Your Address</h5>
+                                                                            <h5 class="comment-title">Edit Your Address
+                                                                            </h5>
                                                                             <br>
                                                                             <div class="close-btn">
-                                                                                <img src="/users/assets_3/images/homepage-one/close-btn.png" onclick="modalAction('.edit')" alt="close-btn">
+                                                                                <img src="/users/assets_3/images/homepage-one/close-btn.png"
+                                                                                    onclick="modalAction('.edit')"
+                                                                                    alt="close-btn">
                                                                             </div>
                                                                         </div>
                                                                         <br>
-                                                                        <input type="hidden" id="editAddressId" value="">
+                                                                        <input type="hidden" id="editAddressId"
+                                                                            value="">
                                                                         <div class="account-inner-form">
                                                                             <div class="review-form-name">
-                                                                                <input name="name" type="text" id="editName" class="form-control" required>
+                                                                                <input name="name" type="text"
+                                                                                    id="editName" class="form-control"
+                                                                                    required>
                                                                             </div>
                                                                         </div>
                                                                         <div class="account-inner-form">
                                                                             <div class="review-form-name">
-                                                                                <input name="mobile" type="tel" id="editMobile" class="form-control" required>
+                                                                                <input name="mobile" type="tel"
+                                                                                    id="editMobile" class="form-control"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="review-form-name">
-                                                                                <input name="city" type="text" id="editCity" class="form-control" required>
+                                                                                <input name="city" type="text"
+                                                                                    id="editCity" class="form-control"
+                                                                                    required>
                                                                             </div>
                                                                         </div>
                                                                         <div class="review-form-name address-form">
-                                                                            <input type="text" name="address" id="editAddress" class="form-control" required>
+                                                                            <input type="text" name="address"
+                                                                                id="editAddress" class="form-control"
+                                                                                required>
                                                                         </div>
                                                                         <div class="account-inner-form city-inner-form">
                                                                             <div class="review-form-name">
-                                                                                <label for="userstate" class="form-label">State</label>
-                                                                                <select name="state" id="editState" class="form-select" required>
-                                                                                    <!-- List of states -->
+                                                                                <label for="userstate"
+                                                                                    class="form-label">State</label>
+                                                                                <select name="state" id="editState"
+                                                                                    class="form-select" required>
+                                                                                    <option value="" disabled selected>
+                                                                                        Select State</option>
+                                                                                    <option>Andhra Pradesh</option>
+                                                                                    <option>Arunachal Pradesh</option>
+                                                                                    <option>Assam</option>
+                                                                                    <option>Bihar</option>
+                                                                                    <option>Chhattisgarh</option>
+                                                                                    <option>Goa</option>
+                                                                                    <option>Gujarat</option>
+                                                                                    <option>Haryana</option>
+                                                                                    <option>Himachal Pradesh</option>
+                                                                                    <option>Jharkhand</option>
+                                                                                    <option>Karnataka</option>
+                                                                                    <option>Kerala</option>
+                                                                                    <option>Madhya Pradesh</option>
+                                                                                    <option>Maharashtra</option>
+                                                                                    <option>Manipur</option>
+                                                                                    <option>Meghalaya</option>
+                                                                                    <option>Mizoram</option>
+                                                                                    <option>Nagaland</option>
+                                                                                    <option>Odisha</option>
+                                                                                    <option>Punjab</option>
+                                                                                    <option>Rajasthan</option>
+                                                                                    <option>Sikkim</option>
+                                                                                    <option>Tamil Nadu</option>
+                                                                                    <option>Telangana</option>
+                                                                                    <option>Tripura</option>
+                                                                                    <option>Uttar Pradesh</option>
+                                                                                    <option>Uttarakhand</option>
+                                                                                    <option>West Bengal</option>
+                                                                                    <option>Andaman and Nicobar Islands
+                                                                                    </option>
+                                                                                    <option>Chandigarh</option>
+                                                                                    <option>Dadra and Nagar Haveli and
+                                                                                        Daman and Diu</option>
+                                                                                    <option>Delhi</option>
+                                                                                    <option>Lakshadweep</option>
+                                                                                    <option>Puducherry</option>
                                                                                 </select>
                                                                             </div>
                                                                             <div class="review-form-name">
-                                                                                <input name="pincode" type="number" id="editPincode" class="form-control" required>
+                                                                                <input name="pincode" type="number"
+                                                                                    id="editPincode"
+                                                                                    class="form-control" required>
                                                                             </div>
                                                                         </div>
                                                                         <br>
                                                                         <div class="login-btn text-center">
-                                                                            <button id="saveEditedAddressBtn" data-address-id="<%= address.id %>" class="shop-btn">Edit Address</button>
+                                                                            <button id="saveEditedAddressBtn"
+                                                                                data-address-id="<%= address.id %>"
+                                                                                class="shop-btn">Edit Address</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1016,6 +1115,19 @@
                                 </div>
                             </div>
                         </div>
+
+
+                        <script>
+                            function openEditModal(addressId, name, mobile, address, city, state, pincode) {
+                                document.getElementById('editAddressId').value = addressId;
+                                document.getElementById('editName').value = name;
+                                document.getElementById('editMobile').value = mobile;
+                                document.getElementById('editCity').value = city;
+                                document.getElementById('editState').value = state;
+                                document.getElementById('editAddress').value = address;  // Corrected here
+                                document.getElementById('editPincode').value = pincode;
+                            }
+                        </script>
 
 
                         <div class="tab-pane fade" id="v-pills-coupons" role="tabpanel"
@@ -1056,7 +1168,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    <% } %>
+                                        <% } %>
                                 </div>
                             </div>
                         </div>
@@ -1064,39 +1176,26 @@
                         <div class="tab-pane fade" id="v-pills-password" role="tabpanel"
                             aria-labelledby="v-pills-password-tab" tabindex="0">
                             <div class="row align-items-center">
-
                                 <div class="col-lg-6">
                                     <div class="form-section">
-                                        <form id="password-update-form" action="/update-password" method="POST">
+                                        <form id="password-update-form" method="POST">
                                             <div class="currentpass form-item">
                                                 <label for="currentpass" class="form-label">Current Password*</label>
                                                 <input type="password" class="form-control" id="currentpass"
                                                     name="currentPassword" required>
-                                                <% if (errors && errors.currentPassword) { %>
-                                                    <div class="text-danger">
-                                                        <%= errors.currentPassword %>
-                                                    </div>
-                                                    <% } %>
+                                                <div id="currentPasswordError" class="text-danger"></div>
                                             </div>
                                             <div class="password form-item">
                                                 <label for="pass" class="form-label">Password*</label>
                                                 <input type="password" class="form-control" id="pass" name="newPassword"
                                                     required>
-                                                <% if (errors && errors.newPassword) { %>
-                                                    <div class="text-danger">
-                                                        <%= errors.newPassword %>
-                                                    </div>
-                                                    <% } %>
+                                                <div id="newPasswordError" class="text-danger"></div>
                                             </div>
                                             <div class="re-password form-item">
                                                 <label for="repass" class="form-label">Re-enter Password*</label>
                                                 <input type="password" class="form-control" id="repass"
                                                     name="confirmPassword" required>
-                                                <% if (errors && errors.confirmPassword) { %>
-                                                    <div class="text-danger">
-                                                        <%= errors.confirmPassword %>
-                                                    </div>
-                                                    <% } %>
+                                                <div id="confirmPasswordError" class="text-danger"></div>
                                             </div>
                                             <div class="form-btn">
                                                 <button type="submit" class="shop-btn">Update Password</button>
@@ -1177,8 +1276,13 @@
                                                         </td>
                                                         <td class="table-wrapper">
                                                             <div class="table-wrapper-center">
-                                                                <p class="ticket-info">Refunded form returned product.
-                                                                </p>
+                                                                <% if(transaction.transactionMethod=='Refund' ) {%>
+                                                                    <p class="ticket-info">Refunded form returned
+                                                                        product.</p>
+                                                                    <% }else { %>
+                                                                        <p class="ticket-info">Refunded from cancelled
+                                                                            product.</p>
+                                                                        <% } %>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -1447,54 +1551,54 @@
         });
 
 
-        function confirmCancellation(orderId) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "Do you want to cancel this order?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, cancel it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            cancelOrder(orderId);
+        function confirmCancellation(orderId, itemId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to cancel this order?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, cancel it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    cancelOrder(orderId, itemId);
+                }
+            });
         }
-    });
-}
 
-function cancelOrder(orderId) {
-    fetch(`/cancel-order/${orderId}`, { method: 'POST' })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                Swal.fire(
-                    'Cancelled!',
-                    'Your order has been cancelled.',
-                    'success'
-                );
-                location.reload();
-            } else {
-                Swal.fire(
-                    'Error!',
-                    data.message || 'Failed to cancel the order.',
-                    'error'
-                );
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            Swal.fire(
-                'Error!',
-                'An unexpected error occurred.',
-                'error'
-            );
-        });
-}
+        function cancelOrder(orderId, itemId) {
+            fetch(`/cancel-order/${orderId}/${itemId}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire(
+                            'Cancelled!',
+                            'Your order has been cancelled.',
+                            'success'
+                        );
+                        location.reload();
+                    } else {
+                        Swal.fire(
+                            'Error!',
+                            data.message || 'Failed to cancel the order.',
+                            'error'
+                        );
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire(
+                        'Error!',
+                        'An unexpected error occurred.',
+                        'error'
+                    );
+                });
+        }
 
 
 
-        function showReturnModal(orderId) {
+        function showReturnModal(orderId, itemId) {
             Swal.fire({
                 title: 'Return Reason',
                 input: 'select',
@@ -1511,18 +1615,18 @@ function cancelOrder(orderId) {
                 showCancelButton: true,
                 inputValidator: (value) => {
                     if (!value) {
-                        return 'You need to select a reason!'
+                        return 'You need to select a reason!';
                     }
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    requestReturn(orderId, result.value);
+                    requestReturn(orderId, itemId, result.value);
                 }
             });
         }
 
-        function requestReturn(orderId, reason) {
-            fetch(`/request-return/${orderId}`, {
+        function requestReturn(orderId, itemId, reason) {
+            fetch(`/request-return/${orderId}/${itemId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -1606,90 +1710,66 @@ function cancelOrder(orderId) {
 
 
 
-        // Function to open the edit modal with address data
-        function openEditModal(addressId) {
-    fetch(`/myAccount/${addressId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Populate the modal fields with fetched data
-            document.getElementById('editAddressId').value = data._id;
-            document.getElementById('editName').value = data.name;
-            document.getElementById('editMobile').value = data.mobile;
-            document.getElementById('editCity').value = data.city;
-            document.getElementById('editAddress').value = data.address;
-            document.getElementById('editState').value = data.state;
-            document.getElementById('editPincode').value = data.pincode;
 
-            // Open the modal
-            modalAction('.edit');
-        })
-        .catch(error => {
-            console.error('Error fetching address data:', error);
-        });
-}
+        document.getElementById('saveEditedAddressBtn').addEventListener('click', function () {
+            const addressId = document.getElementById('editAddressId').value;
+            const name = document.getElementById('editName').value;
+            const mobile = document.getElementById('editMobile').value;
+            const city = document.getElementById('editCity').value;
+            const address = document.getElementById('editAddress').value;
+            const state = document.getElementById('editState').value;
+            const pincode = document.getElementById('editPincode').value;
 
-// Add event listeners to all edit buttons
-document.querySelectorAll('.edit-button').forEach(button => {
-    button.addEventListener('click', function() {
-        const addressId = this.getAttribute('data-addressid');
-        openEditModal(addressId);
-    });
-});
-
-// Function to save the edited address
-document.getElementById('saveEditedAddressBtn').addEventListener('click', function () {
-    const addressId = document.getElementById('editAddressId').value;
-    const name = document.getElementById('editName').value;
-    const mobile = document.getElementById('editMobile').value;
-    const city = document.getElementById('editCity').value;
-    const address = document.getElementById('editAddress').value;
-    const state = document.getElementById('editState').value;
-    const pincode = document.getElementById('editPincode').value;
-
-    const data = {
-        name: name,
-        mobile: mobile,
-        city: city,
-        address: address,
-        state: state,
-        pincode: pincode
-    };
-
-    fetch(`/myAccount/${addressId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-        .then(response => response.json())
-        .then(data => {
-            Swal.fire({
-                title: 'Success!',
-                text: 'Address has been updated.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = '/myAccount';
-                }
+            console.log('Saving data for address ID:', addressId, 'with data:', {
+                name: name,
+                mobile: mobile,
+                city: city,
+                address: address,
+                state: state,
+                pincode: pincode
             });
-        })
-        .catch(error => {
-            console.error('Error updating address:', error);
-            Swal.fire({
-                title: 'Error!',
-                text: 'Failed to update address.',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
+
+            const data = {
+                name: name,
+                mobile: mobile,
+                city: city,
+                address: address,
+                state: state,
+                pincode: pincode
+            };
+
+            fetch(`/myAccount/${addressId}`, {
+                method: 'POST', // Change PATCH to POST
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Address has been updated.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/myAccount';
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error updating address:', error);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Failed to update address.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                });
         });
-});
+
+
 
 
         function copyToClipboard(text) {
@@ -1714,10 +1794,50 @@ document.getElementById('saveEditedAddressBtn').addEventListener('click', functi
             }, 1000);
         }
 
+        document.getElementById('password-update-form').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const currentPassword = document.getElementById('currentpass').value;
+            const newPassword = document.getElementById('pass').value;
+            const confirmPassword = document.getElementById('repass').value;
+
+            const response = await fetch('/update-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ currentPassword, newPassword, confirmPassword })
+            });
+
+            const result = await response.json();
+
+            document.getElementById('currentPasswordError').textContent = '';
+            document.getElementById('newPasswordError').textContent = '';
+            document.getElementById('confirmPasswordError').textContent = '';
+
+            if (result.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: result.successMessage,
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            } else {
+                if (result.errors.currentPassword) {
+                    document.getElementById('currentPasswordError').textContent = result.errors.currentPassword;
+                }
+                if (result.errors.newPassword) {
+                    document.getElementById('newPasswordError').textContent = result.errors.newPassword;
+                }
+                if (result.errors.confirmPassword) {
+                    document.getElementById('confirmPasswordError').textContent = result.errors.confirmPassword;
+                }
+            }
+        });
 
 
     </script>
-
 
 </body>
 

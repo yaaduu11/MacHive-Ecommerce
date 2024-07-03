@@ -52,39 +52,40 @@
 	<!-- Start Header/Navigation -->
 	<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
-        <div class="container">
-            <a class="navbar-brand">MacHive</a>
+		<div class="container">
+			<a class="navbar-brand">MacHive</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+				aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
-            <div class="collapse navbar-collapse" id="navbarsFurni">
-                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-                    <li><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/shop">Shop</a>
-                    </li>
-                    <li><a class="nav-link" href="/views/users/about.ejs">About us</a></li>
-                    <li><a class="nav-link" href="/views/users/contact.ejs">Contact us</a></li>
-                </ul>
+			<div class="collapse navbar-collapse" id="navbarsFurni">
+				<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+					<li><a class="nav-link" href="/">Home</a></li>
+					<li class="nav-item active">
+						<a class="nav-link" href="/shop">Shop</a>
+					</li>
+					<li><a class="nav-link" href="/views/users/about.ejs">About us</a></li>
+					<li><a class="nav-link" href="/views/users/contact.ejs">Contact us</a></li>
+				</ul>
 
-                <ul class=" custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                    <li><a class="nav-link" href="/wishlist"><i class="fa-solid fa-heart"></i></a></li>
-                    <li><a class="nav-link" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                    <li><a class="nav-link" href="/myAccount"><i class="fa-solid fa-user"></i></a></li>
-                </ul>
+				<ul class=" custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+					<li><a class="nav-link" href="/wishlist"><i class="fa-solid fa-heart"></i></a></li>
+					<li><a class="nav-link" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+					<li><a class="nav-link" href="/myAccount"><i class="fa-solid fa-user"></i></a></li>
+				</ul>
 
-                <ul class="custom-navbar-nav navbar-nav ">
+				<ul class="custom-navbar-nav navbar-nav ">
 
-                    <li><a class="nav-link login-nav" href="/sign-in">SIGN IN</a></li>
+					<li><a class="nav-link login-nav" href="/sign-in">SIGN IN</a></li>
 
-                </ul>
-                
-            </div>
-        </div>
-            
-    </nav>
+				</ul>
+
+			</div>
+		</div>
+
+	</nav>
 
 
 
@@ -98,10 +99,10 @@
 							<h5 class="pt-title mb-20">Product categories</h5>
 							<div class="widget-category-list">
 								<form action="#">
-
 									<% for (var i=0; i < categories.length; i++) { %>
 										<div class="single-widget-category">
-											<input type="checkbox" id="cat-item-<%= i %>" name="cat-item">
+											<input type="checkbox" id="cat-item-<%= i %>" class="category-checkbox"
+												data-category="<%= categories[i].name.toLowerCase() %>">
 											<label for="cat-item-<%= i %>">
 												<%= categories[i].name %>
 											</label>
@@ -110,8 +111,6 @@
 								</form>
 							</div>
 						</div>
-						
-
 					</div>
 				</div>
 				<div class="col-xxl-9 col-xl-8">
@@ -185,7 +184,7 @@
 									opacity: 0;
 								}
 							</style>
-							
+
 							<div class="col-xl-4 col-xl-4 col-md-3 col-sm-3">
 								<div class="text-sm-end">
 									<div class="select-default">
@@ -284,8 +283,7 @@
 																			if (variant.productId.toString() ===
 																			productId.toString() && (minPrice ===
 																			Infinity || variant.salePrice < minPrice)) {
-																				minPrice=variant.salePrice; } });
-																				 return minPrice; }%>
+																				minPrice=variant.salePrice; } }); return minPrice; }%>
 
 																				₹<%= getLowestPrice(products[i]._id,
 																					variants) %>/-
@@ -377,8 +375,7 @@
 																			if (variant.productId.toString() ===
 																			productId.toString() && (minPrice ===
 																			Infinity || variant.salePrice < minPrice)) {
-																				minPrice=variant.salePrice; } }); 
-																				return minPrice; }%>
+																				minPrice=variant.salePrice; } }); return minPrice; }%>
 
 																				₹<%= getLowestPrice(products[i]._id,
 																					variants) %>/-
@@ -471,8 +468,7 @@
 																			if (variant.productId.toString() ===
 																			productId.toString() && (minPrice ===
 																			Infinity || variant.salePrice < minPrice)) {
-																				minPrice=variant.salePrice; } }); 
-																				return minPrice; }%>
+																				minPrice=variant.salePrice; } }); return minPrice; }%>
 
 																				₹<%= getLowestPrice(products[i]._id,
 																					variants) %>/-
@@ -518,107 +514,114 @@
 			</div>
 		</div>
 	</section>
-	
-  <!-- Start Footer Section -->
-  <footer class="footer-section">
-	<div class="container relative">
 
-		<div class="row">
-			<div class="col-lg-8">
-				<div class="subscription-form">
-					<h3 class="d-flex align-items-center"><span class="me-1"><img src="/users/assets/images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+	<!-- Start Footer Section -->
+	<footer class="footer-section">
+		<div class="container relative">
 
-					<form action="#" class="row g-3">
-						<div class="col-auto">
-							<input type="text" class="form-control" placeholder="Enter your name">
-						</div>
-						<div class="col-auto">
-							<input type="email" class="form-control" placeholder="Enter your email">
-						</div>
-						<div class="col-auto">
-							<button class="btn btn-primary">
-								<span class="fa fa-paper-plane"></span>
-							</button>
-						</div>
-					</form>
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="subscription-form">
+						<h3 class="d-flex align-items-center"><span class="me-1"><img
+									src="/users/assets/images/envelope-outline.svg" alt="Image"
+									class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
 
+						<form action="#" class="row g-3">
+							<div class="col-auto">
+								<input type="text" class="form-control" placeholder="Enter your name">
+							</div>
+							<div class="col-auto">
+								<input type="email" class="form-control" placeholder="Enter your email">
+							</div>
+							<div class="col-auto">
+								<button class="btn btn-primary">
+									<span class="fa fa-paper-plane"></span>
+								</button>
+							</div>
+						</form>
+
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="row g-5 mb-5">
-			<div class="col-lg-4">
-				<div class="mb-4 footer-logo-wrap"><a class="navbar-brand">MacHive</a></div>
-				<p class="mb-4">Discover the perfect blend of quality and convenience at our store. With a seamless shopping experience, we make it effortless and rewarding for you to find your ideal iPhone or MacBook, ensuring satisfaction with every purchase. Explore our collection today and elevate your tech journey!</p>
+			<div class="row g-5 mb-5">
+				<div class="col-lg-4">
+					<div class="mb-4 footer-logo-wrap"><a class="navbar-brand">MacHive</a></div>
+					<p class="mb-4">Discover the perfect blend of quality and convenience at our store. With a seamless
+						shopping experience, we make it effortless and rewarding for you to find your ideal iPhone or
+						MacBook, ensuring satisfaction with every purchase. Explore our collection today and elevate
+						your tech journey!</p>
 
-				<ul class="list-unstyled custom-social">
-					<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
-					<li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
-					<li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
-					<li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
-				</ul>
+					<ul class="list-unstyled custom-social">
+						<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+						<li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+						<li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+						<li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+					</ul>
+				</div>
+
+				<div class="col-lg-8">
+					<div class="row links-wrap">
+						<div class="col-6 col-sm-6 col-md-3">
+							<ul class="list-unstyled">
+								<li><a href="#">About us</a></li>
+								<li><a href="#">Services</a></li>
+								<li><a href="#">Blog</a></li>
+								<li><a href="#">Contact us</a></li>
+							</ul>
+						</div>
+
+						<div class="col-6 col-sm-6 col-md-3">
+							<ul class="list-unstyled">
+								<li><a href="#">Support</a></li>
+								<li><a href="#">Knowledge base</a></li>
+								<li><a href="#">Live chat</a></li>
+							</ul>
+						</div>
+
+						<div class="col-6 col-sm-6 col-md-3">
+							<ul class="list-unstyled">
+								<li><a href="#">Jobs</a></li>
+								<li><a href="#">Our team</a></li>
+								<li><a href="#">Leadership</a></li>
+								<li><a href="#">Privacy Policy</a></li>
+							</ul>
+						</div>
+
+						<div class="col-6 col-sm-6 col-md-3">
+							<ul class="list-unstyled">
+								<li><a href="#">Nordic Chair</a></li>
+								<li><a href="#">Kruzo Aero</a></li>
+								<li><a href="#">Ergonomic Chair</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
 			</div>
 
-			<div class="col-lg-8">
-				<div class="row links-wrap">
-					<div class="col-6 col-sm-6 col-md-3">
-						<ul class="list-unstyled">
-							<li><a href="#">About us</a></li>
-							<li><a href="#">Services</a></li>
-							<li><a href="#">Blog</a></li>
-							<li><a href="#">Contact us</a></li>
-						</ul>
+			<div class="border-top copyright">
+				<div class="row pt-4">
+					<div class="col-lg-6">
+						<p class="mb-2 text-center text-lg-start">Copyright &copy;
+							<script>document.write(new Date().getFullYear());</script>. All Rights Reserved.
+						</p>
+						</p>
 					</div>
 
-					<div class="col-6 col-sm-6 col-md-3">
-						<ul class="list-unstyled">
-							<li><a href="#">Support</a></li>
-							<li><a href="#">Knowledge base</a></li>
-							<li><a href="#">Live chat</a></li>
-						</ul>
-					</div>
-
-					<div class="col-6 col-sm-6 col-md-3">
-						<ul class="list-unstyled">
-							<li><a href="#">Jobs</a></li>
-							<li><a href="#">Our team</a></li>
-							<li><a href="#">Leadership</a></li>
+					<div class="col-lg-6 text-center text-lg-end">
+						<ul class="list-unstyled d-inline-flex ms-auto">
+							<li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
 							<li><a href="#">Privacy Policy</a></li>
 						</ul>
 					</div>
 
-					<div class="col-6 col-sm-6 col-md-3">
-						<ul class="list-unstyled">
-							<li><a href="#">Nordic Chair</a></li>
-							<li><a href="#">Kruzo Aero</a></li>
-							<li><a href="#">Ergonomic Chair</a></li>
-						</ul>
-					</div>
 				</div>
 			</div>
 
 		</div>
-
-		<div class="border-top copyright">
-			<div class="row pt-4">
-				<div class="col-lg-6">
-					<p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved.</p>
-	</p>
-				</div>
-
-				<div class="col-lg-6 text-center text-lg-end">
-					<ul class="list-unstyled d-inline-flex ms-auto">
-						<li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
-						<li><a href="#">Privacy Policy</a></li>
-					</ul>
-				</div>
-
-			</div>
-		</div>
-
-	</div>
-</footer>
-<!-- End Footer Section -->	
+	</footer>
+	<!-- End Footer Section -->
 
 
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
@@ -671,84 +674,89 @@
 			});
 		});
 
-		document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('product-search');
-            const productItems = Array.from(document.querySelectorAll('.product__item'));
-            const noItemsMessage = document.getElementById('no-items-message');
-            const productList = document.querySelector('.product__list');
+		document.addEventListener('DOMContentLoaded', () => {
+			const checkboxes = document.querySelectorAll('.category-checkbox');
+			const products = document.querySelectorAll('.product__item');
 
-            searchInput.addEventListener('input', function(event) {
-                const query = event.target.value.toLowerCase();
-                let hasVisibleItems = false;
-                const visibleItems = [];
+			checkboxes.forEach(checkbox => {
+				checkbox.addEventListener('change', filterProducts);
+			});
 
-                productItems.forEach(function(item) {
-                    const productName = item.querySelector('.product__title a').textContent.toLowerCase();
-                    if (productName.includes(query)) {
-                        item.style.display = 'block';
-                        hasVisibleItems = true;
-                        visibleItems.push(item);
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
+			function filterProducts() {
+				const selectedCategories = Array.from(checkboxes)
+					.filter(checkbox => checkbox.checked)
+					.map(checkbox => checkbox.dataset.category);
 
-                if (hasVisibleItems) {
-                    noItemsMessage.style.display = 'none';
-                } else {
-                    noItemsMessage.style.display = 'block';
-                }
+				products.forEach(product => {
+					const productCategory = product.dataset.category.toLowerCase();
+					if (selectedCategories.length === 0 || selectedCategories.includes(productCategory)) {
+						product.style.display = 'block';
+					} else {
+						product.style.display = 'none';
+					}
+				});
+			}
 
-                visibleItems.forEach(function(item) {
-                    productList.appendChild(item);
-                });
-            });
-        });
+			const searchInput = document.getElementById('product-search');
+			searchInput.addEventListener('input', function () {
+				const searchQuery = searchInput.value.toLowerCase();
+
+				products.forEach(product => {
+					const productName = product.querySelector('.pro-title a').innerText.toLowerCase();
+					if (productName.includes(searchQuery)) {
+						product.style.display = 'block';
+					} else {
+						product.style.display = 'none';
+					}
+				});
+			});
+		});
 
 
-		document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('product-search');
-            const productItems = document.querySelectorAll('.product__item');
-            const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
-            const noItemsMessage = document.getElementById('no-items-message');
+		document.addEventListener('DOMContentLoaded', function () {
+			const searchInput = document.getElementById('product-search');
+			const productItems = document.querySelectorAll('.product__item');
+			const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
+			const noItemsMessage = document.getElementById('no-items-message');
 
-            searchInput.addEventListener('input', filterProducts);
-            categoryCheckboxes.forEach(checkbox => checkbox.addEventListener('change', filterProducts));
+			searchInput.addEventListener('input', filterProducts);
+			categoryCheckboxes.forEach(checkbox => checkbox.addEventListener('change', filterProducts));
 
-            function filterProducts() {
-                const query = searchInput.value.toLowerCase();
-                const selectedCategories = Array.from(categoryCheckboxes)
-                                                .filter(checkbox => checkbox.checked)
-                                                .map(checkbox => checkbox.getAttribute('data-category'));
+			function filterProducts() {
+				const query = searchInput.value.toLowerCase();
+				const selectedCategories = Array.from(categoryCheckboxes)
+					.filter(checkbox => checkbox.checked)
+					.map(checkbox => checkbox.getAttribute('data-category'));
 
-                let visibleProductCount = 0;
-                productItems.forEach(item => {
-                    const productName = item.querySelector('.product__title a').textContent.toLowerCase();
-                    const productCategory = item.getAttribute('data-category');
+				let visibleProductCount = 0;
+				productItems.forEach(item => {
+					const productName = item.querySelector('.product__title a').textContent.toLowerCase();
+					const productCategory = item.getAttribute('data-category');
 
-                    const matchesSearch = productName.includes(query);
-                    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(productCategory);
+					const matchesSearch = productName.includes(query);
+					const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(productCategory);
 
-                    if (matchesSearch && matchesCategory) {
-                        item.style.display = 'block';
-                        visibleProductCount++;
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
+					if (matchesSearch && matchesCategory) {
+						item.style.display = 'block';
+						visibleProductCount++;
+					} else {
+						item.style.display = 'none';
+					}
+				});
 
-                if (visibleProductCount === 0) {
-                    noItemsMessage.style.display = 'block';
-                } else {
-                    noItemsMessage.style.display = 'none';
-                }
+				if (visibleProductCount === 0) {
+					noItemsMessage.style.display = 'block';
+				} else {
+					noItemsMessage.style.display = 'none';
+				}
 
-                const visibleItems = Array.from(productItems).filter(item => item.style.display === 'block');
-                const productList = document.querySelector('.product__list');
-                visibleItems.forEach(item => productList.appendChild(item));
-            }
-        });
-            
+				const visibleItems = Array.from(productItems).filter(item => item.style.display === 'block');
+				const productList = document.querySelector('.product__list');
+				visibleItems.forEach(item => productList.appendChild(item));
+			}
+		});
+
+
 	</script>
 
 </body>

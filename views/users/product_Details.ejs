@@ -95,12 +95,13 @@
                                     </a>
                                     <br>
                                     <div class="product__thumbnail-container">
-                                        <img class="thumbnail-image" src="/users/assets/images/black-iphone1.webp"
+
+                                           <% for(let j of variants[0].image) { %>
+                                        <img class="thumbnail-image" src="<%- j  %>"
                                             alt="Thumbnail 2">
-                                        <img class="thumbnail-image" src="/users/assets/images/black-iphone2.webp"
-                                            alt="Thumbnail 2">
-                                        <img class="thumbnail-image" src="/users/assets/images/black-iphone3.webp"
-                                            alt="Thumbnail 2">
+                                            <% } %>
+                                           
+                                       
                                     </div>
                                 </div>
                             </nav>
@@ -149,36 +150,7 @@
                             }
                         </style>
 
-                        <div class="tab-content mb-20" id="product-detailsContent">
-                            <div class="tab-pane fade active show" id="pro-one" role="tabpanel"
-                                aria-labelledby="pro-one-tab">
-                                <div class="product__modal-img product__thumb w-img">
-                                    <img src="assets/img/products/quick-view/quick-view-02-1.jpg" alt="">
-                                    <div class="product__sale ">
-                                        <span class="new">new</span>
-                                        <span class="percent">-20%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="pro-two" role="tabpanel" aria-labelledby="pro-two-tab">
-                                <div class="product__modal-img product__thumb w-img">
-                                    <img src="assets/img/products/quick-view/quick-view-02-2.jpg" alt="">
-                                    <div class="product__sale ">
-                                        <span class="new">new</span>
-                                        <span class="percent">-13%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="pro-three" role="tabpanel" aria-labelledby="pro-three-tab">
-                                <div class="product__modal-img product__thumb w-img">
-                                    <img src="assets/img/products/quick-view/quick-view-02-3.jpg" alt="">
-                                    <div class="product__sale ">
-                                        <span class="new">new</span>
-                                        <span class="percent">-15%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-6">
@@ -238,23 +210,17 @@
                                                                 <div class="variant-option">
                                                                     <div
                                                                         class="product__details-color d-sm-flex align-items-center mb-25">
-                                                                        <span>COLOR:&nbsp;<strong>
-                                                                                <%= variant.color %>
-                                                                            </strong></span>
+                                                                        <span>COLOR:&nbsp;<strong><%= variant.color %></strong></span>
                                                                     </div>
                                                                     <% if (products.categoryId.name==='Iphones' ||
                                                                         products.categoryId.name==='Macbooks' ) { %>
                                                                         <div
                                                                             class="product__details-size d-sm-flex align-items-center mb-30">
-                                                                            <span>RAM:&nbsp;<strong>
-                                                                                    <%= variant.ram %>&nbsp;GB
-                                                                                </strong></span>
+                                                                            <span>RAM:&nbsp;<strong><%= variant.ram %>&nbsp;GB</strong></span>
                                                                         </div>
                                                                         <div
                                                                             class="product__details-size d-sm-flex align-items-center mb-30">
-                                                                            <span>ROM:&nbsp;<strong>
-                                                                                    <%= variant.rom %>&nbsp;GB
-                                                                                </strong></span>
+                                                                            <span>ROM:&nbsp;<strong><%= variant.rom %>&nbsp;GB</strong></span>
                                                                         </div>
                                                                         <% } %>
                                                                 </div>

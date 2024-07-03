@@ -16,67 +16,70 @@ const variantUpload = generateStorage('variant')
 
 
 //////////////!   SIGN IN
-router.get('/', signIn.loadSignIn)
+router.get('/', authAdmin.checkAdminLoggedIn, signIn.loadSignIn)
 router.post('/', authAdmin.isAdminAuthenticated, signIn.adminSignin)
 
 
+//////////////!   LOGOUT
+router.post('/logout', signIn.adminLogout)
+
+
 //////////////!   DASHBOARD
-router.get('/dashboard', dashboard.loadAdminPanel)
+router.get('/dashboard', authAdmin.redirectIfNotAuthenticated, dashboard.loadAdminPanel)
 
 
 //////////////!   USERS
-router.get('/customers', dashboard.loadCustomers)
+router.get('/customers', authAdmin.redirectIfNotAuthenticated, dashboard.loadCustomers)
 router.patch('/block-user/:userId', dashboard.userBlocking, authAdmin.logout)
 
 
 //////////////!   CATEGORIES
-router.get('/categories', categories.loadCategories)
-router.get('/AddCategories', categories.loadAddCategories)
-router.get('/EditCategories/:categoryId', categories.loadEditCategories)
+router.get('/categories', authAdmin.redirectIfNotAuthenticated, categories.loadCategories)
+router.get('/AddCategories', authAdmin.redirectIfNotAuthenticated, categories.loadAddCategories)
+router.get('/EditCategories/:categoryId', authAdmin.redirectIfNotAuthenticated, categories.loadEditCategories)
 router.post('/AddCategories', categoryUpload.single('image'), categories.insertCategory)
 router.patch('/EditCategories/:categoryId', categoryUpload.single('image'), categories.editCategory)
 router.patch('/unlist-category/:categoryId', categories.categoryUnlist)
 
 
 //////////////!   PRODUCTS
-router.get('/products', products.loadProducts)
-router.get('/AddProducts', products.loadAddProducts)
-router.get('/EditProducts/:productId', products.loadEditProducts)
-router.get('/productDetails/:productId', products.loadProductDetails)
+router.get('/products', authAdmin.redirectIfNotAuthenticated, products.loadProducts)
+router.get('/AddProducts', authAdmin.redirectIfNotAuthenticated, products.loadAddProducts)
+router.get('/EditProducts/:productId', authAdmin.redirectIfNotAuthenticated, products.loadEditProducts)
+router.get('/productDetails/:productId', authAdmin.redirectIfNotAuthenticated, products.loadProductDetails)
 router.post('/AddProducts', productUpload.single('image'), products.insertProduct)
 router.patch('/EditProducts/:productId', productUpload.single('image'), products.editProduct)
 router.patch('/unlist-product/:productId', products.productUnlist)
 
 
 //////////////!   VARIENTS
-router.get('/AddVariants/:productId', variants.loadAddVariants)
-router.get('/EditVariant/:variantId', variants.loadEditVariants)
-router.get('/variantDetails/:variantId', variants.loadVariantDetails)
+router.get('/AddVariants/:productId', authAdmin.redirectIfNotAuthenticated, variants.loadAddVariants)
+router.get('/EditVariant/:variantId', authAdmin.redirectIfNotAuthenticated, variants.loadEditVariants)
+router.get('/variantDetails/:variantId', authAdmin.redirectIfNotAuthenticated, variants.loadVariantDetails)
 router.post('/AddVariants/:productId', variantUpload.array('image'), variants.insertVariant)
 router.patch('/EditVariant/:variantId', variantUpload.array('image'), variants.editVariant)
 router.patch('/unlist-variant/:variantId', variants.variantUnlist);
 
 
 //////////////!   ORDERS
-router.get('/orders', orders.loadOrderList)
-router.get('/salesReport', orders.loadSalesReport)
-router.get('/orderDetails/:orderId', orders.loadOrderDetails);
+router.get('/orders', authAdmin.redirectIfNotAuthenticated, orders.loadOrderList)
+router.get('/salesReport', authAdmin.redirectIfNotAuthenticated, orders.loadSalesReport)
+router.get('/orderDetails/:orderId', authAdmin.redirectIfNotAuthenticated, orders.loadOrderDetails);
 router.patch('/updateOrderStatus', orders.orderStatusUpdate)
 
 
 //////////////!   COUPONS
-router.get('/coupons', coupons.loadCoupons)
-router.get('/AddCoupons', coupons.loadAddCoupons)
-router.get('/EditCoupons/:couponId', coupons.loadEditCoupons)
+router.get('/coupons', authAdmin.redirectIfNotAuthenticated, coupons.loadCoupons)
+router.get('/AddCoupons', authAdmin.redirectIfNotAuthenticated, coupons.loadAddCoupons)
+router.get('/EditCoupons/:couponId', authAdmin.redirectIfNotAuthenticated, coupons.loadEditCoupons)
 router.post('/AddCoupons', coupons.addCoupons);
 router.patch('/EditCoupons/:couponId', coupons.editCoupon)
 router.patch('/unlist-coupon/:couponId', coupons.unlistCoupon)
 
 
 //////////////!    PDF AND EXCEL
-router.get('/download-excel', orders.downloadExcel);
-router.get('/download-pdf', orders.downloadPdf);
-
+router.get('/download-excel', authAdmin.redirectIfNotAuthenticated, orders.downloadExcel);
+router.get('/download-pdf', authAdmin.redirectIfNotAuthenticated, orders.downloadPdf);
 
 
 module.exports = router

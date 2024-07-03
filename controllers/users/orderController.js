@@ -4,10 +4,12 @@ const Order = require('../../models/orderModel')
 const User = require('../../models/userModel')
 const Coupon = require('../../models/couponModel')
 const Variant = require('../../models/variantModel')
+const Wallet = require('../../models/walletModel')
 const Razorpay = require('razorpay');
 const asyncHandler = require('express-async-handler');
 require('dotenv').config();
 const crypto = require('crypto');
+const PDFDocument = require('pdfkit');
 
 
 exports.loadCheckout = async (req, res) => {
@@ -123,7 +125,7 @@ exports.placeOrder = asyncHandler(async (req, res) => {
             subTotal,
             deliveryCharge,
             grandTotal,
-            orderStatus: 'Processing', // Set to 'Processing' for the whole order
+            orderStatus: 'Processing',
             shippingAddress: {
                 name: address.name,
                 mobile: address.mobile,
@@ -142,7 +144,7 @@ exports.placeOrder = asyncHandler(async (req, res) => {
                 couponCode,
                 minPurchaseAmount: coupon.minPurchaseAmount,
                 maxDiscountAmount: coupon.maxDiscountAmount,
-                couponReversedAmount: 0 // This field can be used later if you need to reverse the coupon
+                couponReversedAmount: 0 
             };
         }
 
@@ -205,23 +207,24 @@ exports.verifyPayment = async (req, res) => {
 
             await Cart.findOneAndDelete({ userId: order.userId });
 
-            res.send('Payment verified successfully');
+            return res.json({ success: true, message: 'Payment verified successfully' });
         } else {
-            res.status(400).send('Payment verification failed');
+            res.status(400).json({ success: false, message: 'Payment verification failed' });
         }
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error verifying payment: ' + error.message);
+        res.status(500).json({ success: false, message: 'Error verifying payment: ' + error.message });
     }
 };
 
-exports.returnOrder = async(req,res)=>{
+exports.returnOrder = async (req, res) => {
     try {
-        const orderId = req.params.id;
+        const orderId = req.params.orderId;
+        const itemId = req.params.itemId;
         const { reason } = req.body;
 
         const order = await Order.findOneAndUpdate(
-            { "orderItems._id": orderId },
+            { _id: orderId, "orderItems._id": itemId },
             {
                 $set: {
                     "orderItems.$.orderStatus": "Return requested",
@@ -241,6 +244,7 @@ exports.returnOrder = async(req,res)=>{
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 }
+
 
 exports.loadThankYou = async(req,res)=>{
     try {
@@ -278,37 +282,133 @@ exports.loadTrackOrder = async(req,res) =>{
     }
 }
 
+exports.invoice = async (req, res) => {
+    const orderDetails = req.body;
+
+    const doc = new PDFDocument();
+    let buffers = [];
+    doc.on('data', buffers.push.bind(buffers));
+    doc.on('end', () => {
+        let pdfData = Buffer.concat(buffers);
+        res.setHeader('Content-Disposition', 'attachment; filename=invoice.pdf');
+        res.setHeader('Content-Type', 'application/pdf');
+        res.send(pdfData);
+    });
+
+    // Add content to PDF
+    doc.fontSize(18).text(`Invoice`, { align: 'center' });
+    doc.fontSize(12).text(`Order Date: ${new Date(orderDetails.orderDate).toDateString()}`, { align: 'center' });
+    doc.moveDown().moveDown(); // Add space between the header and the order details
+
+    // Table headers
+    let y = 150; // Starting y position after header
+    doc.fontSize(12)
+        .text('Product', 50, y)
+        .text('Quantity', 200, y)
+        .text('Amount', 300, y)
+        .text('Status', 400, y)
+    y += 20;
+
+    // Table rows
+    orderDetails.orderItems.forEach((item) => {
+        doc.fontSize(10)
+            .text(item.product.productId.name, 50, y)
+            .text(item.quantity, 200, y)
+            .text(`${item.productPrice}`, 300, y)
+            .text(item.orderStatus, 400, y)
+        y += 20;
+    });
+
+    y += 20; // Extra space before the next section
+
+    // Order Summary
+    doc.fontSize(16).text('Order Summary', 50, y);
+    y += 20;
+    doc.fontSize(12)
+        .text(`Order Status: ${orderDetails.orderItems[0].orderStatus}`, 50, y)
+        .text(`Payment Method: ${orderDetails.paymentMethod}`, 50, y + 20)
+        .text(`Sub Total:  ${orderDetails.subTotal}`, 50, y + 40)
+        .text(`Shipping Charge:  100.00`, 50, y + 60)
+        .text(`Total Amount:  ${orderDetails.grandTotal}`, 50, y + 80);
+
+    y += 120; // Extra space before the next section
+
+    // User Address
+    doc.fontSize(16).text('User Address', 300, y);
+    y += 20;
+    doc.fontSize(12)
+        .text(`Name: ${orderDetails.shippingAddress.name}`, 300, y)
+        .text(`Mobile: ${orderDetails.shippingAddress.mobile}`, 300, y + 20)
+        .text(`City: ${orderDetails.shippingAddress.city}`, 300, y + 40)
+        .text(`Address: ${orderDetails.shippingAddress.address}`, 300, y + 60)
+        .text(`State: ${orderDetails.shippingAddress.state}`, 300, y + 80)
+        .text(`Pincode: ${orderDetails.shippingAddress.pincode}`, 300, y + 100);
+
+    doc.end();
+};
+
 exports.cancelOrder = async (req, res) => {
-    const { orderId } = req.params;
-    console.log(`Received cancel request for orderId: ${orderId}`);
+    const { orderId, itemId } = req.params;
+    console.log(`Received cancel request for orderId: ${orderId}, itemId: ${itemId}`);
 
     try {
-        // Attempt to find the order by ID
-        // const order = await Order.findOne({'orderItems.product'});
-        
-        // Log the result of the find operation
-        console.log(`Order search result: ${order}`);
+        const order = await Order.findOne({ _id: orderId, 'orderItems._id': itemId }).populate('userId');
 
         if (!order) {
-            console.log(`Order not found: ${orderId}`);
-            return res.status(404).json({ success: false, message: 'Order not found' });
+            console.log(`Order or item not found: orderId=${orderId}, itemId=${itemId}`);
+            return res.status(404).json({ success: false, message: 'Order or item not found' });
         }
 
-        // Log the found order
-        console.log(`Order found: ${orderId}`, order);
+        const orderItem = order.orderItems.id(itemId);
+        if (!orderItem) {
+            console.log(`Order item not found: ${itemId}`);
+            return res.status(404).json({ success: false, message: 'Order item not found' });
+        }
 
-        // Update the status of each order item
-        order.orderItems.forEach(item => {
-            console.log(`Cancelling item: ${item._id}`);
-            item.orderStatus = 'Cancelled';
-        });
+        orderItem.orderStatus = 'Cancelled';
 
-        // Save the updated order
+        // Process refund if payment method is Razorpay
+        if (order.paymentMethod === 'razorpay') {
+            const userId = order.userId._id;
+            const price = orderItem.productPrice || 0;
+            const quantity = orderItem.quantity || 0;
+            const refundAmount = price * quantity;
+
+            console.log(`Refund amount calculated: ${refundAmount} (price: ${price}, quantity: ${quantity})`);
+
+            if (isNaN(refundAmount)) {
+                console.error('Refund amount is NaN. Check price and quantity values.');
+                return res.status(500).json({ success: false, message: 'Internal server error' });
+            }
+
+            let wallet = await Wallet.findOne({ userID: userId });
+
+            if (!wallet) {
+                wallet = new Wallet({
+                    userID: userId,
+                    balance: 0,
+                    transactions: []
+                });
+            }
+
+            wallet.balance += refundAmount;
+
+            wallet.transactions.push({
+                amount: refundAmount,
+                transactionMethod: 'Cancelled',
+                date: new Date()
+            });
+
+            await wallet.save();
+        }
+
         await order.save();
-        console.log(`Order ${orderId} cancelled successfully`);
-        res.json({ success: true, message: 'Order cancelled successfully' });
+        console.log(`Order item ${itemId} in order ${orderId} cancelled successfully`);
+        res.json({ success: true, message: 'Order item cancelled successfully' });
     } catch (error) {
-        console.error('Error cancelling order:', error);
+        console.error('Error cancelling order item:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
+
+

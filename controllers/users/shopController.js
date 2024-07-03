@@ -16,6 +16,8 @@ exports.loadProductDetails = async (req,res)=>{
             Categories.find({}),
             Variants.find({productId:productId})
         ]);
+ 
+        console.log(variants)
 
         res.render('users/product_Details', { user: req.user, products, categories, variants });
 
@@ -27,9 +29,6 @@ exports.loadProductDetails = async (req,res)=>{
 exports.loadWishlist = async (req, res) => {
     try {
         const userId = req.session.userId;
-        if (!userId) {
-            return res.redirect('/sign-in');
-        }
 
         const wishlist = await Wishlist.findOne({ userId: userId }).populate({
             path: 'products.productVariantId',
@@ -58,9 +57,6 @@ exports.loadWishlist = async (req, res) => {
 exports.loadCart = async (req, res) => {
     try {
         const userId = req.session.userId; 
-        if (!userId) {
-            return res.redirect('/sign-in');
-        }
 
         const cart = await Cart.findOne({ userId: userId }).populate({
             path: 'products.productVariantId',
@@ -113,7 +109,6 @@ exports.addToWishlist = async (req, res) => {
         return res.status(500).json({ success: false, message: "Could not add item to wishlist", error: error.message });
     }
 };
-
 
 
 exports.addToCart = async (req, res) => {

@@ -15,20 +15,28 @@ exports.loadMyAccount = async (req, res) => {
     }
 
     try {
+        const ITEMS_PER_PAGE = 4; 
         const userId = req.session.userId;
-        const [user, address, orders, coupons, wallet] = await Promise.all([
+        const page = parseInt(req.query.page) || 1;
+
+        const [user, address, ordersCount, orders, coupons, wallet] = await Promise.all([
             User.findById(userId),
             Adress.find({ userId }),
-            Order.find({ userId }).populate({
-                path: 'orderItems.product',
-                model: 'Varients',
-                populate: {
-                    path: 'productId',
-                    model: 'Products'
-                }
-            }),
+            Order.countDocuments({ userId }),
+            Order.find({ userId })
+                .sort({ createdAt: -1 })
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+                .populate({
+                    path: 'orderItems.product',
+                    model: 'Varients',
+                    populate: {
+                        path: 'productId',
+                        model: 'Products'
+                    }
+                }),
             Coupon.find({}),
-            Wallet.findOne({userID:userId})
+            Wallet.findOne({ userID: userId })
         ]);
 
         if (!user) {
@@ -36,15 +44,23 @@ exports.loadMyAccount = async (req, res) => {
             return;
         }
 
-        // console.log('Orders:', JSON.stringify(orders, null, 2));
+        const totalPages = Math.ceil(ordersCount / ITEMS_PER_PAGE);
 
-        res.render('users/myAccount', { user, address, orders, coupons, wallet, errors: {} });
+        res.render('users/myAccount', {
+            user,
+            address,
+            orders,
+            coupons,
+            wallet,
+            errors: {},
+            currentPage: page,
+            totalPages
+        });
     } catch (error) {
         console.error('Load Account Error:', error);
         res.status(500).send('Internal Server Error');
     }
 };
-
 
 
 exports.userDataEdit = async (req, res) => {
@@ -69,32 +85,18 @@ exports.userDataEdit = async (req, res) => {
     }
 }
 
-exports.changePassword = async(req,res)=>{
-    if (!req.session.userId) {
-        return res.redirect('/sign-in');
-    }
-
-    const { currentPassword, newPassword, confirmPassword } = req.body;
-    const errors = {};
-
+exports.changePassword = async (req, res) => {
     try {
         const userId = req.session.userId;
+
+        const { currentPassword, newPassword, confirmPassword } = req.body;
+        const errors = {};
+
         const user = await User.findById(userId);
-        const [address, orders] = await Promise.all([
-            Adress.find({ userId }),
-            Order.find({ userId }).populate({
-                path: 'orderItems.product',
-                model: 'Varients',
-                populate: {
-                    path: 'productId',
-                    model: 'Products'
-                }
-            })
-        ]);
 
         if (!user) {
             errors.general = 'User not found';
-            return res.render('users/myAccount', { user, address, orders, errors });
+            return res.json({ success: false, errors });
         }
 
         const isMatch = await bcrypt.compare(currentPassword, user.password);
@@ -111,7 +113,7 @@ exports.changePassword = async(req,res)=>{
         }
 
         if (Object.keys(errors).length > 0) {
-            return res.render('users/myAccount', { user, address, orders, errors });
+            return res.json({ success: false, errors });
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -119,12 +121,13 @@ exports.changePassword = async(req,res)=>{
         user.password = hashedPassword;
         await user.save();
 
-        res.redirect('/my-account');
+        return res.json({ success: true, successMessage: 'Password updated successfully' });
+
     } catch (error) {
         console.error('Password Update Error:', error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 
 exports.insertAddress = async (req, res) => {
@@ -175,11 +178,10 @@ exports.deleteAddress = async (req, res) => {
 
 exports.editAddress = async (req, res) => {
     try {
-        const addressId = req.params.addressId
+        const addressId = req.params.addressId;
+        const { name, mobile, city, address, state, pincode } = req.body;
 
-        const { name, mobile, city, address, state, pincode } = req.body
-
-        const updatedAddressData = { name, mobile, city, address, state, pincode }
+        const updatedAddressData = { name, mobile, city, address, state, pincode };
 
         const updatedAddress = await Adress.findByIdAndUpdate(
             addressId,
@@ -187,13 +189,18 @@ exports.editAddress = async (req, res) => {
             { new: true }
         );
 
-
-        res.status(200)
+        if (updatedAddress) {
+            res.status(200).json({ message: 'Address updated successfully' });
+        } else {
+            res.status(404).json({ message: 'Address not found' });
+        }
 
     } catch (error) {
-        console.log(error)
+        console.error('Error updating address:', error);
+        res.status(500).json({ message: 'Server error' });
     }
-}
+};
+
 
 exports.logoutUser = async (req, res) => {
     req.session.destroy(err => {

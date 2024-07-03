@@ -8,7 +8,7 @@ const transactionShema = new mongoose.Schema({
     transactionMethod:{
         type: String,
         required: true,
-        enum: ['Refund']
+        enum: ['Refund','Cancelled']
     },
     date:{
         type:Date,

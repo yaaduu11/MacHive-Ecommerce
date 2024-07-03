@@ -4,13 +4,27 @@ const statusCodes = require('../../util/statusCodes')
 
 exports.loadCoupons = async (req, res) => {
   try {
-    const coupons = await Coupons.find({})
+    const page = parseInt(req.query.page) || 1; // Current page number
+    const limit = 4; // Number of coupons per page
 
-    res.render('admin/coupons', { coupons })
+    const skip = (page - 1) * limit; // Number of coupons to skip
+
+    const totalCoupons = await Coupons.countDocuments({}); // Total number of coupons
+    const totalPages = Math.ceil(totalCoupons / limit); // Total number of pages
+
+    const coupons = await Coupons.find({}).skip(skip).limit(limit);
+
+    res.render('admin/coupons', {
+      coupons,
+      currentPage: page,
+      totalPages
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
+    res.status(500).send('Server Error');
   }
-}
+};
+
 
 exports.loadAddCoupons = async (req, res) => {
   try {

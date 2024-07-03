@@ -111,13 +111,17 @@
                             <div class="card-header">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <h4 class="mb-1">Order ID: <%= orderDetails._id %></h4>
                                         <div class="d-flex align-items-center">
-                                            <small>Order Date: <%= orderDetails.orderDate.toDateString() %></small>
+                                            <h5>Order Date: <%= orderDetails.orderDate.toDateString() %></h5>
                                         </div>
                                     </div>
                                     <div>
-                                        <a href="#!" class="btn btn-primary">Invoice</a>
+                                        <% orderDetails.orderItems.forEach(item=> { %>
+                                            <% if(item.orderStatus=='Completed' || item.orderStatus=='Delivered' ) {%>
+                                                <a href="#!" class="btn btn-primary"
+                                                    onclick="downloadInvoice()">Invoice</a>
+                                            <% } %>
+                                        <% }); %>
                                     </div>
                                 </div>
                             </div>
@@ -139,19 +143,26 @@
                                                     <td>
                                                         <div class="d-flex align-items-center">
                                                             <a href="#!"><img src="<%= item.product.productId.image %>"
-                                                                    alt="Product Image"
-                                                                    class="img-4by3-md rounded-3"></a>
+                                                                    alt="Product Image" class="img-4by3-md rounded-3"></a>
                                                             <div class="ms-3">
-                                                                <h5 class="mb-0"><a href="#!"
-                                                                        class="text-inherit"><%= item.product.productId.name %></a>
+                                                                <h5 class="mb-0"><a href="#!" class="text-inherit">
+                                                                        <%= item.product.productId.name %>
+                                                                    </a>
                                                                 </h5>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td><%= item.quantity %></td>
-                                                    <td>₹ <%= item.productPrice %></td>
-                                                    <td><%= item.orderStatus %></td>
-                                                    <td><%= item.returnReason || '-' %></td>
+                                                    <td>
+                                                        <%= item.quantity %>
+                                                    </td>
+                                                    <td>₹ <%= item.productPrice %>
+                                                    </td>
+                                                    <td>
+                                                        <%= item.orderStatus %>
+                                                    </td>
+                                                    <td>
+                                                        <%= item.returnReason || '-' %>
+                                                    </td>
                                                 </tr>
                                             <% }); %>
                                         </tbody>
@@ -171,15 +182,21 @@
                                             <tbody>
                                                 <tr>
                                                     <td>Order Status :</td>
-                                                    <td><%= orderDetails.orderItems[0].orderStatus %></td>
+                                                    <td>
+                                                        <%= orderDetails.orderItems[0].orderStatus %>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Payment Method :</td>
-                                                    <td><%= orderDetails.paymentMethod %></td>
+                                                    <td>
+                                                        <%= orderDetails.paymentMethod %>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Sub Total :</td>
-                                                    <td><%= orderDetails.subTotal %></td>
+                                                    <td>
+                                                        <%= orderDetails.subTotal %>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Shipping Charge :</td>
@@ -187,7 +204,9 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Total Amount</td>
-                                                    <td class="text-dark"><%= orderDetails.grandTotal %></td>
+                                                    <td class="text-dark">
+                                                        <%= orderDetails.grandTotal %>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -203,28 +222,40 @@
                                         <table class="table table-centered mb-0">
                                             <tbody>
                                                 <tr>
-                                                    <td>name :</td>
-                                                    <td><%= orderDetails.shippingAddress.name %></td>
+                                                    <td>Name :</td>
+                                                    <td>
+                                                        <%= orderDetails.shippingAddress.name %>
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>mobile :</td>
-                                                    <td><%= orderDetails.shippingAddress.mobile %></td>
+                                                    <td>Mobile :</td>
+                                                    <td>
+                                                        <%= orderDetails.shippingAddress.mobile %>
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>city :</td>
-                                                    <td><%= orderDetails.shippingAddress.city %></td>
+                                                    <td>City :</td>
+                                                    <td>
+                                                        <%= orderDetails.shippingAddress.city %>
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>address :</td>
-                                                    <td><%= orderDetails.shippingAddress.address %></td>
+                                                    <td>Address :</td>
+                                                    <td>
+                                                        <%= orderDetails.shippingAddress.address %>
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>state :</td>
-                                                    <td><%= orderDetails.shippingAddress.state %></td>
+                                                    <td>State :</td>
+                                                    <td>
+                                                        <%= orderDetails.shippingAddress.state %>
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>pincode :</td>
-                                                    <td><%= orderDetails.shippingAddress.pincode %></td>
+                                                    <td>Pincode :</td>
+                                                    <td>
+                                                        <%= orderDetails.shippingAddress.pincode %>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -237,7 +268,7 @@
             </div>
         </div>
     </div>
-    
+
 
 
     <!-- Scripts -->
@@ -248,13 +279,33 @@
     <script src="/admin/assets/libs/feather-icons/dist/feather.min.js"></script>
     <script src="/admin/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
-
-
-
     <!-- Theme JS -->
     <script src="/admin/assets/js/theme.min.js"></script>
 
-
+    <script>
+        function downloadInvoice() {
+            const orderDetails = <%- JSON.stringify(orderDetails) %>;
+    
+            fetch('/generate-invoice', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderDetails)
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'invoice.pdf';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            })
+            .catch(error => console.error('Error downloading invoice:', error));
+        }
+    </script>
 
 </body>
 

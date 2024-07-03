@@ -57,7 +57,11 @@ exports.insertVariant = async (req,res)=>{
         const { name, color, ram, rom, stock, regularPrice, salePrice } = req.body
         const productId  = req.params.productId
 
-        const imagePath = `/admin/uploads/variant/${req.files[0].filename}`
+        const img = []
+        for(let i of req.files) {
+            img.push(`/admin/uploads/variant/${i.filename}`)
+        }
+        // const imagePath = `/admin/uploads/variant/${req.files[0].filename}`
 
         const variants =  new Variants({
             productId,
@@ -68,7 +72,7 @@ exports.insertVariant = async (req,res)=>{
             stock,
             regularPrice: parseFloat(regularPrice), 
             salePrice: parseFloat(salePrice),
-            image: imagePath
+            image: img
         })
 
         const savedVariant = await variants.save()
@@ -86,13 +90,19 @@ exports.editVariant = async(req,res)=>{
         const { name, color, ram, rom, stock, regularPrice, salePrice } = req.body
         let imagePath = ''
 
+        let img = [];
         if(req.files){
-            imagePath = `/admin/uploads/variant/${req.files.filename}`;
+          for(let i of req.files){
+              img.push(`/admin/uploads/variant/${i.filename}`)
+          }
         }
+        // if(req.files){
+        //     imagePath = `/admin/uploads/variant/${req.files.filename}`;
+        // }
 
         const updatedVariantData = { name, color, ram, rom, stock, regularPrice, salePrice }
-        if(imagePath){
-            updatedVariantData.image = imagePath
+        if(img){
+            updatedVariantData.image = img
         }
 
         const updatedVariant = await Variants.findByIdAndUpdate(
@@ -100,6 +110,7 @@ exports.editVariant = async(req,res)=>{
             updatedVariantData,
             { new: true }
         )
+
 
         if (!updatedVariant) {
             return res.status(statusCodes.BAD_REQUEST).json({ success: false, message: 'variant not found' });

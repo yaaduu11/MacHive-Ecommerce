@@ -58,6 +58,13 @@ const loadSignUp = async (req,res)=>{
     }
 }
 
+const loadOtp = async (req,res) =>{
+    try {
+        res.status(200).render('users/otp')
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 
 ////////!inserting user
@@ -85,7 +92,7 @@ const insertUser = async (req, res) => {
             const savedOtp = await saveOtp(savedUser._id, otpCode);
 
             const userData = { userId: savedOtp.userId };
-            console.log(userData)
+            // console.log(userData)
             const jwtToken = jsonwebtoken.sign(userData, process.env.JWT_KEY);
             
             // Set cookie
@@ -115,16 +122,6 @@ const insertUser = async (req, res) => {
         res.status(500).send("An error occurred on the server.");
     }
 };
-
-
-
-const loadOtp = async (req,res) =>{
-    try {
-        res.status(200).render('users/otp')
-    } catch (error) {
-        console.log(error.message);
-    }
-}
 
 
 //////!checking otp is true

@@ -256,7 +256,7 @@
 												</div>
 											</div>
 										</div>
-										
+
 										<div class="form-group">
 											<button class="btn btn-black btn-lg py-3 btn-block"
 												id="place-order-button">Place Order</button>
@@ -460,20 +460,15 @@
 				$('#remove-coupon').on('click', function () {
 					$('#applied-coupon').hide();
 					$('#c_code').val('');
-					$('#discount-amount').text('0.00'); // Set discount amount to 0
+					$('#discount-amount').text('0.00'); 
 
-					// Fetch the original subtotal without coupon discount
 					const originalSubtotal = parseFloat($('#subtotal-value').text().replace('₹ ', ''));
 
-					// Calculate new total including shipping charge (assuming 100)
 					const newTotal = isNaN(originalSubtotal) ? 100 : originalSubtotal + 100;
 
-					// Update the order total display
 					$('#order-total').text(`${newTotal.toFixed(2)}`);
+					location.reload()
 				});
-
-
-
 
 
 				$('#place-order-button').on('click', function () {
@@ -507,13 +502,41 @@
 						success: function (response) {
 							if (response.razorpayOrderId) {
 								const options = {
-									"key": response.razorpayKey,
-									"amount": response.orderTotal * 100,
+									"key": response.key_id,
+									"amount": response.amount,
 									"currency": "INR",
-									"name": "E-Commerce",
+									"name": "MACHIVE",
 									"description": "Test Transaction",
 									"order_id": response.razorpayOrderId,
-									"callback_url": "/payment/callback",
+									"handler": function (response) {
+										$.ajax({
+											url: '/verifyPayment',
+											method: 'POST',
+											data: {
+												orderId: response.razorpay_order_id,
+												paymentId: response.razorpay_payment_id,
+												signature: response.razorpay_signature
+											},
+											success: function (verificationResponse) {
+												if (verificationResponse.success) {
+													window.location.href = '/thankyou';
+												} else {
+													Swal.fire({
+														icon: 'error',
+														title: 'Payment verification failed',
+														text: verificationResponse.message
+													});
+												}
+											},
+											error: function () {
+												Swal.fire({
+													icon: 'error',
+													title: 'Error',
+													text: 'Failed to verify payment. Please try again.'
+												});
+											}
+										});
+									},
 									"prefill": {
 										"name": response.customerName,
 										"email": response.customerEmail,
@@ -528,7 +551,6 @@
 								};
 								const rzp1 = new Razorpay(options);
 								rzp1.open();
-							
 							} else {
 								Swal.fire({
 									icon: 'success',
@@ -550,6 +572,7 @@
 						}
 					});
 				});
+
 			});
 
 

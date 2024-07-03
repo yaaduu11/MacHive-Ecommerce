@@ -524,8 +524,8 @@
                                                 <div class="col-md-6 mb-3">
                                                     <label class="form-label">Discount Percentage</label>
                                                     <input name="discount" value="<%= coupons.discountPercentage %>"
-                                                        type="text" class="form-control" pattern="\d+"
-                                                        title="Only numbers are allowed.">
+                                                        type="text" class="form-control" pattern="^(0?[1-9]|[1-9][0-9])$" 
+                                                        title="Only positive numbers below 100 are allowed." max="99">
                                                     <span class="error-message"></span>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
@@ -646,7 +646,7 @@
                     } else if (target.name === "minamount" || target.name === "maxamount") {
                         errorMsg.textContent = "This field must contain only numbers.";
                     } else if (target.name === "discount") {
-                        errorMsg.textContent = "The discount percentage must be a numeric value.";
+                        errorMsg.textContent = "Only positive numbers below 100 are allowed.";
                     } else if (target.name === "expirydate") {
                         errorMsg.textContent = "Enter a date in the format MM-DD-YYYY. Eg: 01-12-2024";
                     } else {
