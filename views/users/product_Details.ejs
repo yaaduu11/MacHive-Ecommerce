@@ -35,6 +35,31 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
+    <style>
+        .main-image {
+            width: 300px;
+            height: auto;
+        }
+
+        .product__thumbnail-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .thumbnail-image {
+            width: 150px;
+            height: 150px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            transition: border 0.3s;
+        }
+
+        .thumbnail-image:hover {
+            border: 1px solid #000;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -96,61 +121,16 @@
                                     <br>
                                     <div class="product__thumbnail-container">
 
-                                           <% for(let j of variants[0].image) { %>
-                                        <img class="thumbnail-image" src="<%- j  %>"
-                                            alt="Thumbnail 2">
+                                        <% for(let j of variants[0].image) { %>
+                                            <img class="thumbnail-image" src="<%- j  %>" alt="Thumbnail 2">
                                             <% } %>
-                                           
-                                       
+
                                     </div>
                                 </div>
                             </nav>
                         </div>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', (event) => {
-                                const mainImage = document.getElementById('main-image');
-                                const thumbnails = document.querySelectorAll('.thumbnail-image');
 
-                                thumbnails.forEach(thumbnail => {
-                                    thumbnail.addEventListener('click', () => {
-                                        mainImage.src = thumbnail.src;
-                                    });
-                                });
-                            });
 
-                        </script>
-
-                        <style>
-                            .main-image {
-                                width: 300px;
-                                /* Adjust size as needed */
-                                height: auto;
-                            }
-
-                            .product__thumbnail-container {
-                                display: flex;
-                                justify-content: center;
-                                gap: 10px;
-                            }
-
-                            .thumbnail-image {
-                                width: 150px;
-                                /* Adjust size as needed */
-                                height: 150px;
-                                /* Adjust size as needed */
-                                cursor: pointer;
-                                border: 1px solid #ccc;
-                                /* Optional: Add border for better visibility */
-                                transition: border 0.3s;
-                            }
-
-                            .thumbnail-image:hover {
-                                border: 1px solid #000;
-                                /* Optional: Add hover effect */
-                            }
-                        </style>
-
-                        
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-6">
@@ -174,12 +154,14 @@
                             <% if (variants.length> 0) { %>
                                 <% const variant=variants[0]; %>
                                     <div class="product__price mb-25">
+                                       
                                         <span id="price-amount">
-                                            <%= variants[0].salePrice %>
+                                            <%= variants.salePrice  %>
                                         </span>
                                         <span class="old-price">
                                             <%= variant.regularPrice %>
                                         </span>
+
                                     </div>
                                     <% } %>
                                         <div class="product__modal-des mb-30">
@@ -210,17 +192,20 @@
                                                                 <div class="variant-option">
                                                                     <div
                                                                         class="product__details-color d-sm-flex align-items-center mb-25">
-                                                                        <span>COLOR:&nbsp;<strong><%= variant.color %></strong></span>
+                                                                        <span>COLOR:&nbsp;<strong><%= variant.color %>
+                                                                            </strong></span>
                                                                     </div>
                                                                     <% if (products.categoryId.name==='Iphones' ||
                                                                         products.categoryId.name==='Macbooks' ) { %>
                                                                         <div
                                                                             class="product__details-size d-sm-flex align-items-center mb-30">
-                                                                            <span>RAM:&nbsp;<strong><%= variant.ram %>&nbsp;GB</strong></span>
+                                                                            <span>RAM:&nbsp;<strong><%= variant.ram %>&nbsp;GB
+                                                                                </strong></span>
                                                                         </div>
                                                                         <div
                                                                             class="product__details-size d-sm-flex align-items-center mb-30">
-                                                                            <span>ROM:&nbsp;<strong><%= variant.rom %>&nbsp;GB</strong></span>
+                                                                            <span>ROM:&nbsp;<strong><%= variant.rom %>&nbsp;GB
+                                                                                </strong></span>
                                                                         </div>
                                                                         <% } %>
                                                                 </div>
@@ -1191,7 +1176,6 @@
             });
         });
 
-
         document.addEventListener('DOMContentLoaded', function () {
             const variantBoxes = document.querySelectorAll('.variants-box');
             const priceDisplay = document.getElementById('price-amount');
@@ -1394,6 +1378,17 @@
                             confirmButtonText: 'OK'
                         });
                     });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const mainImage = document.getElementById('main-image');
+            const thumbnails = document.querySelectorAll('.thumbnail-image');
+
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', () => {
+                    mainImage.src = thumbnail.src;
+                });
             });
         });
 

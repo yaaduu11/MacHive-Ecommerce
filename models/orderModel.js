@@ -19,7 +19,7 @@ const orderSchema = new mongoose.Schema({
         orderStatus: {
             type: String,
             default: 'Processing',
-            enum: ['Pending', 'Payment Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Returned', 'Completed', 'Return requested', 'Return approved', 'Return Rejected', 'Refunded'],
+            enum: ['Pending', 'Payment pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Returned', 'Completed', 'Return requested', 'Return approved', 'Return Rejected', 'Refunded'],
         },
         productPrice: {
             type: Number,
@@ -40,6 +40,10 @@ const orderSchema = new mongoose.Schema({
     paymentMethod: {
         type: String,
         required: true
+    },
+    paymentStatus: {
+        type: Boolean,
+        default: true
     },
     subTotal: {
         type: Number,
@@ -86,7 +90,6 @@ const orderSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema);
-
 
 
 //     offerDiscount :{

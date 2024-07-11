@@ -18,11 +18,6 @@ const offerSchema = new mongoose.Schema({
         required:true
     },
 
-    discription: {
-        type: String,
-        required: true
-    },
-
     block: {
         type: Boolean,
         default: false
@@ -32,23 +27,8 @@ const offerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-
-    productID:[
-        {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'Products',
-            required:true
-        }
-    ],
-    categoryID:[
-        {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'Categories',
-            required:true
-        }
-    ],
     offerItems:{
-        type:String,
+        type:mongoose.Schema.Types.ObjectId,
         required:true
     }
 

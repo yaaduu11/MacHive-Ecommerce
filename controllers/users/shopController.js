@@ -17,8 +17,6 @@ exports.loadProductDetails = async (req,res)=>{
             Variants.find({productId:productId})
         ]);
  
-        console.log(variants)
-
         res.render('users/product_Details', { user: req.user, products, categories, variants });
 
     } catch (error) {

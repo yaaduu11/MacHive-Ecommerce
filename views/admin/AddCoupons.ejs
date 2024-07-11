@@ -23,7 +23,7 @@
 
   <!-- Favicon icon-->
   <link rel="shortcut icon" type="image/x-icon"
-    href="https://dashui.codescandy.com/dashuipro/assets/images/favicon/favicon.ico">
+    href="/users/assets/images/mini-logo.png">
 
 
   <!-- Libs CSS -->
@@ -39,7 +39,7 @@
   <link href="/admin/assets/libs/%40yaireo/tagify/dist/tagify.css" rel="stylesheet">
 
 
-  <title>Add Product | Dash UI - Bootstrap 5 Admin Dashboard Template</title>
+  <title>MacHive</title>
 </head>
 
 <body>
@@ -237,9 +237,8 @@
     <div class="navbar-vertical navbar nav-dashboard">
       <div class="h-100" data-simplebar>
         <!-- Brand logo -->
-        <a class="navbar-brand" href="https://dashui.codescandy.com/dashuipro/index.html">
-          <img src="https://dashui.codescandy.com/dashuipro/assets/images/brand/logo/logo-2.svg"
-            alt="dash ui - bootstrap 5 admin dashboard template">
+        <a class="navbar-brand">
+          <h3>MacHive</h3>
         </a>
         <!-- Navbar nav -->
         <ul class="navbar-nav flex-column" id="sideNavbar">
@@ -268,7 +267,7 @@
               </i> Categories
             </a>
 
-            <div id="navEmail" class="collapse" data-bs-parent="#sideNavbar">
+            <div id="navEmail" class="collapse " data-bs-parent="#sideNavbar">
               <ul class="nav flex-column">
                 <li class="nav-item">
                   <a class="nav-link has-arrow " href="/admin/categories">
@@ -277,7 +276,7 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link has-arrow" href="/admin/AddCategories">
+                  <a class="nav-link has-arrow " href="/admin/AddCategories">
 
                     Add Categories
                   </a>
@@ -311,6 +310,7 @@
             </div>
           </li>
           <!-- Nav item -->
+
           <li class="nav-item">
             <a class="nav-link has-arrow  collapsed " href="#!" data-bs-toggle="collapse" data-bs-target="#navCRM"
               aria-expanded="false" aria-controls="navCRM">
@@ -340,6 +340,32 @@
             </div>
           </li>
           <!-- Nav item -->
+          <li class="nav-item">
+            <a class="nav-link has-arrow  collapsed " href="#!" data-bs-toggle="collapse" data-bs-target="#navblog"
+              aria-expanded="false" aria-controls="navblog">
+              <i data-feather="edit" class="nav-icon me-2 icon-xxs">
+              </i> Offers
+            </a>
+
+            <div id="navblog" class="collapse " data-bs-parent="#sideNavbar">
+              <ul class="nav flex-column">
+
+                <li class="nav-item">
+                  <a class="nav-link has-arrow " href="/admin/offers">
+
+                    Offers
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link has-arrow " href="/admin/AddOffers">
+
+                    Add Offers
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <!-- Nav item -->
           <li class="nav-item ">
             <a class="nav-link   collapsed  " href="#!" data-bs-toggle="collapse" data-bs-target="#navProject"
               aria-expanded="false" aria-controls="navProject">
@@ -353,94 +379,18 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link  " href="project-list.html">
-                    List
+                  <a class="nav-link  " href="/admin/salesReport">
+                    Sales Report
                   </a>
                 </li>
 
               </ul>
             </div>
           </li>
-          <!-- Nav item -->
-          <li class="nav-item">
-            <a class="nav-link has-arrow  collapsed " href="#!" data-bs-toggle="collapse" data-bs-target="#navinvoice"
-              aria-expanded="false" aria-controls="navinvoice">
-              <i data-feather="clipboard" class="nav-icon me-2 icon-xxs">
-              </i> Invoice
-            </a>
-
-            <div id="navinvoice" class="collapse " data-bs-parent="#sideNavbar">
-              <ul class="nav flex-column">
-
-                <li class="nav-item">
-                  <a class="nav-link has-arrow " href="invoice-list.html">
-
-                    List
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link has-arrow " href="invoice-detail.html">
-
-                    Detail
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link has-arrow " href="invoice-generator.html">
-
-                    Invoice Generator
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link   collapsed  " href="#!" data-bs-toggle="collapse" data-bs-target="#navprofilePages"
-              aria-expanded="false" aria-controls="navprofilePages">
-
-              <i data-feather="user" class="nav-icon me-2 icon-xxs">
-              </i> Profile
-            </a>
-            <div id="navprofilePages" class="collapse " data-bs-parent="#sideNavbar">
-              <ul class="nav flex-column">
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-overview.html">
-                    Overview
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-project.html">
-                    Project
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-files.html">
-                    Files
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-team.html">
-                    Team
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-followers.html">
-                    Followers
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-activity.html">
-                    Activity
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-settings.html">
-                    Settings
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
+          
+          <li class="nav-item ">
+            <a class="nav-link collapsed" href="#" id="logout-link" aria-expanded="false" style="color: red;">🡸 Log out</a>
+        </li>
 
 
         </ul>
@@ -559,83 +509,98 @@
 
 
   <script>
-    document.getElementById('addCouponForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const formData = new FormData(this);
-      const formDataObject = {};
-      formData.forEach((value, key) => {
-        formDataObject[key] = value;
+    document.addEventListener('DOMContentLoaded', function () {
+      $('#expiryDate').datepicker({
+        format: 'mm-dd-yyyy',
+        autoclose: true,
       });
-
-      fetch('/admin/AddCoupons', {
-        method: 'POST',
-        body: JSON.stringify(formDataObject),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          if (data.success) {
-            Swal.fire({
-              title: 'Success!',
-              text: data.message || 'Coupon has been added successfully',
-              icon: 'success'
-            }).then((result) => {
-              if (result.isConfirmed || result.isDismissed) {
-                window.location.href = '/admin/coupons';
-              }
-            });
-          } else {
-            Swal.fire({
-              title: 'Error!',
-              text: data.message || 'Failed to add coupon',
-              icon: 'error'
-            });
+  
+      document.querySelector('.input-group-text').addEventListener('click', function () {
+        $('#expiryDate').datepicker('show');
+      });
+  
+      document.getElementById('offerType').addEventListener('change', async function () {
+        let offerType = this.value;
+        const offerItemsContainer = document.getElementById('offerItemsContainer');
+        const offerItemsSelect = document.getElementById('offerItems');
+  
+        if (offerType) {
+          let route;
+          if (offerType === 'Category Offer') {
+            route = '/admin/categoryOffers';
+          } else if (offerType === 'Product Offer') {
+            route = '/admin/productOffers';
           }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          Swal.fire({
-            title: 'Error!',
-            text: 'Failed to add coupon.',
-            icon: 'error'
-          });
-        });
-    });
-
-
-
-
-    document.getElementById("addCouponForm").addEventListener("input", function (event) {
-      const target = event.target;
-      const pattern = target.getAttribute("pattern");
-      const errorMsg = target.nextElementSibling;
-
-      if (pattern) {
-        const regex = new RegExp(pattern);
-        if (!regex.test(target.value)) {
-          if (target.name === "code") {
-            errorMsg.textContent = "The coupon code must contain only letters and numbers.";
-          } else if (target.name === "description") {
-            errorMsg.textContent = "The description must contain only letters and spaces.";
-          } else if (target.name === "minamount" || target.name === "maxamount") {
-            errorMsg.textContent = "This field must contain only numbers.";
-          } else if (target.name === "discount") {
-            errorMsg.textContent = "Only positive numbers below 100 are allowed.";
-          } else if (target.name === "expirydate") {
-            errorMsg.textContent = "Enter a date in the format MM-DD-YYYY. Eg: 01-12-2024";
-          } else {
-            errorMsg.textContent = "";
+  
+          if (route) {
+            const response = await fetch(route);
+            const data = await response.json();
+  
+            if (data.success) {
+              offerItemsSelect.innerHTML = '';
+              data.items.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item._id;
+                option.textContent = item.name;
+                offerItemsSelect.appendChild(option);
+              });
+  
+              offerItemsContainer.style.display = 'block';
+            } else {
+              offerItemsContainer.style.display = 'none';
+            }
           }
         } else {
-          errorMsg.textContent = "";
+          offerItemsContainer.style.display = 'none';
         }
-      }
+      });
+  
+      document.getElementById('offerForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+  
+        const formData = new FormData(this);
+        const formDataObject = {};
+        formData.forEach((value, key) => {
+          formDataObject[key] = value;
+        });
+  
+        fetch('/admin/addOffers', {
+          method: 'POST',
+          body: JSON.stringify(formDataObject),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              Swal.fire({
+                title: 'Success!',
+                text: data.message || 'Offer has been added successfully',
+                icon: 'success'
+              }).then((result) => {
+                if (result.isConfirmed || result.isDismissed) {
+                  window.location.href = '/admin/offers';
+                }
+              });
+            } else {
+              Swal.fire({
+                title: 'Error!',
+                text: data.message || 'Failed to add offer',
+                icon: 'error'
+              });
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+              title: 'Error!',
+              text: 'Failed to add offer.',
+              icon: 'error'
+            });
+          });
+      });
     });
-
   </script>
 
 

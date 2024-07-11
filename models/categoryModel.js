@@ -23,7 +23,7 @@ const categorySchema = new mongoose.Schema ({
         default: Date.now()
       },
       is_delete:{
-        type:Boolean, //soft deleting
+        type:Boolean, 
         default:false
       }
 });

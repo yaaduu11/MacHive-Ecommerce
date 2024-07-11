@@ -23,7 +23,7 @@
 
   <!-- Favicon icon-->
   <link rel="shortcut icon" type="image/x-icon"
-    href="https://dashui.codescandy.com/dashuipro/assets/images/favicon/favicon.ico">
+  href="/users/assets/images/mini-logo.png">
 
 
   <!-- Libs CSS -->
@@ -36,7 +36,7 @@
   <!-- Theme CSS -->
   <link rel="stylesheet" href="../admin/assets/css/theme.min.css">
   <link href="../admin/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-  <title>Product List | Dash UI - Responsive Bootstrap 5 Admin Dashboard</title>
+  <title>MacHive</title>
 </head>
 
 <body>
@@ -234,7 +234,7 @@
     <div class="navbar-vertical navbar nav-dashboard">
       <div class="h-100" data-simplebar>
         <!-- Brand logo -->
-        <a class="navbar-brand" href="https://dashui.codescandy.com/dashuipro/index.html">
+        <a class="navbar-brand">
           <h3>MacHive</h3>
         </a>
         <!-- Navbar nav -->
@@ -307,6 +307,7 @@
             </div>
           </li>
           <!-- Nav item -->
+
           <li class="nav-item">
             <a class="nav-link has-arrow  collapsed " href="#!" data-bs-toggle="collapse" data-bs-target="#navCRM"
               aria-expanded="false" aria-controls="navCRM">
@@ -327,9 +328,35 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link has-arrow " href="crm-contacts.html">
+                  <a class="nav-link has-arrow " href="/admin/AddCoupons">
 
                     Add Coupons
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <!-- Nav item -->
+          <li class="nav-item">
+            <a class="nav-link has-arrow  collapsed " href="#!" data-bs-toggle="collapse" data-bs-target="#navblog"
+              aria-expanded="false" aria-controls="navblog">
+              <i data-feather="edit" class="nav-icon me-2 icon-xxs">
+              </i> Offers
+            </a>
+
+            <div id="navblog" class="collapse " data-bs-parent="#sideNavbar">
+              <ul class="nav flex-column">
+
+                <li class="nav-item">
+                  <a class="nav-link has-arrow " href="/admin/offers">
+
+                    Offers
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link has-arrow " href="/admin/AddOffers">
+
+                    Add Offers
                   </a>
                 </li>
               </ul>
@@ -349,94 +376,18 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link  " href="project-list.html">
-                    List
+                  <a class="nav-link  " href="/admin/salesReport">
+                    Sales Report
                   </a>
                 </li>
 
               </ul>
             </div>
           </li>
-          <!-- Nav item -->
-          <li class="nav-item">
-            <a class="nav-link has-arrow  collapsed " href="#!" data-bs-toggle="collapse" data-bs-target="#navinvoice"
-              aria-expanded="false" aria-controls="navinvoice">
-              <i data-feather="clipboard" class="nav-icon me-2 icon-xxs">
-              </i> Invoice
-            </a>
-
-            <div id="navinvoice" class="collapse " data-bs-parent="#sideNavbar">
-              <ul class="nav flex-column">
-
-                <li class="nav-item">
-                  <a class="nav-link has-arrow " href="invoice-list.html">
-
-                    List
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link has-arrow " href="invoice-detail.html">
-
-                    Detail
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link has-arrow " href="invoice-generator.html">
-
-                    Invoice Generator
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link   collapsed  " href="#!" data-bs-toggle="collapse" data-bs-target="#navprofilePages"
-              aria-expanded="false" aria-controls="navprofilePages">
-
-              <i data-feather="user" class="nav-icon me-2 icon-xxs">
-              </i> Profile
-            </a>
-            <div id="navprofilePages" class="collapse " data-bs-parent="#sideNavbar">
-              <ul class="nav flex-column">
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-overview.html">
-                    Overview
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-project.html">
-                    Project
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-files.html">
-                    Files
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-team.html">
-                    Team
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-followers.html">
-                    Followers
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-activity.html">
-                    Activity
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-settings.html">
-                    Settings
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
+          
+          <li class="nav-item ">
+            <a class="nav-link collapsed" href="#" id="logout-link" aria-expanded="false" style="color: red;">🡸 Log out</a>
+        </li>
 
 
         </ul>

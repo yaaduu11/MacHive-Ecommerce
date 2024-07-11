@@ -6,6 +6,7 @@ const products = require("../controllers/admin/products")
 const variants = require("../controllers/admin/varients")
 const orders = require('../controllers/admin/orders')
 const coupons = require('../controllers/admin/coupons')
+const offers = require('../controllers/admin/offers')
 const signIn = require("../controllers/admin/sign-in")
 const generateStorage = require('../util/multer')
 const authAdmin = require('../middleware/authMiddleware')
@@ -66,6 +67,15 @@ router.get('/orders', authAdmin.redirectIfNotAuthenticated, orders.loadOrderList
 router.get('/salesReport', authAdmin.redirectIfNotAuthenticated, orders.loadSalesReport)
 router.get('/orderDetails/:orderId', authAdmin.redirectIfNotAuthenticated, orders.loadOrderDetails);
 router.patch('/updateOrderStatus', orders.orderStatusUpdate)
+
+
+//////////////!   OFFERS
+router.get('/offers',authAdmin.redirectIfNotAuthenticated, offers.loadOffers)
+router.get('/AddOffers',authAdmin.redirectIfNotAuthenticated, offers.loadAddOffers)
+router.get('/categoryOffers', authAdmin.redirectIfNotAuthenticated, offers.getAllCategories);
+router.get('/productOffers', authAdmin.redirectIfNotAuthenticated, offers.getAllProducts);
+router.post('/addOffers', authAdmin.redirectIfNotAuthenticated, offers.insertOffer);
+router.delete('/delete/:offerId', authAdmin.redirectIfNotAuthenticated, offers.deleteOffer)
 
 
 //////////////!   COUPONS

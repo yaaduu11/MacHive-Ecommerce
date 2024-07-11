@@ -77,7 +77,9 @@ router.post('/applyCoupon', couponController.applyCoupon)
 
 //////////////! Order
 router.post('/placeOrder', orderController.placeOrder)
+router.post('/repayment', orderController.repayment)
 router.post('/verifyPayment',  orderController.verifyPayment)
+router.post('/paymentFailed', orderController.paymentFailed);
 router.post('/request-return/:orderId/:itemId', orderController.returnOrder)
 router.post('/cancel-order/:orderId/:itemId', orderController.cancelOrder);
 router.get('/thankyou',authUser.isAuthenticated, orderController.loadThankYou)

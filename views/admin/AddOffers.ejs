@@ -38,6 +38,10 @@
   <link href="/admin/assets/libs/dropzone/dist/dropzone.css" rel="stylesheet">
   <link href="/admin/assets/libs/%40yaireo/tagify/dist/tagify.css" rel="stylesheet">
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
   <title>MacHive</title>
 </head>
 
@@ -266,7 +270,7 @@
               </i> Categories
             </a>
 
-            <div id="navEmail" class="collapse show" data-bs-parent="#sideNavbar">
+            <div id="navEmail" class="collapse " data-bs-parent="#sideNavbar">
               <ul class="nav flex-column">
                 <li class="nav-item">
                   <a class="nav-link has-arrow " href="/admin/categories">
@@ -275,7 +279,7 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link has-arrow active" href="/admin/AddCategories">
+                  <a class="nav-link has-arrow " href="/admin/AddCategories">
 
                     Add Categories
                   </a>
@@ -346,7 +350,7 @@
               </i> Offers
             </a>
 
-            <div id="navblog" class="collapse " data-bs-parent="#sideNavbar">
+            <div id="navblog" class="collapse show" data-bs-parent="#sideNavbar">
               <ul class="nav flex-column">
 
                 <li class="nav-item">
@@ -356,7 +360,7 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link has-arrow " href="/admin/AddOffers">
+                  <a class="nav-link has-arrow active" href="/admin/AddOffers">
 
                     Add Offers
                   </a>
@@ -397,72 +401,91 @@
       </div>
     </div>
 
-
-
     <!-- Page Content -->
     <div id="app-content">
-      <!-- Container fluid -->
       <div class="app-content-area">
         <div class="container-fluid">
           <div class="row">
             <div class="col-lg-12 col-md-12 col-12">
-              <!-- Page header -->
               <div class="mb-5">
-                <h3 class="mb-0 ">Add Categories</h3>
-
+                <h3 class="mb-0">Add Offers</h3>
               </div>
             </div>
           </div>
           <div>
-            <!-- row -->
-
-            <div class="row">
-              <form id="addCategoryForm" method="POST" enctype="multipart/form-data">
-
-                <div class="col-lg-8 col-12">
-                  <!-- card -->
-                  <div class="card mb-4">
-                    <!-- card body -->
-                    <div class="card-body">
-                      <!-- input -->
-                      <div class="mb-3">
-                        <label class="form-label">Category Name</label>
-                        <input name="name" type="text" class="form-control" required>
-                      </div>
-                      <!-- input -->
-                      <div>
-                        <label class="form-label">Description</label>
-                        <input name="description" type="text" class="form-control" required>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- card -->
-                  <div class="card mb-4">
-                    <!-- card body -->
-                    <div class="card-body">
-                      <div>
-                        <div class="mb-4">
-                          <!-- heading -->
-                          <h5 class="mb-1">Image</h5>
-                          <p>Add Image For Category</p>
-                          <!-- input -->
-                          <input type="file" name="image" class="form-control">
+            <div class="container">
+              <div class="row">
+                <form id="offerForm" action="/admin/addOffers" method="POST" enctype="multipart/form-data">
+                  <div class="col-lg-6 col-12">
+                    <div class="card mb-4">
+                      <div class="card-body">
+                        <div class="mb-3">
+                          <label class="form-label">Offer Name</label>
+                          <input name="code" type="text" class="form-control" pattern="[A-Za-z\s]+"
+                            title="Only letters and numbers are allowed. No spaces.">
+                          <span class="error-message"></span>
                         </div>
+
+                        <div class="row">
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">Offer Type</label>
+                            <select name="offerType" class="form-control" id="offerType">
+                              <option disabled selected>Select One type</option>
+                              <option value="Product Offer">Product Offer</option>
+                              <option value="Category Offer">Category Offer</option>
+
+                            </select>
+                            <span class="error-message"></span>
+                          </div>
+                          <div class="col-md-6 mb-3" id="offerItemsContainer" style="display:none;">
+                            <label class="form-label">Offer Items</label>
+                            <select name="offerItems" class="form-control" id="offerItems">
+
+                            </select>
+                            <span class="error-message"></span>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">Discount Percentage</label>
+                            <input name="discount" type="text" class="form-control" pattern="^(0?[1-9]|[1-9][0-9])$"
+                              title="Only positive numbers below 100 are allowed." max="99">
+                            <span class="error-message"></span>
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">Expiry Date</label>
+                            <div class="input-group">
+                              <input id="expiryDate" name="expirydate" type="text" class="form-control"
+                                pattern="(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])-(19|20)\d{2}"
+                                title="Enter a date in the format MM-DD-YYYY. Eg: 01-12-2024">
+                              <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                              </span>
+                            </div>
+                            <span class="error-message"></span>
+                          </div>
+
+                        </div>
+
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="col-lg-4 col-12">
-                  <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Create Category</button>
+
+                  <div class="col-lg-4 col-12">
+                    <div class="d-grid">
+                      <button type="submit" class="btn btn-primary">Create Offer</button>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
   </main>
   <!-- Scripts -->
 
@@ -483,56 +506,114 @@
   <script src="/admin/assets/js/theme.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
 
   <script>
-    document.getElementById('addCategoryForm').addEventListener('submit', function(e) {
-      e.preventDefault(); 
-    
-      const formData = new FormData(this); 
-    
-      fetch('/admin/AddCategories', { 
-        method: 'POST',
-        body: formData,
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          Swal.fire({
-            title: 'Success!',
-            text: data.message || 'Category has been Added', 
-            icon: 'success'
-          }).then((result) => {
-            if (result.isConfirmed || result.isDismissed) {
-              window.location.href = '/admin/categories'; 
+    document.addEventListener('DOMContentLoaded', function () {
+      $('#expiryDate').datepicker({
+        format: 'mm-dd-yyyy',
+        autoclose: true,
+      });
+
+      document.querySelector('.input-group-text').addEventListener('click', function () {
+        $('#expiryDate').datepicker('show');
+      });
+
+      document.getElementById('offerType').addEventListener('change', async function () {
+        let offerType = this.value.toLowerCase();
+        const offerItemsContainer = document.getElementById('offerItemsContainer');
+        const offerItemsSelect = document.getElementById('offerItems');
+
+        if (offerType) {
+          let route;
+          if (offerType === 'category offer') {
+            route = '/admin/categoryOffers';
+          } else if (offerType === 'product offer') {
+            route = '/admin/productOffers';
+          }
+
+          if (route) {
+            const response = await fetch(route);
+            const data = await response.json();
+
+            if (data.success) {
+              offerItemsSelect.innerHTML = '';
+              data.items.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item._id;  // Use item._id to store the ID
+                option.textContent = item.name;
+                offerItemsSelect.appendChild(option);
+              });
+
+              offerItemsContainer.style.display = 'block';
+            } else {
+              offerItemsContainer.style.display = 'none';
             }
-          });
+          }
         } else {
-          Swal.fire({
-            title: 'Error!',
-            text: data.message || 'Something went wrong', 
-            icon: 'error'
-          });
+          offerItemsContainer.style.display = 'none';
         }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        Swal.fire({
-          title: 'Error!',
-          text: 'Failed to add category.', 
-          icon: 'error'
+      });
+
+      document.getElementById('offerForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const formDataObject = {};
+        formData.forEach((value, key) => {
+          formDataObject[key] = value;
         });
+
+        fetch('/admin/addOffers', {
+          method: 'POST',
+          body: JSON.stringify(formDataObject),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              Swal.fire({
+                title: 'Success!',
+                text: data.message || 'Offer has been added successfully',
+                icon: 'success'
+              }).then((result) => {
+                if (result.isConfirmed || result.isDismissed) {
+                  window.location.href = '/admin/offers';
+                }
+              });
+            } else {
+              Swal.fire({
+                title: 'Error!',
+                text: data.message || 'Failed to add offer',
+                icon: 'error'
+              });
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+              title: 'Error!',
+              text: 'Failed to add offer.',
+              icon: 'error'
+            });
+          });
       });
     });
-    </script>
-    
-    
+
+  </script>
 
 
 
 </body>
-
-
-<!-- Mirrored from dashui.codescandy.com/dashuipro/pages/ecommerce-product-edit.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 18 Apr 2024 13:13:42 GMT -->
 
 </html>

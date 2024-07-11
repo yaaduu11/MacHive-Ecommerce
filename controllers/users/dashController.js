@@ -35,7 +35,7 @@ exports.loadMyAccount = async (req, res) => {
                         model: 'Products'
                     }
                 }),
-            Coupon.find({}),
+            Coupon.find({block:false}),
             Wallet.findOne({ userID: userId })
         ]);
 
@@ -102,6 +102,10 @@ exports.changePassword = async (req, res) => {
         const isMatch = await bcrypt.compare(currentPassword, user.password);
         if (!isMatch) {
             errors.currentPassword = 'Current password is incorrect';
+        }
+
+        if(currentPassword == newPassword){
+            errors.newPassword = 'Current password and new password must be different.'
         }
 
         if (newPassword !== confirmPassword) {
@@ -205,7 +209,7 @@ exports.editAddress = async (req, res) => {
 exports.logoutUser = async (req, res) => {
     req.session.destroy(err => {
         if (err) {
-            return res.status(500).send("<script>alert('Error logging out'); window.history.back();</script>");
+            return res.status(500).send("logout succesful");
         }
         res.redirect('/sign-in');
     });

@@ -39,6 +39,10 @@ const varientSchema = new mongoose.Schema ({
       type : Number,
       required :true
     },
+    offerPercentage : {
+      type : Number,
+      default : 0
+    },
     createdAt: {
       type: Date,
       default: Date.now()

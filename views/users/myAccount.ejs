@@ -61,6 +61,20 @@
             color: rgb(0, 0, 0);
         }
 
+        .repay-order-btn {
+            color: black;
+            border: 1px solid rgb(45, 104, 0);
+            background: none;
+            cursor: pointer;
+            width: 70px;
+            border-radius: 7px;
+        }
+
+        .repay-order-btn:hover {
+            background: rgb(67, 100, 0);
+            color: rgb(255, 255, 255);
+        }
+
         .status-cancelled {
             color: red;
         }
@@ -615,18 +629,24 @@
                                                                 <% } else if (item.orderStatus=="Refunded" ) { %>
                                                                     <h5 class="heading"
                                                                         style="color: rgb(201, 164, 0);">Refunded</h5>
-                                                                    <% } else if (item.orderStatus=="Processing" ) { %>
-                                                                        <button class="cancel-order-btn"
-                                                                            onclick="confirmCancellation('<%= order._id %>', '<%= item._id %>')">Cancel</button>
-                                                                        <% } else if (item.orderStatus=="Delivered" ) {
+                                                                    <% } else if (order.paymentStatus==false) { %>
+                                                                        <button class="repay-order-btn"
+                                                                            onclick="repayment('<%= order._id %>', '<%= item._id %>')">re-pay</button>
+                                                                        <% } else if (item.orderStatus=="Processing" ) {
                                                                             %>
-                                                                            <button class="return-order-btn"
-                                                                                onclick="showReturnModal('<%= order._id %>', '<%= item._id %>')">Return</button>
-                                                                            <% } else if (item.orderStatus=="Cancelled"
+                                                                            <button class="cancel-order-btn"
+                                                                                onclick="confirmCancellation('<%= order._id %>', '<%= item._id %>')">Cancel</button>
+                                                                            <% } else if (item.orderStatus=="Delivered"
                                                                                 ) { %>
-                                                                                <h5 class="heading status-cancelled">
-                                                                                    Cancelled</h5>
-                                                                                <% } %>
+                                                                                <button class="return-order-btn"
+                                                                                    onclick="showReturnModal('<%= order._id %>', '<%= item._id %>')">Return</button>
+                                                                                <% } else if
+                                                                                    (item.orderStatus=="Cancelled" ) {
+                                                                                    %>
+                                                                                    <h5
+                                                                                        class="heading status-cancelled">
+                                                                                        Cancelled</h5>
+                                                                                    <% } %>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -1124,7 +1144,7 @@
                                 document.getElementById('editMobile').value = mobile;
                                 document.getElementById('editCity').value = city;
                                 document.getElementById('editState').value = state;
-                                document.getElementById('editAddress').value = address;  // Corrected here
+                                document.getElementById('editAddress').value = address;  
                                 document.getElementById('editPincode').value = pincode;
                             }
                         </script>
@@ -1252,7 +1272,7 @@
                                             </tr>
 
                                             <% if (wallet && wallet.transactions.length> 0) { %>
-                                                <% wallet.transactions.forEach(transaction=> { %>
+                                                <% wallet.transactions.reverse().forEach(transaction=> { %>
                                                     <tr class="table-row ticket-row">
                                                         <td class="table-wrapper">
                                                             <p class="ticker-number">
@@ -1431,6 +1451,9 @@
     <script src="/users/assets_3/js/shopus.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <script>
 
@@ -1739,7 +1762,7 @@
             };
 
             fetch(`/myAccount/${addressId}`, {
-                method: 'POST', // Change PATCH to POST
+                method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -1836,6 +1859,110 @@
             }
         });
 
+
+        function repayment(orderId) {
+					$.ajax({
+						url: '/repayment',
+						method: 'POST',
+						data: {
+                            orderId
+						},
+						success: function (response) {
+							if (response.razorpayOrderId) {
+								const options = {
+									"key": response.key_id,
+									"amount": response.amount,
+									"currency": "INR",
+									"name": "MACHIVE",
+									"description": "Test Transaction",
+									"order_id": response.razorpayOrderId,
+									"handler": function (response) {
+										$.ajax({
+											url: '/verifyPayment',
+											method: 'POST',
+											data: {
+												orderId: response.razorpay_order_id,
+												paymentId: response.razorpay_payment_id,
+												signature: response.razorpay_signature
+											},
+											success: function (verificationResponse) {
+												if (verificationResponse.success) {
+													window.location.href = '/myAccount';
+												} else {
+													Swal.fire({
+														icon: 'error',
+														title: 'Payment verification failed',
+														text: verificationResponse.message
+													});
+												}
+											},
+											error: function () {
+												Swal.fire({
+													icon: 'error',
+													title: 'Error',
+													text: 'Failed to verify payment. Please try again.'
+												});
+											}
+										});
+									},
+									"prefill": {
+										"name": response.customerName,
+										"email": response.customerEmail,
+										"contact": response.customerPhone
+									},
+									"notes": {
+										"address": "note value"
+									},
+									"theme": {
+										"color": "#3399cc"
+									}
+								};
+								const rzp1 = new Razorpay(options);
+								rzp1.on('payment.failed', function (response) {
+									$.ajax({
+										url: '/paymentFailed',
+										method: 'POST',
+										data: {
+											orderId: options.order_id
+										},
+										success: function (failedResponse) {
+											Swal.fire({
+												icon: 'error',
+												title: 'Payment Failed',
+												text: 'Your payment could not be processed. Please try again.'
+											});
+										},
+										error: function () {
+											Swal.fire({
+												icon: 'error',
+												title: 'Error',
+												text: 'Failed to update payment status. Please contact support.'
+											});
+										}
+									});
+								});
+								rzp1.open();
+							} else {
+								Swal.fire({
+									icon: 'success',
+									title: 'Order Placed Successfully!',
+									text: 'Your order has been placed successfully.',
+									showConfirmButton: false,
+									timer: 2000
+								}).then(() => {
+									window.location.href = '/thankyou';
+								});
+							}
+						},
+						error: function () {
+							Swal.fire({
+								icon: 'error',
+								title: 'Error',
+								text: 'Failed to place the order. Please try again.'
+							});
+						}
+					});
+        }
 
     </script>
 

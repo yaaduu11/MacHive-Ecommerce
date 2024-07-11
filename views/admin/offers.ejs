@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
-<!-- Mirrored from dashui.codescandy.com/dashuipro/pages/ecommerce-products.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 18 Apr 2024 13:13:36 GMT -->
-
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -234,7 +231,7 @@
     <div class="navbar-vertical navbar nav-dashboard">
       <div class="h-100" data-simplebar>
         <!-- Brand logo -->
-        <a class="navbar-brand" href="https://dashui.codescandy.com/dashuipro/index.html">
+        <a class="navbar-brand">
           <h3>MacHive</h3>
         </a>
         <!-- Navbar nav -->
@@ -307,6 +304,7 @@
             </div>
           </li>
           <!-- Nav item -->
+
           <li class="nav-item">
             <a class="nav-link has-arrow  collapsed " href="#!" data-bs-toggle="collapse" data-bs-target="#navCRM"
               aria-expanded="false" aria-controls="navCRM">
@@ -316,12 +314,12 @@
               Coupons
             </a>
 
-            <div id="navCRM" class="collapse show" data-bs-parent="#sideNavbar">
+            <div id="navCRM" class="collapse " data-bs-parent="#sideNavbar">
               <ul class="nav flex-column">
 
 
                 <li class="nav-item">
-                  <a class="nav-link has-arrow active" href="/admin/coupons">
+                  <a class="nav-link has-arrow " href="/admin/coupons">
 
                     Coupons
                   </a>
@@ -330,6 +328,32 @@
                   <a class="nav-link has-arrow " href="/admin/AddCoupons">
 
                     Add Coupons
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <!-- Nav item -->
+          <li class="nav-item">
+            <a class="nav-link has-arrow  collapsed " href="#!" data-bs-toggle="collapse" data-bs-target="#navblog"
+              aria-expanded="false" aria-controls="navblog">
+              <i data-feather="edit" class="nav-icon me-2 icon-xxs">
+              </i> Offers
+            </a>
+
+            <div id="navblog" class="collapse show" data-bs-parent="#sideNavbar">
+              <ul class="nav flex-column">
+
+                <li class="nav-item">
+                  <a class="nav-link has-arrow active" href="/admin/offers">
+
+                    Offers
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link has-arrow " href="/admin/AddOffers">
+
+                    Add Offers
                   </a>
                 </li>
               </ul>
@@ -349,94 +373,18 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link  " href="project-list.html">
-                    List
+                  <a class="nav-link  " href="/admin/salesReport">
+                    Sales Report
                   </a>
                 </li>
 
               </ul>
             </div>
           </li>
-          <!-- Nav item -->
-          <li class="nav-item">
-            <a class="nav-link has-arrow  collapsed " href="#!" data-bs-toggle="collapse" data-bs-target="#navinvoice"
-              aria-expanded="false" aria-controls="navinvoice">
-              <i data-feather="clipboard" class="nav-icon me-2 icon-xxs">
-              </i> Invoice
-            </a>
-
-            <div id="navinvoice" class="collapse " data-bs-parent="#sideNavbar">
-              <ul class="nav flex-column">
-
-                <li class="nav-item">
-                  <a class="nav-link has-arrow " href="invoice-list.html">
-
-                    List
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link has-arrow " href="invoice-detail.html">
-
-                    Detail
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link has-arrow " href="invoice-generator.html">
-
-                    Invoice Generator
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link   collapsed  " href="#!" data-bs-toggle="collapse" data-bs-target="#navprofilePages"
-              aria-expanded="false" aria-controls="navprofilePages">
-
-              <i data-feather="user" class="nav-icon me-2 icon-xxs">
-              </i> Profile
-            </a>
-            <div id="navprofilePages" class="collapse " data-bs-parent="#sideNavbar">
-              <ul class="nav flex-column">
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-overview.html">
-                    Overview
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-project.html">
-                    Project
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-files.html">
-                    Files
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-team.html">
-                    Team
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-followers.html">
-                    Followers
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-activity.html">
-                    Activity
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="profile-settings.html">
-                    Settings
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
+          
+          <li class="nav-item ">
+            <a class="nav-link collapsed" href="#" id="logout-link" aria-expanded="false" style="color: red;">🡸 Log out</a>
+        </li>
 
 
         </ul>
@@ -459,7 +407,7 @@
                   <h2 class="title">Offers</h2>
                 </div>
                 <div class="action">
-                  <a href="/admin/AddCoupons" class="btn btn-primary">+ Add Offers</a>
+                  <a href="/admin/AddOffers" class="btn btn-primary">+ Add Offers</a>
                 </div>
               </div>
               <style>
@@ -467,7 +415,7 @@
                   display: flex;
                   align-items: center;
                 }
-    
+
                 .header {
                   flex-grow: 1;
                 }
@@ -477,64 +425,33 @@
           <br>
           <!-- row -->
           <div class="row">
-            <div class="coupon-wrapper">
-              <!-- <% for (let i = 0; i < coupons.length; i++) { %> -->
-                <div class="col-lg-5 mb-6">
-                  <div class="card">
-                    <div class="card-body">
-                      <table id="example" style="width: 100%">
-                        <thead>
-                          <tr></tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td style="vertical-align: top;">
-                              <img src="/users/assets/images/couponImg.png" alt="Sample Image" style="width: 200px; height: 200px;">
-                            </td>
-                            <td style="vertical-align: top;">
-                              <div style="text-align: left;">
-                                <!-- <h2><%= coupons[i].couponCode %></h2> -->
-                                <!-- <h4 style="color: red;"><strong>Expiry Date: <%= coupons[i].expiryDate %></strong></h4> -->
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colspan="2">
-                              <!-- <div class="coupon-inputs">
-                                <p style="font-size: 18px; font-weight: bold; margin-bottom: 6px;">Description: <span class="value"><%= coupons[i].description %></span></p>
-                                <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Discount Percentage: <span class="value"><%= coupons[i].discountPercentage %>%
-                                </span></p>
-                                <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Min Purchase Amount: <span class="value"><%= coupons[i].minPurchaseAmount %></span>
-                                </p>
-                                <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Max Discount Amount: <span class="value"><%= coupons[i].maxDiscountAmount %></span>
-                                </p>
-                              </div> -->
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colspan="2">
-                              <div style="text-align: center;">
-                                <!-- <button type="button" class="btn btn-primary" style="margin-right: 22px;" data-coupon-id="<%= coupons[i]._id %>" onclick="navigateToEdit('<%= coupons[i]._id %>')">Edit</button> -->
-                                <!-- <button style="margin-right: 22px;" class="btn <%= coupons[i].block ? 'btn-success' : 'btn-danger' %>" onclick="toggleBlockStatus('<%= coupons[i]._id %>', this, this.closest('tr').querySelector('.badge'))"> -->
-                                  <!-- <%= coupons[i].block ? 'List' : 'Unlist' %> -->
-                                </button>
-                                <!-- <button type="button" class="btn btn-danger">Delete</button> -->
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+            <% offers.forEach(items => { %>
+              <div class="col-md-4 mb-4">
+                <div class="card">
+                  <div class="card-body">
+                    <h2><%= items.offerName %></h2>
+                    <h4 style="color: red;"><strong>Expiry Date: <%= items.expiryDate %></strong></h4>
+                    <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">
+                      Discount Percentage: <span class="value"><%= items.discountPercentage %></span>
+                    </p>
+                    <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">
+                      Offer Type: <span class="value"><%= items.offerType %></span>
+                    </p>
+                    <div style="text-align: center;">
+                      <!-- <button type="button" class="btn btn-primary" style="margin-right: 22px;" onclick="navigateToEdit('<%= items._id %>')">Edit</button> -->
+                      <button class="btn btn-danger" onclick="confirmDeleteOffer('<%= items._id %>')">Delete</button>
                     </div>
                   </div>
                 </div>
-              <!-- <% } %> -->
-            </div>
+              </div>
+            <% }) %>
           </div>
           
+
         </div>
       </div>
     </div>
-    
+
   </main>
 
   <!-- Modal -->
@@ -618,56 +535,58 @@
   <script src="../admin/assets/js/vendors/datatable.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
   <script>
-    function navigateToEdit(couponId) {
-      window.location.href = `/admin/EditCoupons/${couponId}`;
-    }
-
-    function toggleBlockStatus(couponId, btnElement, statusElement) {
-  const isCurrentlyBlocked = btnElement.innerText.trim() === 'Unlist';
-  const confirmationMessage = isCurrentlyBlocked 
-    ? 'Are you sure you want to Unlist this Coupon?' 
-    : 'Are you sure you want to List this Coupon?';
-
-  Swal.fire({
-    title: confirmationMessage,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, Sure!"
-  }).then((result) => {
-    if (result) {
-      fetch(`/admin/unlist-coupon/${couponId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
+   
+    function confirmDeleteOffer(offerId) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteOffer(offerId);
         }
-      })
-      .then(response => response.json())
-       .then((data) => {
-        const newBlockStatus = btnElement.innerText.trim() === 'Unlist';
-        btnElement.innerText = newBlockStatus ? 'List' : 'Unlist';
-        btnElement.classList.toggle('btn-success', newBlockStatus);
-        btnElement.classList.toggle('btn-danger', !newBlockStatus);
-
-        statusElement.innerText = newBlockStatus ? 'Listed' : 'Unlisted';
-        statusElement.classList.toggle('badge-success-soft', newBlockStatus);
-        statusElement.classList.toggle('badge-danger', !newBlockStatus);
-        statusElement.classList.toggle('text-success', newBlockStatus);
-        statusElement.classList.toggle('text-danger', !newBlockStatus);
-
-      })
+      });
     }
-  });
-}
 
-
+    function deleteOffer(offerId) {
+      fetch(`/admin/delete/${offerId}`, {
+        method: 'DELETE'
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            Swal.fire(
+              'Deleted!',
+              'Your offer has been deleted.',
+              'success'
+            ).then(() => {
+              location.reload();
+            });
+          } else {
+            Swal.fire(
+              'Error!',
+              data.message,
+              'error'
+            );
+          }
+        })
+        .catch(error => {
+          Swal.fire(
+            'Error!',
+            'Something went wrong. Please try again later.',
+            'error'
+          );
+        });
+    }
 
   </script>
 
-</body>
 
+</body>
 
 </html>
