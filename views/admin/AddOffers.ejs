@@ -22,8 +22,7 @@
 
 
   <!-- Favicon icon-->
-  <link rel="shortcut icon" type="image/x-icon"
-    href="/users/assets/images/mini-logo.png">
+  <link rel="shortcut icon" type="image/x-icon" href="/users/assets/images/mini-logo.png">
 
 
   <!-- Libs CSS -->
@@ -390,10 +389,11 @@
               </ul>
             </div>
           </li>
-          
+
           <li class="nav-item ">
-            <a class="nav-link collapsed" href="#" id="logout-link" aria-expanded="false" style="color: red;">🡸 Log out</a>
-        </li>
+            <a class="nav-link collapsed" href="#" id="logout-link" aria-expanded="false" style="color: red;">🡸 Log
+              out</a>
+          </li>
 
 
         </ul>
@@ -415,17 +415,17 @@
           <div>
             <div class="container">
               <div class="row">
+
                 <form id="offerForm" action="/admin/addOffers" method="POST" enctype="multipart/form-data">
                   <div class="col-lg-6 col-12">
                     <div class="card mb-4">
                       <div class="card-body">
                         <div class="mb-3">
                           <label class="form-label">Offer Name</label>
-                          <input name="code" type="text" class="form-control" pattern="[A-Za-z\s]+"
-                            title="Only letters and numbers are allowed. No spaces.">
-                          <span class="error-message"></span>
+                          <input name="code" type="text" class="form-control">
+                          <span class="error-message" style="color: red; display: none;"></span>
                         </div>
-
+                
                         <div class="row">
                           <div class="col-md-6 mb-3">
                             <label class="form-label">Offer Type</label>
@@ -433,52 +433,44 @@
                               <option disabled selected>Select One type</option>
                               <option value="Product Offer">Product Offer</option>
                               <option value="Category Offer">Category Offer</option>
-
                             </select>
-                            <span class="error-message"></span>
+                            <span class="error-message" style="color: red; display: none;"></span>
                           </div>
                           <div class="col-md-6 mb-3" id="offerItemsContainer" style="display:none;">
                             <label class="form-label">Offer Items</label>
-                            <select name="offerItems" class="form-control" id="offerItems">
-
-                            </select>
-                            <span class="error-message"></span>
+                            <select name="offerItems" class="form-control" id="offerItems"></select>
+                            <span class="error-message" style="color: red; display: none;"></span>
                           </div>
                         </div>
-
+                
                         <div class="row">
                           <div class="col-md-6 mb-3">
                             <label class="form-label">Discount Percentage</label>
-                            <input name="discount" type="text" class="form-control" pattern="^(0?[1-9]|[1-9][0-9])$"
-                              title="Only positive numbers below 100 are allowed." max="99">
-                            <span class="error-message"></span>
+                            <input name="discount" type="text" class="form-control">
+                            <span class="error-message" style="color: red; display: none;"></span>
                           </div>
-
+                
                           <div class="col-md-6 mb-3">
                             <label class="form-label">Expiry Date</label>
                             <div class="input-group">
-                              <input id="expiryDate" name="expirydate" type="text" class="form-control"
-                                pattern="(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])-(19|20)\d{2}"
-                                title="Enter a date in the format MM-DD-YYYY. Eg: 01-12-2024">
-                              <span class="input-group-text">
-                                <i class="fa fa-calendar"></i>
-                              </span>
+                              <input id="expiryDate" name="expirydate" type="text" class="form-control" pattern="(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])-(19|20)\d{2}" title="Enter a date in the format MM-DD-YYYY. Eg: 01-12-2024">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                             </div>
-                            <span class="error-message"></span>
+                            <span class="error-message" style="color: red; display: none;"></span>
                           </div>
-
                         </div>
-
+                
                       </div>
                     </div>
                   </div>
-
+                
                   <div class="col-lg-4 col-12">
                     <div class="d-grid">
                       <button type="submit" class="btn btn-primary">Create Offer</button>
                     </div>
                   </div>
                 </form>
+
               </div>
             </div>
           </div>
@@ -515,23 +507,22 @@
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
-
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       $('#expiryDate').datepicker({
         format: 'mm-dd-yyyy',
         autoclose: true,
       });
-
+  
       document.querySelector('.input-group-text').addEventListener('click', function () {
         $('#expiryDate').datepicker('show');
       });
-
+  
       document.getElementById('offerType').addEventListener('change', async function () {
         let offerType = this.value.toLowerCase();
         const offerItemsContainer = document.getElementById('offerItemsContainer');
         const offerItemsSelect = document.getElementById('offerItems');
-
+  
         if (offerType) {
           let route;
           if (offerType === 'category offer') {
@@ -539,20 +530,20 @@
           } else if (offerType === 'product offer') {
             route = '/admin/productOffers';
           }
-
+  
           if (route) {
             const response = await fetch(route);
             const data = await response.json();
-
+  
             if (data.success) {
               offerItemsSelect.innerHTML = '';
               data.items.forEach(item => {
                 const option = document.createElement('option');
-                option.value = item._id;  // Use item._id to store the ID
+                option.value = item._id;
                 option.textContent = item.name;
                 offerItemsSelect.appendChild(option);
               });
-
+  
               offerItemsContainer.style.display = 'block';
             } else {
               offerItemsContainer.style.display = 'none';
@@ -562,23 +553,48 @@
           offerItemsContainer.style.display = 'none';
         }
       });
-
+  
       document.getElementById('offerForm').addEventListener('submit', function (e) {
         e.preventDefault();
-
+  
         const formData = new FormData(this);
-        const formDataObject = {};
-        formData.forEach((value, key) => {
-          formDataObject[key] = value;
-        });
-
-        fetch('/admin/addOffers', {
-          method: 'POST',
-          body: JSON.stringify(formDataObject),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
+        let isValid = true;
+  
+        const offerNameInput = this.querySelector('input[name="code"]');
+        const offerNameError = offerNameInput.nextElementSibling;
+        const offerNamePattern = /^[A-Za-z\s]+$/;
+        if (!offerNamePattern.test(offerNameInput.value)) {
+          offerNameError.textContent = 'Offer Name should contain only letters and spaces.';
+          offerNameError.style.display = 'block';
+          isValid = false;
+        } else {
+          offerNameError.style.display = 'none';
+        }
+  
+        const discountInput = this.querySelector('input[name="discount"]');
+        const discountError = discountInput.nextElementSibling;
+        const discountValue = parseFloat(discountInput.value);
+        if (isNaN(discountValue) || discountValue <= 0 || discountValue >= 100) {
+          discountError.textContent = 'Discount Percentage should be a positive number below 100.';
+          discountError.style.display = 'block';
+          isValid = false;
+        } else {
+          discountError.style.display = 'none';
+        }
+  
+        if (isValid) {
+          const formDataObject = {};
+          formData.forEach((value, key) => {
+            formDataObject[key] = value;
+          });
+  
+          fetch('/admin/addOffers', {
+            method: 'POST',
+            body: JSON.stringify(formDataObject),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
           .then(response => response.json())
           .then(data => {
             if (data.success) {
@@ -607,12 +623,10 @@
               icon: 'error'
             });
           });
+        }
       });
     });
-
   </script>
-
-
 
 </body>
 

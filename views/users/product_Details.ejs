@@ -117,20 +117,20 @@
                                             <img id="main-image" src="<%= products.image %>" alt=""
                                                 class="zoomable-image">
                                         </div>
+                                        <div id="zoomed-image-container">
+                                            <img id="zoomed-image" src="" alt="Zoomed Image">
+                                        </div>
                                     </a>
                                     <br>
                                     <div class="product__thumbnail-container">
-
                                         <% for(let j of variants[0].image) { %>
-                                            <img class="thumbnail-image" src="<%- j  %>" alt="Thumbnail 2">
+                                            <img class="thumbnail-image" src="<%- j  %>" alt="Thumbnail">
                                             <% } %>
-
                                     </div>
                                 </div>
                             </nav>
+
                         </div>
-
-
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-6">
@@ -154,9 +154,9 @@
                             <% if (variants.length> 0) { %>
                                 <% const variant=variants[0]; %>
                                     <div class="product__price mb-25">
-                                       
+
                                         <span id="price-amount">
-                                            <%= variants.salePrice  %>
+                                            <%= variants.salePrice %>
                                         </span>
                                         <span class="old-price">
                                             <%= variant.regularPrice %>
@@ -192,19 +192,22 @@
                                                                 <div class="variant-option">
                                                                     <div
                                                                         class="product__details-color d-sm-flex align-items-center mb-25">
-                                                                        <span>COLOR:&nbsp;<strong><%= variant.color %>
+                                                                        <span>COLOR:&nbsp;<strong>
+                                                                                <%= variant.color %>
                                                                             </strong></span>
                                                                     </div>
                                                                     <% if (products.categoryId.name==='Iphones' ||
                                                                         products.categoryId.name==='Macbooks' ) { %>
                                                                         <div
                                                                             class="product__details-size d-sm-flex align-items-center mb-30">
-                                                                            <span>RAM:&nbsp;<strong><%= variant.ram %>&nbsp;GB
+                                                                            <span>RAM:&nbsp;<strong>
+                                                                                    <%= variant.ram %>&nbsp;GB
                                                                                 </strong></span>
                                                                         </div>
                                                                         <div
                                                                             class="product__details-size d-sm-flex align-items-center mb-30">
-                                                                            <span>ROM:&nbsp;<strong><%= variant.rom %>&nbsp;GB
+                                                                            <span>ROM:&nbsp;<strong>
+                                                                                    <%= variant.rom %>&nbsp;GB
                                                                                 </strong></span>
                                                                         </div>
                                                                         <% } %>
@@ -1256,6 +1259,15 @@
                     zoomedImageContainer.style.display = 'none';
                 });
             });
+
+            const mainImage = document.getElementById('main-image');
+            const thumbnails = document.querySelectorAll('.thumbnail-image');
+
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', () => {
+                    mainImage.src = thumbnail.src;
+                });
+            });
         });
 
 
@@ -1312,7 +1324,7 @@
                         console.error('Error:', error);
                         Swal.fire({
                             title: 'Error!',
-                            text: error.message,
+                            text: 'User not signed in',
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
@@ -1373,26 +1385,13 @@
                         console.error('Error:', error);
                         Swal.fire({
                             title: 'Error!',
-                            text: error.message,
+                            text: 'User not signed in',
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
                     });
             });
         });
-
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const mainImage = document.getElementById('main-image');
-            const thumbnails = document.querySelectorAll('.thumbnail-image');
-
-            thumbnails.forEach(thumbnail => {
-                thumbnail.addEventListener('click', () => {
-                    mainImage.src = thumbnail.src;
-                });
-            });
-        });
-
-
 
     </script>
 

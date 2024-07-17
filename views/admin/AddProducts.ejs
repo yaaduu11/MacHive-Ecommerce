@@ -22,8 +22,7 @@
 
 
   <!-- Favicon icon-->
-  <link rel="shortcut icon" type="image/x-icon"
-    href="/users/assets/images/mini-logo.png">
+  <link rel="shortcut icon" type="image/x-icon" href="/users/assets/images/mini-logo.png">
 
 
   <!-- Libs CSS -->
@@ -123,6 +122,13 @@
       font-size: 28px;
       font-weight: bold;
       cursor: pointer;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 5px;
+      display: none;
     }
   </style>
 </head>
@@ -472,10 +478,11 @@
               </ul>
             </div>
           </li>
-          
+
           <li class="nav-item ">
-            <a class="nav-link collapsed" href="#" id="logout-link" aria-expanded="false" style="color: red;">🡸 Log out</a>
-        </li>
+            <a class="nav-link collapsed" href="#" id="logout-link" aria-expanded="false" style="color: red;">🡸 Log
+              out</a>
+          </li>
 
 
         </ul>
@@ -504,19 +511,21 @@
             <!-- row -->
 
             <div class="row">
-              <form id="addProductForm" method="POST" enctype="multipart/form-data" class="row">
 
+              <form id="addProductForm" method="POST" enctype="multipart/form-data" class="row">
                 <div class="col-lg-8 col-12">
                   <div class="card mb-4">
                     <div class="card-body">
                       <div>
                         <div class="mb-3">
                           <label class="form-label">Product Name</label>
-                          <input id="name-error" name="name" type="text" class="form-control" required>
+                          <input id="name" name="name" type="text" class="form-control" required>
+                          <span class="error-message" id="name-error"></span>
                         </div>
                         <div>
                           <label class="form-label">Description</label>
-                          <input id="description-error" name="description" type="text" class="form-control" required>
+                          <input id="description" name="description" type="text" class="form-control" required>
+                          <span class="error-message" id="description-error"></span>
                         </div>
                         <br>
                         <div class="mb-3">
@@ -532,12 +541,11 @@
                               <% }); %>
                           </select>
                         </div>
-
                         <div class="mb-3">
                           <label class="form-label">Product Brand</label>
-                          <input id="brand-error" name="brand" type="text" class="form-control">
+                          <input id="brand" name="brand" type="text" class="form-control">
+                          <span class="error-message" id="brand-error"></span>
                         </div>
-
                         <div class="mb-3">
                           <label class="form-label">Tags</label>
                           <input name='tags' class="form-control w-100">
@@ -545,8 +553,6 @@
                       </div>
                     </div>
                   </div>
-
-                  <!-- Form for Product Images -->
                   <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                       <h5 class="mb-0 card-title">Media</h5>
@@ -555,20 +561,20 @@
                     <div class="card-body">
                       <div class="image-upload-container">
                         <input type="file" id="imageUpload" name="image" accept="image/*">
-                        <div id="image-error" class="error-message" style="color: red;"></div>
+                        <span id="image-error" class="error-message"></span>
                         <label for="imageUpload">Add Images</label>
                         <div class="image-preview" id="imagePreview"></div>
                       </div>
                     </div>
                   </div>
-                  <!-- End Form for Product Images -->
-
                   <div class="col-lg-12 col-12">
                     <div class="d-grid">
                       <button type="submit" class="btn btn-primary">Create Product</button>
                     </div>
                   </div>
+                </div>
               </form>
+
             </div>
           </div>
         </div>
@@ -625,7 +631,7 @@
     let currentFileIndex = 0;
     let filesToProcess = [];
     let processedFiles = [];
-  
+
     imageUpload.addEventListener('change', function (event) {
       const files = event.target.files;
       if (files.length > 0) {
@@ -634,7 +640,7 @@
         processNextFile();
       }
     });
-  
+
     function processNextFile() {
       if (currentFileIndex < filesToProcess.length) {
         const file = filesToProcess[currentFileIndex];
@@ -657,7 +663,7 @@
         reader.readAsDataURL(file);
       }
     }
-  
+
     cropButton.addEventListener('click', function () {
       cropper.getCroppedCanvas({
         width: 580,
@@ -666,11 +672,11 @@
         const url = URL.createObjectURL(blob);
         const imageBox = document.createElement('div');
         imageBox.classList.add('image-box');
-  
+
         const img = document.createElement('img');
         img.src = url;
         img.alt = filesToProcess[currentFileIndex].name;
-  
+
         const removeButton = document.createElement('button');
         removeButton.classList.add('remove-image');
         removeButton.innerHTML = '&times;';
@@ -678,97 +684,152 @@
           imagePreview.removeChild(imageBox);
           processedFiles = processedFiles.filter(file => file.url !== url);
         };
-  
+
         imageBox.appendChild(img);
         imageBox.appendChild(removeButton);
         imagePreview.appendChild(imageBox);
-  
+
         processedFiles.push({ name: filesToProcess[currentFileIndex].name, blob: blob, url: url });
         cropperModal.style.display = 'none';
         cropper.destroy();
-  
+
         currentFileIndex++;
         processNextFile();
-  
+
         console.log(processedFiles);
       });
     });
-  
+
     closeModalButton.addEventListener('click', function () {
       cropperModal.style.display = 'none';
       cropper.destroy();
     });
-  
+
     window.onclick = function (event) {
       if (event.target === cropperModal) {
         cropperModal.style.display = 'none';
         cropper.destroy();
       }
     };
-  
+
     function getProcessedFiles() {
       return processedFiles.map(file => file.blob);
     }
-  
+
     function getProcessedFiles() {
       return processedFiles;
     }
-  
+
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('productId');
-  
 
-    
+
+
     document.getElementById("addProductForm").addEventListener('submit', function (event) {
-    event.preventDefault();
+      event.preventDefault();
 
-    const formData = new FormData();
+      const name = this.elements['name'].value.trim();
+      const description = this.elements['description'].value.trim();
+      const brand = this.elements['brand'].value.trim();
+      const imageInput = this.elements['image'];
 
-    formData.append('name', this.elements['name'].value);
-    formData.append('description', this.elements['description'].value);
-    formData.append('categoryId', this.elements['categoryId'].value);
-    formData.append('brand', this.elements['brand'].value);
-    formData.append('tags', this.elements['tags'].value);
+      const nameError = document.getElementById('name-error');
+      const descriptionError = document.getElementById('description-error');
+      const brandError = document.getElementById('brand-error');
+      const imageError = document.getElementById('image-error');
 
-    processedFiles.forEach((file, index) => {
-        formData.append('image', file.blob, file.name);
-    });
+      // Clear previous error messages
+      nameError.textContent = '';
+      nameError.style.display = 'none';
+      descriptionError.textContent = '';
+      descriptionError.style.display = 'none';
+      brandError.textContent = '';
+      brandError.style.display = 'none';
+      imageError.textContent = '';
+      imageError.style.display = 'none';
 
-    fetch(`/admin/AddProducts`, {
+      // Regular expression to allow only letters, numbers, and spaces
+      const validRegex = /^[a-zA-Z0-9 ]*$/;
+
+      let isValid = true;
+
+      if (!validRegex.test(name) || name === "") {
+        nameError.textContent = 'Product name can only contain letters, numbers, and spaces, and cannot be empty or whitespace only.';
+        nameError.style.display = 'block';
+        isValid = false;
+      }
+
+      if (!validRegex.test(description) || description === "") {
+        descriptionError.textContent = 'Product description can only contain letters, numbers, and spaces, and cannot be empty or whitespace only.';
+        descriptionError.style.display = 'block';
+        isValid = false;
+      }
+
+      if (!validRegex.test(brand) || brand === "") {
+        brandError.textContent = 'Brand can only contain letters, numbers, and spaces, and cannot be empty or whitespace only.';
+        brandError.style.display = 'block';
+        isValid = false;
+      }
+
+      if (imageInput.files.length === 0) {
+        imageError.textContent = 'Please add an image.';
+        imageError.style.display = 'block';
+        isValid = false;
+      }
+
+      if (!isValid) {
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('description', description);
+      formData.append('categoryId', this.elements['categoryId'].value);
+      formData.append('brand', brand);
+      formData.append('tags', this.elements['tags'].value);
+
+      Array.from(imageInput.files).forEach((file) => {
+        formData.append('image', file);
+      });
+
+      fetch(`/admin/AddProducts`, {
         method: 'POST',
         body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
             Swal.fire({
-                title: 'Success!',
-                text: data.message || 'Product has been added',
-                icon: 'success'
+              title: 'Success!',
+              text: data.message || 'Product has been added',
+              icon: 'success'
             }).then((result) => {
-                if (result.isConfirmed || result.isDismissed) {
-                    window.location.href = `/admin/AddVariants/${data.productId}`;
-                }
+              if (result.isConfirmed || result.isDismissed) {
+                window.location.href = `/admin/AddVariants/${data.productId}`;
+              }
             });
-        } else {
+          } else {
             Swal.fire({
-                title: 'Error!',
-                text: data.message || 'Something went wrong',
-                icon: 'error'
+              title: 'Error!',
+              text: data.message || 'Something went wrong',
+              icon: 'error'
             });
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        Swal.fire({
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.fire({
             title: 'Error!',
             text: 'Failed to add product.',
             icon: 'error'
+          });
         });
     });
-});
+
+
   </script>
-  
+
 
 </body>
+
 </html>

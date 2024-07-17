@@ -17,7 +17,6 @@ exports.loadAddOffers = asyncHandler(async (req, res) => {
   res.render('admin/AddOffers');
 });
 
-
 exports.getAllCategories = asyncHandler(async (req, res) => {
   const categories = await Categories.find({}, { _id: 1, name: 1 });
   res.status(200).json({ success: true, items: categories });

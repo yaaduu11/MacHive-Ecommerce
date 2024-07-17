@@ -81,10 +81,6 @@ exports.addToWishlist = async (req, res) => {
     const { productVariantId, quantity } = req.body;
     const userId = req.session.userId;
 
-    if (!userId) {
-        return res.status(401).json({ success: false, message: "User not authenticated" });
-    }
-
     try {
         let wishlist = await Wishlist.findOne({ userId: userId });
         if (wishlist) {
@@ -112,10 +108,6 @@ exports.addToWishlist = async (req, res) => {
 exports.addToCart = async (req, res) => {
     const { productVariantId, quantity } = req.body;
     const userId = req.session.userId;
-
-    if (!userId) {
-        return res.status(401).json({ success: false, message: "User not authenticated" });
-    }
 
     try {
         let cart = await Cart.findOne({ userId: userId });

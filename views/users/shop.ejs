@@ -66,8 +66,8 @@
 					<li class="nav-item active">
 						<a class="nav-link" href="/shop">Shop</a>
 					</li>
-					<li><a class="nav-link" href="/views/users/about.ejs">About us</a></li>
-					<li><a class="nav-link" href="/views/users/contact.ejs">Contact us</a></li>
+					<li><a class="nav-link" href="/about">About us</a></li>
+					<li><a class="nav-link" href="/contact">Contact us</a></li>
 				</ul>
 
 				<ul class=" custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
@@ -194,10 +194,10 @@
 											<option value="">DEC</option>
 										</select>
 										<div class="nice-select shorting-select" tabindex="0"><span
-												class="current">Default sorting</span>
-											<ul class="list">
-												<li data-value="" class="option">Price high to low</li>
-												<li data-value="" class="option">Price low to high</li>
+												class="current">product filtering</span>
+											<ul id="sortOptions" class="list">
+												<li data-value="high-to-low" class="option">Price high to low</li>
+												<li data-value="low-to-high" class="option">Price low to high</li>
 											</ul>
 										</div>
 									</div>
@@ -210,7 +210,7 @@
 							<div class="tab-pane fade active show" id="tab1">
 
 
-								<div class="row">
+								<div class="row" id="productListt">
 									<% for(let i=products.length-1 ;i>=0; i--) { %>
 										<% const variant=variants[i]; %>
 											<% if (products[i].categoryId && products[i].categoryId.name==="Iphones" &&
@@ -275,8 +275,8 @@
 																	<%= products[i].name %>
 																</a>
 															</h3>
-															<div class="product__price product__price-4 mb-10">
-																<span class="price">from <strong>
+															<div class="product__price product__price-4 mb-10" id="productt">
+																<span class="price productmoney">from <strong>
 																		<%function getLowestPrice(productId, variants) {
 																			let minPrice=Infinity;
 																			variants.forEach(variant=> {
@@ -302,7 +302,7 @@
 
 								<br><br>
 
-								<div class="row">
+								<div class="row" id="productListt">
 									<% for(let i=products.length-1 ;i>=0; i--) { %>
 										<% const variant=variants[i]; %>
 											<% if (products[i].categoryId && products[i].categoryId.name==="Macbooks" &&
@@ -367,8 +367,8 @@
 																	<%= products[i].name %>
 																</a>
 															</h3>
-															<div class="product__price product__price-4 mb-10">
-																<span class="price">from <strong>
+															<div class="product__price product__price-4 mb-10" id="productt">
+																<span class="price productmoney">from <strong>
 																		<%function getLowestPrice(productId, variants) {
 																			let minPrice=Infinity;
 																			variants.forEach(variant=> {
@@ -394,7 +394,7 @@
 
 								<br><br>
 
-								<div class="row">
+								<div class="row" id="productListt">
 									<% for(let i=products.length-1 ;i>=0; i--) { %>
 										<% const variant=variants[i]; %>
 											<% if (products[i].categoryId &&
@@ -456,12 +456,12 @@
 														</div>
 														<div class="product__content">
 															<h3 class="product__title">
-																<a >
+																<a>
 																	<%= products[i].name %>
 																</a>
 															</h3>
-															<div class="product__price product__price-4 mb-10">
-																<span class="price">from <strong>
+															<div class="product__price product__price-4 mb-10" id="productt">
+																<span class="price productmoney">from <strong>
 																		<%function getLowestPrice(productId, variants) {
 																			let minPrice=Infinity;
 																			variants.forEach(variant=> {
@@ -756,6 +756,45 @@
 			}
 		});
 
+
+
+
+
+
+
+		document.addEventListener('DOMContentLoaded', function () {
+    const sortOptions = document.getElementById('sortOptions');
+    const productList = document.getElementById('productListt');
+    const products = Array.from(productList.getElementsByClassName('productt'));
+
+    sortOptions.addEventListener('click', function (event) {
+        if (event.target && event.target.matches('li.option')) {
+            const sortOrder = event.target.getAttribute('data-value');
+            sortProducts(sortOrder);
+        }
+    });
+
+    function sortProducts(order) {
+        products.sort((a, b) => {
+            const priceA = parseFloat(a.querySelector('.productmoney').textContent.replace('$', ''));
+            const priceB = parseFloat(b.querySelector('.productmoney').textContent.replace('$', ''));
+
+            if (order === 'high-to-low') {
+                return priceB - priceA;
+            } else if (order === 'low-to-high') {
+                return priceA - priceB;
+            }
+        });
+
+        // Clear existing products
+        while (productList.firstChild) {
+            productList.removeChild(productList.firstChild);
+        }
+
+        // Append sorted products
+        products.forEach(product => productList.appendChild(product));
+    }
+});
 
 	</script>
 

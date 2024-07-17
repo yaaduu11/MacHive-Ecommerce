@@ -1,5 +1,5 @@
 const User = require('../../models/userModel')
-const Products = require('../../models/productModel') 
+const Products = require('../../models/productModel')
 const Variants = require('../../models/variantModel')
 const Categories = require('../../models/categoryModel')
 const bcrypt = require("bcrypt")
@@ -10,9 +10,9 @@ const { isAuthenticated, logout } = require('../../middleware/authMiddleware');
 
 //! importing user otp
 const Otp = require('../../models/otpModel')
-const {generateRandomOtp, saveOtp} =require('../../util/otpGenerate')
+const { generateRandomOtp, saveOtp } = require('../../util/otpGenerate')
 
-const loadHome = async (req,res) =>{
+const loadHome = async (req, res) => {
     try {
         res.status(200).render('users/home')
     } catch (error) {
@@ -20,15 +20,15 @@ const loadHome = async (req,res) =>{
     }
 }
 
-const loadShop = async (req,res) =>{
+const loadShop = async (req, res) => {
     try {
-        const [ products, variants, categories ] = await Promise.all ([
-            Products.find({}).populate('categoryId'),
-            Variants.find({}),
-            Categories.find({})
+        const [products, variants, categories] = await Promise.all([
+            Products.find({ is_delete: false }).populate('categoryId'),
+            Variants.find({ is_blocked: false }),
+            Categories.find({ is_delete: false })
         ])
-        
-        res.status(200).render('users/shop',{ products, variants, categories })
+
+        res.status(200).render('users/shop', { products, variants, categories })
     } catch (error) {
         console.log(error.message)
     }
@@ -42,7 +42,7 @@ const loadContactUs = async (req, res) => {
     res.render('users/contact');
 };
 
-const loadSignIn = async (req,res) =>{
+const loadSignIn = async (req, res) => {
     try {
         res.status(200).render('users/sign-in')
     } catch (error) {
@@ -50,7 +50,7 @@ const loadSignIn = async (req,res) =>{
     }
 }
 
-const loadSignUp = async (req,res)=>{
+const loadSignUp = async (req, res) => {
     try {
         res.status(200).render('users/sign-up')
     } catch (error) {
@@ -58,7 +58,7 @@ const loadSignUp = async (req,res)=>{
     }
 }
 
-const loadOtp = async (req,res) =>{
+const loadOtp = async (req, res) => {
     try {
         res.status(200).render('users/otp')
     } catch (error) {
@@ -70,7 +70,7 @@ const loadOtp = async (req,res) =>{
 ////////!inserting user
 const insertUser = async (req, res) => {
     try {
-       
+
         const { name, email, mobile, password } = req.body;
         const checkEmail = await User.find({ email });
         // console.log(checkEmail)
@@ -88,13 +88,13 @@ const insertUser = async (req, res) => {
                 password: hashedPassword
             });
             const savedUser = await user.save();
-            
+
             const savedOtp = await saveOtp(savedUser._id, otpCode);
 
             const userData = { userId: savedOtp.userId };
             // console.log(userData)
             const jwtToken = jsonwebtoken.sign(userData, process.env.JWT_KEY);
-            
+
             // Set cookie
             res.cookie('jwtToken', jwtToken, {
                 httpOnly: true,
@@ -102,19 +102,19 @@ const insertUser = async (req, res) => {
                 sameSite: 'strict'
             });
 
-           
+
 
             sendOtpEmail(email, savedOtp.code).then(() => {
                 // console.log('OTP sent to:', email);
             }).catch(err => {
                 console.error('Error sending OTP email:', err);
             });
-            
-            res.json({success:true});
-            
-           
+
+            res.json({ success: true });
+
+
         } else {
-            res.json({success:false, message:"Email is already in use"});
+            res.json({ success: false, message: "Email is already in use" });
         }
 
     } catch (error) {
@@ -128,23 +128,23 @@ const insertUser = async (req, res) => {
 //////! verifying the user
 const userVerification = async (req, res) => {
     try {
-        
-        const {A,B,C,D,E,F} = req.body
-        const enteredOtp = A+B+C+D+E+F
+
+        const { A, B, C, D, E, F } = req.body
+        const enteredOtp = A + B + C + D + E + F
         console.log(enteredOtp);
 
         const decodedjwt = jsonwebtoken.decode(req.cookies.jwtToken);
         const userId = decodedjwt.userId;
 
-        const savedOtp = await Otp.findOne({ userId:decodedjwt.userId });
-        
+        const savedOtp = await Otp.findOne({ userId: decodedjwt.userId });
+
         if (savedOtp) {
             if (savedOtp.code === enteredOtp && savedOtp.userId.equals(decodedjwt.userId)) {
                 await User.updateOne({ _id: userId }, { is_verified: true });
 
                 res.redirect('/sign-in');
             } else {
-                res.status(400).json({success:false, message:"Invalid OTP"});
+                res.status(400).json({ success: false, message: "Invalid OTP" });
             }
         } else {
             res.status(400).send("<script>alert('Failed to verify otp. Please resend OTP'); window.history.back();</script>");
@@ -159,7 +159,7 @@ const userVerification = async (req, res) => {
 const resendOtp = async (req, res) => {
     try {
         const jwtUserId = jsonwebtoken.decode(req.cookies.jwtToken).userId;
-        
+
         const userData = await User.findById(jwtUserId);
         const otpCode = await generateRandomOtp();
 
@@ -204,6 +204,38 @@ const signIn = async (req, res) => {
     }
 };
 
+const googleAuthSignIn = async (req, res) => {
+    try {
+        const { name, email } = req.body;
+
+        const regexPattern = new RegExp(`^${email}$`, 'i');
+        let user = await User.findOne({ email: regexPattern });
+        console.log(email, name)
+
+        if (user) {
+            req.session.userId = user._id;
+            req.session.isAuthenticated = true;
+            return res.status(200).json({ success: true });
+        }
+
+        user = new User({
+            name,
+            email
+        });
+
+        const savedUser = await user.save();
+
+        req.session.userId = savedUser._id;
+        req.session.isAuthenticated = true;
+
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('Google Login Error:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+
+
 
 
 module.exports = {
@@ -217,5 +249,6 @@ module.exports = {
     loadOtp,
     userVerification,
     resendOtp,
-    signIn
+    signIn,
+    googleAuthSignIn
 };

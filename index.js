@@ -5,6 +5,18 @@ const nocache = require('nocache')
 const bodyParser = require("body-parser")
 const app = express()
 
+//mongodb connecting
+require("dotenv").config()
+const mongoose = require("mongoose")
+mongoose.connect(process.env.DATABASE_URL)
+.then(()=>{
+    console.log("connection succesfull")
+})
+.catch((err)=>{
+    console.log(err)
+})
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -17,16 +29,6 @@ app.use(session({
 }));
 
 
-//mongodb connecting
-require("dotenv").config()
-const mongoose = require("mongoose")
-mongoose.connect(process.env.DATABASE_URL)
-.then(()=>{
-    console.log("connection succesfull")
-})
-.catch((err)=>{
-    console.log(err)
-})
 
 app.use(nocache())
 

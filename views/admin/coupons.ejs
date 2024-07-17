@@ -22,8 +22,7 @@
 
 
   <!-- Favicon icon-->
-  <link rel="shortcut icon" type="image/x-icon"
-    href="/users/assets/images/mini-logo.png">
+  <link rel="shortcut icon" type="image/x-icon" href="/users/assets/images/mini-logo.png">
 
 
   <!-- Libs CSS -->
@@ -385,10 +384,11 @@
               </ul>
             </div>
           </li>
-          
+
           <li class="nav-item ">
-            <a class="nav-link collapsed" href="#" id="logout-link" aria-expanded="false" style="color: red;">🡸 Log out</a>
-        </li>
+            <a class="nav-link collapsed" href="#" id="logout-link" aria-expanded="false" style="color: red;">🡸 Log
+              out</a>
+          </li>
 
 
         </ul>
@@ -419,9 +419,15 @@
                   display: flex;
                   align-items: center;
                 }
-    
+
                 .header {
                   flex-grow: 1;
+                }
+
+                .couponticket {
+                  font-size: 100px;
+                  margin-left: 27px;
+                  margin-top: 35px;
                 }
               </style>
             </div>
@@ -430,7 +436,7 @@
           <!-- row -->
           <div class="row">
             <div class="coupon-wrapper">
-              <% for (let i = 0; i < coupons.length; i++) { %>
+              <% for (let i=0; i < coupons.length; i++) { %>
                 <div class="col-lg-5 mb-6">
                   <div class="card">
                     <div class="card-body">
@@ -441,11 +447,13 @@
                         <tbody>
                           <tr>
                             <td style="vertical-align: top;">
-                              <img src="/users/assets/images/couponImg.png" alt="Sample Image" style="width: 200px; height: 200px;">
+                              <i class="fa-solid fa-ticket couponticket"></i>
                             </td>
                             <td style="vertical-align: top;">
                               <div style="text-align: left;">
-                                <h2><%= coupons[i].couponCode %></h2>
+                                <h2>
+                                  <%= coupons[i].couponCode %>
+                                </h2>
                                 <h4 style="color: red;"><strong>Expiry Date: <%= coupons[i].expiryDate %></strong></h4>
                               </div>
                             </td>
@@ -453,12 +461,23 @@
                           <tr>
                             <td colspan="2">
                               <div class="coupon-inputs">
-                                <p style="font-size: 18px; font-weight: bold; margin-bottom: 6px;">Description: <span class="value"><%= coupons[i].description %></span></p>
-                                <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Discount Percentage: <span class="value"><%= coupons[i].discountPercentage %>%
-                                </span></p>
-                                <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Min Purchase Amount: <span class="value"><%= coupons[i].minPurchaseAmount %></span>
+                                <p style="font-size: 18px; font-weight: bold; margin-bottom: 6px;">Description: <span
+                                    class="value">
+                                    <%= coupons[i].description %>
+                                  </span></p>
+                                <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Discount Percentage:
+                                  <span class="value">
+                                    <%= coupons[i].discountPercentage %>%
+                                  </span></p>
+                                <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Min Purchase Amount:
+                                  <span class="value">
+                                    <%= coupons[i].minPurchaseAmount %>
+                                  </span>
                                 </p>
-                                <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Max Discount Amount: <span class="value"><%= coupons[i].maxDiscountAmount %></span>
+                                <p style="font-size: 17px; font-weight: bold; margin-bottom: 6px;">Max Discount Amount:
+                                  <span class="value">
+                                    <%= coupons[i].maxDiscountAmount %>
+                                  </span>
                                 </p>
                               </div>
                             </td>
@@ -466,8 +485,12 @@
                           <tr>
                             <td colspan="2">
                               <div style="text-align: center;">
-                                <button type="button" class="btn btn-primary" style="margin-right: 22px;" data-coupon-id="<%= coupons[i]._id %>" onclick="navigateToEdit('<%= coupons[i]._id %>')">Edit</button>
-                                <button style="margin-right: 22px;" class="btn <%= coupons[i].block ? 'btn-success' : 'btn-danger' %>" onclick="toggleBlockStatus('<%= coupons[i]._id %>', this, this.closest('tr').querySelector('.badge'))">
+                                <button type="button" class="btn btn-primary" style="margin-right: 22px;"
+                                  data-coupon-id="<%= coupons[i]._id %>"
+                                  onclick="navigateToEdit('<%= coupons[i]._id %>')">Edit</button>
+                                <button style="margin-right: 22px;"
+                                  class="btn <%= coupons[i].block ? 'btn-success' : 'btn-danger' %>"
+                                  onclick="toggleBlockStatus('<%= coupons[i]._id %>', this, this.closest('tr').querySelector('.badge'))">
                                   <%= coupons[i].block ? 'List' : 'Unlist' %>
                                 </button>
                                 <!-- <button type="button" class="btn btn-danger">Delete</button> -->
@@ -479,20 +502,22 @@
                     </div>
                   </div>
                 </div>
-              <% } %>
+                <% } %>
             </div>
           </div>
           <!-- Pagination controls -->
           <div class="pagination">
-            <% if (currentPage > 1) { %>
+            <% if (currentPage> 1) { %>
               <a href="?page=<%= currentPage - 1 %>">Previous</a>
-            <% } %>
-            <% for (let i = 1; i <= totalPages; i++) { %>
-              <a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
-            <% } %>
-            <% if (currentPage < totalPages) { %>
-              <a href="?page=<%= currentPage + 1 %>">Next</a>
-            <% } %>
+              <% } %>
+                <% for (let i=1; i <=totalPages; i++) { %>
+                  <a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>">
+                    <%= i %>
+                  </a>
+                  <% } %>
+                    <% if (currentPage < totalPages) { %>
+                      <a href="?page=<%= currentPage + 1 %>">Next</a>
+                      <% } %>
           </div>
           <style>
             .coupon-wrapper {
@@ -501,53 +526,53 @@
               flex-wrap: wrap;
               gap: 20px;
             }
-    
+
             #example {
               width: 100%;
               border-collapse: collapse;
             }
-    
+
             #example td {
               padding: 10px;
               vertical-align: top;
             }
-    
+
             #example img {
               width: 200px;
               height: 200px;
               margin-left: -20px;
               margin-top: -57px;
             }
-    
+
             #example .text-container {
               text-align: left;
             }
-    
+
             #example .headings-container {
               margin-top: 20px;
             }
-    
+
             #example .coupon-inputs {
               margin-top: -55px;
             }
-    
+
             .coupon-inputs span.value {
               color: blue;
             }
-    
+
             .pagination {
               display: flex;
               justify-content: center;
               margin-top: 20px;
             }
-    
+
             .pagination a {
               margin: 0 5px;
               padding: 10px 15px;
               text-decoration: none;
               color: #007bff;
             }
-    
+
             .pagination a.active {
               background-color: #007bff;
               color: white;
@@ -557,7 +582,7 @@
         </div>
       </div>
     </div>
-    
+
   </main>
 
   <!-- Modal -->
@@ -648,43 +673,43 @@
     }
 
     function toggleBlockStatus(couponId, btnElement, statusElement) {
-  const isCurrentlyBlocked = btnElement.innerText.trim() === 'Unlist';
-  const confirmationMessage = isCurrentlyBlocked 
-    ? 'Are you sure you want to Unlist this Coupon?' 
-    : 'Are you sure you want to List this Coupon?';
+      const isCurrentlyBlocked = btnElement.innerText.trim() === 'Unlist';
+      const confirmationMessage = isCurrentlyBlocked
+        ? 'Are you sure you want to Unlist this Coupon?'
+        : 'Are you sure you want to List this Coupon?';
 
-  Swal.fire({
-    title: confirmationMessage,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, Sure!"
-  }).then((result) => {
-    if (result) {
-      fetch(`/admin/unlist-coupon/${couponId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
+      Swal.fire({
+        title: confirmationMessage,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Sure!"
+      }).then((result) => {
+        if (result) {
+          fetch(`/admin/unlist-coupon/${couponId}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+            .then(response => response.json())
+            .then((data) => {
+              const newBlockStatus = btnElement.innerText.trim() === 'Unlist';
+              btnElement.innerText = newBlockStatus ? 'List' : 'Unlist';
+              btnElement.classList.toggle('btn-success', newBlockStatus);
+              btnElement.classList.toggle('btn-danger', !newBlockStatus);
+
+              statusElement.innerText = newBlockStatus ? 'Listed' : 'Unlisted';
+              statusElement.classList.toggle('badge-success-soft', newBlockStatus);
+              statusElement.classList.toggle('badge-danger', !newBlockStatus);
+              statusElement.classList.toggle('text-success', newBlockStatus);
+              statusElement.classList.toggle('text-danger', !newBlockStatus);
+
+            })
         }
-      })
-      .then(response => response.json())
-       .then((data) => {
-        const newBlockStatus = btnElement.innerText.trim() === 'Unlist';
-        btnElement.innerText = newBlockStatus ? 'List' : 'Unlist';
-        btnElement.classList.toggle('btn-success', newBlockStatus);
-        btnElement.classList.toggle('btn-danger', !newBlockStatus);
-
-        statusElement.innerText = newBlockStatus ? 'Listed' : 'Unlisted';
-        statusElement.classList.toggle('badge-success-soft', newBlockStatus);
-        statusElement.classList.toggle('badge-danger', !newBlockStatus);
-        statusElement.classList.toggle('text-success', newBlockStatus);
-        statusElement.classList.toggle('text-danger', !newBlockStatus);
-
-      })
+      });
     }
-  });
-}
 
 
 

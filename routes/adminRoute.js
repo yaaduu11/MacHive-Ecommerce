@@ -18,7 +18,7 @@ const variantUpload = generateStorage('variant')
 
 //////////////!   SIGN IN
 router.get('/', authAdmin.checkAdminLoggedIn, signIn.loadSignIn)
-router.post('/', authAdmin.isAdminAuthenticated, signIn.adminSignin)
+router.post('/', signIn.adminSignin)
 
 
 //////////////!   LOGOUT

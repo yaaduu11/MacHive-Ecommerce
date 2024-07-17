@@ -24,6 +24,8 @@ router.post('/sign-up', userController.insertUser)
 router.get('/sign-in',authUser.loginedUser, userController.loadSignIn)
 router.post('/sign-in', userController.signIn)
 
+router.post('/api/google-authentication', userController.googleAuthSignIn);
+
 
 //////////////!  logout side
 router.get('/logout',authUser.isAuthenticated,  dashController.logoutUser)
@@ -56,7 +58,7 @@ router.delete('/delete-address/:id', dashController.deleteAddress)
 
 //////////////! Cart
 router.get('/cart', authUser.isAuthenticated, shopController.loadCart)
-router.post('/cart', shopController.addToCart)
+router.post('/cart', authUser.isAuthenticated, shopController.addToCart)
 router.post('/update-cart-quantity', shopController.cartQuantityUpdate)
 router.post('/check-stock', shopController.checkStock)
 router.delete('/remove-from-cart', shopController.removeItemCart)

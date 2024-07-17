@@ -509,98 +509,83 @@
 
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      $('#expiryDate').datepicker({
-        format: 'mm-dd-yyyy',
-        autoclose: true,
+    document.getElementById('addCouponForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const formDataObject = {};
+      formData.forEach((value, key) => {
+        formDataObject[key] = value;
       });
-  
-      document.querySelector('.input-group-text').addEventListener('click', function () {
-        $('#expiryDate').datepicker('show');
-      });
-  
-      document.getElementById('offerType').addEventListener('change', async function () {
-        let offerType = this.value;
-        const offerItemsContainer = document.getElementById('offerItemsContainer');
-        const offerItemsSelect = document.getElementById('offerItems');
-  
-        if (offerType) {
-          let route;
-          if (offerType === 'Category Offer') {
-            route = '/admin/categoryOffers';
-          } else if (offerType === 'Product Offer') {
-            route = '/admin/productOffers';
-          }
-  
-          if (route) {
-            const response = await fetch(route);
-            const data = await response.json();
-  
-            if (data.success) {
-              offerItemsSelect.innerHTML = '';
-              data.items.forEach(item => {
-                const option = document.createElement('option');
-                option.value = item._id;
-                option.textContent = item.name;
-                offerItemsSelect.appendChild(option);
-              });
-  
-              offerItemsContainer.style.display = 'block';
-            } else {
-              offerItemsContainer.style.display = 'none';
-            }
-          }
-        } else {
-          offerItemsContainer.style.display = 'none';
+
+      fetch('/admin/AddCoupons', {
+        method: 'POST',
+        body: JSON.stringify(formDataObject),
+        headers: {
+          'Content-Type': 'application/json'
         }
-      });
-  
-      document.getElementById('offerForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-  
-        const formData = new FormData(this);
-        const formDataObject = {};
-        formData.forEach((value, key) => {
-          formDataObject[key] = value;
-        });
-  
-        fetch('/admin/addOffers', {
-          method: 'POST',
-          body: JSON.stringify(formDataObject),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(response => response.json())
-          .then(data => {
-            if (data.success) {
-              Swal.fire({
-                title: 'Success!',
-                text: data.message || 'Offer has been added successfully',
-                icon: 'success'
-              }).then((result) => {
-                if (result.isConfirmed || result.isDismissed) {
-                  window.location.href = '/admin/offers';
-                }
-              });
-            } else {
-              Swal.fire({
-                title: 'Error!',
-                text: data.message || 'Failed to add offer',
-                icon: 'error'
-              });
-            }
-          })
-          .catch(error => {
-            console.error('Error:', error);
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          if (data.success) {
+            Swal.fire({
+              title: 'Success!',
+              text: data.message || 'Coupon has been added successfully',
+              icon: 'success'
+            }).then((result) => {
+              if (result.isConfirmed || result.isDismissed) {
+                window.location.href = '/admin/coupons';
+              }
+            });
+          } else {
             Swal.fire({
               title: 'Error!',
-              text: 'Failed to add offer.',
+              text: data.message || 'Failed to add coupon',
               icon: 'error'
             });
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.fire({
+            title: 'Error!',
+            text: 'Failed to add coupon.',
+            icon: 'error'
           });
-      });
+        });
     });
+
+
+
+
+    document.getElementById("addCouponForm").addEventListener("input", function (event) {
+      const target = event.target;
+      const pattern = target.getAttribute("pattern");
+      const errorMsg = target.nextElementSibling;
+
+      if (pattern) {
+        const regex = new RegExp(pattern);
+        if (!regex.test(target.value)) {
+          if (target.name === "code") {
+            errorMsg.textContent = "The coupon code must contain only letters and numbers.";
+          } else if (target.name === "description") {
+            errorMsg.textContent = "The description must contain only letters and spaces.";
+          } else if (target.name === "minamount" || target.name === "maxamount") {
+            errorMsg.textContent = "This field must contain only numbers.";
+          } else if (target.name === "discount") {
+            errorMsg.textContent = "Only positive numbers below 100 are allowed.";
+          } else if (target.name === "expirydate") {
+            errorMsg.textContent = "Enter a date in the format MM-DD-YYYY. Eg: 01-12-2024";
+          } else {
+            errorMsg.textContent = "";
+          }
+        } else {
+          errorMsg.textContent = "";
+        }
+      }
+    });
+
   </script>
 
 
